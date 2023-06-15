@@ -6,4 +6,4 @@ from django.http import HttpResponse
 
 class Index(View):
     def get(self, request):
-        return HttpResponse('Đây là trang chính của Reader')
+        return render(request, 'reader/index.html')
