@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('homepage/', include('reader.urls')),
     path('librarian/', include('librarian.urls')),
+    path('ad/', include('ad.urls')),
 ]
