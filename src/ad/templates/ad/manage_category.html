@@ -1,0 +1,15 @@
+{% extends 'ad/base.html' %}
+
+{% block Page_content %}
+
+<div class="container mt-3" style = "width: 95%; font-size: 14px;"></div>
+    <form id= "add" action="" method = "POST" class = "card p-3 mt-5">
+        {% csrf_token %}
+        {{category}}
+        <div class="d-flex justify-content-between mt-3">
+            <a href="{% url 'ad:category' %}" class="btn btn-dark">Back</a>    
+            <input class="btn btn-dark" type="submit" value="Add">
+        </div>
+    </form>
+
+{% endblock Page_content %}

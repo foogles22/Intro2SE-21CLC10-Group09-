@@ -1,47 +1,67 @@
-{% extends 'ad/base.html'%}
+{% extends 'ad/base.html' %}
 
-{% block Page_content%}
-    <div class = "text-center mb-5">Đây là Categories Page</div>
-    <table class="table">
-          <colcategory>
-            <col width="5%">
-            <col width="15%">
-            <col width="50%">
-            <col width="20%">
-            <col width="10%">
-        </colcategory>
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Description</th>
-            <th scope="col">Status</th>
-            <th class="text-center">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-            {% if data %}
-            {% for d in data %}
-            <tr>
-                <th scope="row">{{forloop.counter}}</th>
-                <td>{{d.name}}</td>
-                <td>{{d.description}}</td>
-                <td>{{d.status}}</td>
-                <td class="text-center">
-                  <div class="dropdown">
-                      <button class="btn btn-light btn-sm rounded-0 border dropdown-toggle" type="button" id="{{d.pk}}" data-bs-toggle="dropdown" aria-expanded="false">
-                        Action
-                      </button>
-                      <ul class="dropdown-menu" aria-labelledby="{{d.pk}}">
-                          <li><a class="dropdown-item view-data" href="" data-url=""><i class="fa fa-eye text-dark"></i> View</a></li>
-                          <li><a class="dropdown-item edit-data" href="" data-url=""><i class="fa fa-edit text-primary"></i> Edit</a></li>
-                          <li><a class="dropdown-item delete-data" href="" data-url=""><i class="fa fa-trash text-danger"></i> Delete</a></li>
-                      </ul>
-                  </div>
-              </td>
-            </tr>
-            {% endfor %}
-            {% endif %}
-        </tbody>
-      </table>
-{% endblock Page_content%}
+{% block Page_content %}
+<section class="py-4">
+  <div class="container">
+    <h3 class="fw-bolder text-center">List of Categories</h3>
+    <center>
+      <hr class="bg-primary opacity-100" style="height:3px" width="5%" />
+    </center>
+    <div class="card rounded-0 shadow">
+      <div class="card-body">
+        <div class="container-fluid">
+          <div class="text-start mb-3">
+            <a href="{% url 'ad:manage_category'%}" class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" type="button"><i class="fa fa-plus"></i>Add New</a>
+          </div>
+          <table class="table">
+            <colcategory>
+              <col width="5%" />
+              <col width="15%" />
+              <col width="50%" />
+              <col width="20%" />
+              <col width="10%" />
+            </colcategory>
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Status</th>
+                <th class="text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if data %}
+                {% for d in data %}
+                  <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ d.name }}</td>
+                    <td>{{ d.description }}</td>
+                    <td>{{ d.status }}</td>
+                    <td class="text-center">
+                      <div class="dropdown">
+                        <button class="btn btn-light btn-sm rounded-0 border dropdown-toggle" type="button" id="{{ d.pk }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
+                        <ul class="dropdown-menu" aria-labelledby="{{ d.pk }}">
+                          <li>
+                            <a class="dropdown-item view-data" href="" data-url=""><i class="fa fa-eye text-dark"></i> View</a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item edit-data" href="" data-url=""><i class="fa fa-edit text-primary"></i> Edit</a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item delete-data" href="" data-url=""><i class="fa fa-trash text-danger"></i> Delete</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
