@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http.response import HttpResponse
+from . import models
 # Create your views here.
 
 def context_data():
@@ -18,6 +19,7 @@ def home(request):
 def category(request):
     context = context_data()
     context['page_title'] = 'Categories'
+    context['data'] = models.Category.objects.all()
     return render(request, 'ad/category.html', context)
 
 def sub_category(request):
