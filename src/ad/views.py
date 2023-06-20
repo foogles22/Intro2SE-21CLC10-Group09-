@@ -30,4 +30,5 @@ def sub_category(request):
 def book(request):
     context = context_data()
     context['page_title'] = 'Books'
+    context['date'] = models.Book.objects.all()
     return render(request, 'ad/book.html', context)
