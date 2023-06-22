@@ -26,16 +26,42 @@ def category(request):
     context['data'] = models.Category.objects.all()
     return render(request, 'ad/category.html', context)
 
-def manage_category(request):
+def manage_category(request, id = None):
     context = context_data()
     context['page_title'] = 'Manage Categories'
-    context['category'] = forms.SaveCategory()
-    if request.method == "POST":
-        category = forms.SaveCategory(request.POST)
-        category.save()
-        return HttpResponseRedirect('category/')
+    if id:
+        context['category'] = models.Category.objects.get(pk = id)
+        context['type'] = 'Save'
     else:
-        return render(request, 'ad/manage_category.html', context)
+        context['category'] = {}
+        context['type'] = 'Add'
+    return render(request, 'ad/manage_category.html', context)
+
+def save_category(request):
+    if request.method == "POST":
+        post = request.POST
+        if post['id']:
+            category = models.Category.objects.get(pk = post['id'])
+            category = forms.SaveCategory(request.POST, instance=category) 
+        else:
+            category = forms.SaveCategory(request.POST)
+        category.save()
+        return HttpResponseRedirect('/ad/category/')
+    else:
+        pass
+
+def delete_category(request, id):
+    category = models.Category.objects.get(pk = id)
+    category.delete()
+    return HttpResponseRedirect('/ad/category/')
+
+def view_category(request, id):
+    context = context_data()
+    context['page_title'] = 'View Categories'
+    context['category'] = models.Category.objects.get(pk = id)
+    return render(request, 'ad/view_category.html', context)
+
+
 
 # --------SUB CATEGORY--------
 def sub_category(request):
