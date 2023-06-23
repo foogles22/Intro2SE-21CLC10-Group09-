@@ -2,15 +2,18 @@ from django.urls import path
 from . import views
 from django.views.generic import TemplateView
 
-
-app_name = 'ad'
-
 urlpatterns = [
-    # --------HOME--------
-    path('home/', views.home, name = 'home'),
+
+    path('login/', TemplateView.as_view(template_name = 'authenticate/login.html')),
+    path('register/', TemplateView.as_view(template_name = 'authenticate/register.html')),
+    
+    # ----------------------------------READER------------------------------------------------
+    # path('homepage/', views.homepage, name = 'homepage'), 
 
 
+    # ----------------------------------ADMIN------------------------------------------------
     # --------CATEGORY--------
+    path('home/', views.home, name = 'home'),
     path('category/', views.category, name = 'category'),
     path('manage_category/', views.manage_category, name = 'manage_category'),
     path('manage_category/<int:id>', views.manage_category, name = 'manage_category_pk'),

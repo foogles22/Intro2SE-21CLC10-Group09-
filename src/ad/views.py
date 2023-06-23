@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from django.http.response import HttpResponse
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponse, HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 from . import models
 from . import forms
 # Create your views here.
@@ -13,6 +13,7 @@ def context_data():
     return context
 
 # --------HOME--------
+@login_required
 def home(request):
     context = context_data()
     context['page_title'] = 'Admin Home'
@@ -20,12 +21,14 @@ def home(request):
 
 
 # --------CATEGORY--------
+@login_required
 def category(request):
     context = context_data()
     context['page_title'] = 'Categories'
-    context['data'] = models.Category.objects.all()
+    context['category'] = models.Category.objects.all()
     return render(request, 'ad/category.html', context)
 
+@login_required
 def manage_category(request, id = None):
     context = context_data()
     context['page_title'] = 'Manage Categories'
@@ -37,6 +40,7 @@ def manage_category(request, id = None):
         context['type'] = 'Add'
     return render(request, 'ad/manage_category.html', context)
 
+@login_required
 def save_category(request):
     if request.method == "POST":
         post = request.POST
@@ -46,15 +50,17 @@ def save_category(request):
         else:
             category = forms.SaveCategory(request.POST)
         category.save()
-        return HttpResponseRedirect('/ad/category/')
+        return HttpResponseRedirect('/category/')
     else:
         pass
 
+@login_required
 def delete_category(request, id):
     category = models.Category.objects.get(pk = id)
     category.delete()
-    return HttpResponseRedirect('/ad/category/')
+    return HttpResponseRedirect('/category/')
 
+@login_required
 def view_category(request, id):
     context = context_data()
     context['page_title'] = 'View Categories'
@@ -64,6 +70,7 @@ def view_category(request, id):
 
 
 # --------SUB CATEGORY--------
+@login_required
 def sub_category(request):
     context = context_data()
     context['page_title'] = 'Sub Categories'
@@ -71,6 +78,7 @@ def sub_category(request):
 
 
 # --------BOOK--------
+@login_required
 def book(request):
     context = context_data()
     context['page_title'] = 'Books'

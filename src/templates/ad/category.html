@@ -11,7 +11,7 @@
       <div class="card-body">
         <div class="container-fluid">
           <div class="text-start mb-3">
-            <a href="{% url 'ad:manage_category'%}" class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" type="button"><i class="fa fa-plus"></i> Add New</a>
+            <a href="{% url 'manage_category'%}" class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" type="button"><i class="fa fa-plus"></i> Add New</a>
           </div>
           <table class="table">
             <colcategory>
@@ -31,32 +31,32 @@
               </tr>
             </thead>
             <tbody>
-              {% if data %}
-                {% for d in data %}
+              {% if category %}
+                {% for cat in category %}
                   <tr>
                     <th class="text-center" scope="row">{{ forloop.counter }}</th>
-                    <td class="text-center">{{ d.name }}</td>
+                    <td class="text-center">{{ cat.name }}</td>
                     <td class="text-center">
-                        <p class="m-0 truncate-1">{{d.description}}</p>
+                        <p class="m-0 truncate-1">{{cat.description}}</p>
                     </td>
                     <td class="text-center">
-                        {% if d.status == '1' %}
+                        {% if cat.status == '1' %}
                         <span class="badge badge-success bg-gradient bg-success px-3 rounded-pill bg-opacity-75 text-sm py-1">Active</span> {% else %}
                         <span class="badge badge-secondary bg-gradient bg-secondary px-3 rounded-pill bg-opacity-75 text-sm py-1">Inactive</span> {% endif %}
                     </td>
 
                     <td class="text-center">
                       <div class="dropdown">
-                        <button class="btn btn-light btn-sm rounded-0 border dropdown-toggle" type="button" id="{{ d.pk }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
-                        <ul class="dropdown-menu" aria-labelledby="{{ d.pk }}">
+                        <button class="btn btn-light btn-sm rounded-0 border dropdown-toggle" type="button" id="{{ cat.pk }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
+                        <ul class="dropdown-menu" aria-labelledby="{{ cat.pk }}">
                           <li>
-                            <a class="dropdown-item view-data" href="{% url 'ad:view_category' d.id%}"><i class="fa fa-eye text-dark"></i> View</a>
+                            <a class="dropdown-item view-data" href="{% url 'view_category' cat.id%}"><i class="fa fa-eye text-dark"></i> View</a>
                           </li>
                           <li>
-                            <a class="dropdown-item edit-data" href="{% url 'ad:manage_category_pk' d.id%}"><i class="fa fa-edit text-primary"></i> Edit</a>
+                            <a class="dropdown-item edit-data" href="{% url 'manage_category_pk' cat.id%}"><i class="fa fa-edit text-primary"></i> Edit</a>
                           </li>
                           <li>
-                            <a class="dropdown-item delete-data" href="{% url 'ad:delete_category' d.id%}"><i class="fa fa-trash text-danger"></i> Delete</a>
+                            <a class="dropdown-item delete-data" href="{% url 'delete_category' cat.id%}"><i class="fa fa-trash text-danger"></i> Delete</a>
                           </li>
                         </ul>
                       </div>
