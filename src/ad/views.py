@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http.response import HttpResponse, HttpResponseRedirect
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from . import models
 from . import forms
@@ -12,6 +13,35 @@ def context_data():
     }
     return context
 
+# AUTHENTICATE-AUTHENTICATE-AUTHENTICATE-AUTHENTICATE-AUTHENTICATE-AUTHENTICATE-AUTHENTICATE-AUTHENTICATE
+
+def login_user(request):
+    context = context_data()
+    context['page_title'] = 'Login'
+    if request.method == "POST":
+        auth = authenticate(username = request.POST['userID'], password = request.POST['password'])
+        if auth is not None:
+            login(request,auth)
+            return HttpResponseRedirect('/home/')
+        else:
+            return HttpResponseRedirect('/login/')
+    else:
+        return render(request, 'authenticate/login.html', context)
+
+def logout_user(request):
+    logout(request)
+    return HttpResponseRedirect('/home/')
+
+def register_user(request):
+    context = context_data()
+    context['page_title'] = 'Register'
+    if request.method == "POST":
+        pass
+    else:
+        return render(request, 'authenticate/register.html', context)
+
+
+# ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN
 # --------HOME--------
 @login_required
 def home(request):
@@ -68,14 +98,19 @@ def view_category(request, id):
     return render(request, 'ad/view_category.html', context)
 
 
-
-# --------SUB CATEGORY--------
+# --------SOURCE TYPE--------
 @login_required
-def sub_category(request):
+def source_type(request):
     context = context_data()
-    context['page_title'] = 'Sub Categories'
-    return render(request, 'ad/sub_category.html', context)
+    context['page_title'] = 'Source Types'
+    return render(request, 'ad/source_type.html', context)
 
+# --------LANGUAGE------------
+@login_required
+def language(request):
+    context = context_data()
+    context['page_title'] = 'Language'
+    return render(request, 'ad/language.html', context)
 
 # --------BOOK--------
 @login_required
@@ -83,3 +118,17 @@ def book(request):
     context = context_data()
     context['page_title'] = 'Books'
     return render(request, 'ad/book.html', context)
+
+# ---------Borrowing Transaction-----------
+@login_required
+def borrowing(request):
+    context = context_data()
+    context['page_title'] = 'Borrowing Transaction'
+    return render(request, 'ad/borrowing.html', context)
+
+# ---------------------Users----------------
+@login_required
+def user(request):
+    context = context_data()
+    context['page_title'] = 'Users'
+    return render(request, 'ad/user.html', context)

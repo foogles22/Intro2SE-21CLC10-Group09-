@@ -4,13 +4,15 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
 
-    path('login/', TemplateView.as_view(template_name = 'authenticate/login.html')),
-    path('register/', TemplateView.as_view(template_name = 'authenticate/register.html')),
-    
+    path('login/', views.login_user, name='login'),
+    path('logout/', views.logout_user, name='logout'),
+    path('register/', views.register_user, name='register'),
     # ----------------------------------READER------------------------------------------------
     # path('homepage/', views.homepage, name = 'homepage'), 
 
+    # ----------------------------------LIBRARIAN--------------------------------------------
 
+    
     # ----------------------------------ADMIN------------------------------------------------
     # --------CATEGORY--------
     path('home/', views.home, name = 'home'),
@@ -21,11 +23,19 @@ urlpatterns = [
     path('delete_category/<int:id>', views.delete_category, name = 'delete_category'),
     path('view_category/<int:id>', views.view_category, name= 'view_category'),
 
-    # --------SUB CATEGORY--------
-    path('sub_category/', views.sub_category, name = 'sub_category'),
+    # --------Source Type--------
+    path('source_type/', views.source_type, name = 'source_type'),
+
+    # --------Languages----------
+    path('language/', views.language, name = 'language'),
 
 
-    # --------BOOK--------
+    # --------Book--------
     path('book/', views.book, name = 'book'),
 
+    # --------Borrowing Transactions-------
+    path('borrowing/', views.borrowing, name = 'borrowing'),
+
+    # --------------User------------------
+    path('user/', views.user, name = 'user'),
 ]

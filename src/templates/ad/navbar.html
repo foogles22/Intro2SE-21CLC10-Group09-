@@ -12,7 +12,6 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarExample01">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="topNav">
-                    {% comment %} {% if request.user.is_authenticated %} {% endcomment %}
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="{% url 'home'%}">Home</a>
                     </li>
@@ -20,38 +19,29 @@
                         <a class="nav-link" aria-current="page" href="{% url 'category'%}">Categories</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{% url 'sub_category'%}">Sub Categories</a>
+                        <a class="nav-link" aria-current="page" href="{% url 'source_type'%}">Source Types</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'language'%}">Languages</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="{% url 'book'%}">Books</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="">Readers</a>
+                        <a class="nav-link" aria-current="page" href="{% url 'borrowing'%}">Borrowing Transactions</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="">Borrowing Transactions</a>
+                        <a class="nav-link" aria-current="page" href="{% url 'user'%}">Users</a>
                     </li>
-                    {% comment %} {% if request.user.is_superuser %} {% endcomment %}
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="">Users</a>
-                    </li>
-                    {% comment %} {% endif %} {% endcomment %}
-                    {% comment %} {% endif %} {% endcomment %}
                 </ul>
 
                 <ul class="navbar-nav d-flex flex-row">
-                    {% comment %} {% if user.id %} {% endcomment %}
                     <li class="nav-item">
-                        <a class="nav-link"  href=""><b>Howdy, HoangKha</b></a>
+                        <a class="nav-link"  href=""><b>{{user.username}}</b></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="">Logout</a>
+                        <a class="nav-link" aria-current="page" href="{% url 'logout' %}">Logout</a>
                     </li>
-                    {% comment %} {% else %} {% endcomment %}
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="">Login</a>
-                    </li>
-                    {% comment %} {% endif %} {% endcomment %}
                 </ul>
             </div>
         </div>
