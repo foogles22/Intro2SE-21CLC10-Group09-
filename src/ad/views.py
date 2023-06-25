@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from . import models
 from . import forms
+from .forms import UserFormRegister
 # Create your views here.
 
 def context_data():
@@ -22,23 +24,28 @@ def login_user(request):
         auth = authenticate(username = request.POST['userID'], password = request.POST['password'])
         if auth is not None:
             login(request,auth)
-            return HttpResponseRedirect('/home/')
+            return redirect('home')
         else:
-            return HttpResponseRedirect('/login/')
+            return redirect('login')
     else:
         return render(request, 'authenticate/login.html', context)
 
 def logout_user(request):
     logout(request)
-    return HttpResponseRedirect('/home/')
+    return redirect('home')
 
 def register_user(request):
     context = context_data()
     context['page_title'] = 'Register'
+    register_form = UserFormRegister()
     if request.method == "POST":
-        pass
-    else:
-        return render(request, 'authenticate/register.html', context)
+        register_form = UserFormRegister(request.POST)
+        if register_form.is_valid():
+            register_form.save()
+            context['page_title'] = 'Login'
+            return render(request, 'authenticate/login.html', context)
+    context['register_form'] = register_form
+    return render(request, 'authenticate/register.html', context)
 
 
 # ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN
@@ -80,7 +87,7 @@ def save_category(request):
         else:
             category = forms.SaveCategory(request.POST)
         category.save()
-        return HttpResponseRedirect('/category/')
+        return redirect('category')
     else:
         pass
 
@@ -88,7 +95,7 @@ def save_category(request):
 def delete_category(request, id):
     category = models.Category.objects.get(pk = id)
     category.delete()
-    return HttpResponseRedirect('/category/')
+    return redirect('category')
 
 @login_required
 def view_category(request, id):

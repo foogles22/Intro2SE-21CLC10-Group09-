@@ -59,21 +59,26 @@
 
                 <!-- User ID input -->
                 <div class="form-outline mb-4">
-                  <input type="text" id="userID" name="userID" class="form-control" />
-                  <label class="form-label" for="userID">User ID</label>
+                  {{register_form.username}}
+                  <label class="form-label" for="username">User ID</label>
                 </div>
   
                 <!-- Password input -->
                 <div class="form-outline mb-4">
-                  <input type="password" id="password" class="form-control" />
-                  <label class="form-label" for="password">Password</label>
+                  {{register_form.password1}}
+                  <label class="form-label" for="password1">Password</label>
                 </div>
-  
+                
+                <div class="form-outline mb-4">
+                  {{register_form.password2}}
+                  <label class="form-label" for="password2">Confirm Password</label>
+                </div>
+
                 <!-- Submit button -->
                 <button type="submit" class="btn btn-primary btn-block mb-4">
                   Sign up
                 </button>
-  
+                {{register_form.errors}}
               </form>
               <a href="{% url 'login' %}">Login</a>
             </div>

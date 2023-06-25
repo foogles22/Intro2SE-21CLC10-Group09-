@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from . import models
 
 class SaveCategory(forms.ModelForm):
@@ -10,14 +12,13 @@ class SaveCategory(forms.ModelForm):
         model = models.Category
         fields = ('name', 'description', 'status', )
 
-    # def clean_name(self):
-    #     id = self.data['id'] if (self.data['id']).isnumeric() else 0
-    #     name = self.cleaned_data['name']
-    #     try:
-    #         if id > 0:
-    #             category = models.Category.objects.exclude(id = id).get(name = name, delete_flag = 0)
-    #         else:
-    #             category = models.Category.objects.get(name = name, delete_flag = 0)
-    #     except:
-    #         return name
-    #     raise forms.ValidationError("Category Name already exists.")
+class UserFormRegister(UserCreationForm):
+    class meta:
+        model = User
+        fields = ('username', 'password1', 'password2')
+
+        # widgets = {
+        #     'username' : forms.CharField(attrs={'class' : 'form-control', 'id':'username'}), 
+        #     'password1' : forms.CharField(attrs={'class' : 'form-control', 'id':'password1'}), 
+        #     'password2' : forms.CharField(attrs={'class' : 'form-control', 'id':'password2'}), 
+        # }
