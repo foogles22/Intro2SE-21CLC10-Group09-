@@ -48,7 +48,8 @@ def home(request):
     context = context_data()
     context['page_title'] = 'Admin Home'
     return render(request, 'ad/home.html', context)
-
+#Comment stupid stuff
+#add more comment
 
 # --------CATEGORY--------
 @login_required
