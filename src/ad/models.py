@@ -1,51 +1,15 @@
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.contrib.auth.models import User
 # Create your models here.
 
 
 # -User-User--User--User--User--User--User--User--User--User--User--User--User--User--User--User--User--User-
-
-class MyUser(AbstractUser):
-    date_of_birth = models.DateField(default=timezone.now)
-    sex = models.CharField(max_length=2, choices=(("1", "Male"),("2", "Female")))
-    phone = models.CharField(max_length=15, blank= True, null=True)
+class Profile(models.Model):
+    user = models.OneToOneField(User, null= True, on_delete=models.CASCADE)
     
-    class Role(models.TextChoices):
-        ADMIN = "ADMIN", 'Admin'
-        LIBRARIAN = "LIBRARIAN", 'Librarian'
-        READER = "READER", 'Reader'
 
-    base_role = Role.READER
 
-    role = models.CharField(max_length=50, choices=Role.choices)
-
-    def save(self, *arg, **kwargs):
-        if not self.pk:
-            self.role = self.base_role
-            return super().save(*arg,**kwargs)
-
-class LibrarianManager(BaseUserManager):
-    def get_queryset(self,*args, **kwargs):
-        results = super().ger_queryset(*args,**kwargs)
-        return results.filter(role=MyUser.Role.LIBRARIAN)
-
-class Librarian(MyUser):
-    base_role = MyUser.Role.LIBRARIAN
-    object = LibrarianManager()
-    class Meta:
-        proxy = True
-
-class AdminManager(BaseUserManager):
-    def get_queryset(self,*args, **kwargs):
-        results = super().ger_queryset(*args,**kwargs)
-        return results.filter(role=MyUser.Role.ADMIN)
-    
-class Admin(MyUser):
-    base_role = MyUser.Role.ADMIN
-
-    class Meta:
-        proxy = True
 # -ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN
 class Category(models.Model):
     name = models.CharField(max_length=250)

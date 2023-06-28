@@ -6,7 +6,6 @@ from django.contrib.auth.decorators import login_required
 from . import models
 from . import forms
 from .decorators import user_is_authenticated
-from .forms import CustomUserCreationForm
 
 # Create your views here.
 
@@ -46,9 +45,9 @@ def logout_user(request):
 def register_user(request, *args, **kwargs):
     context = context_data()
     context["page_title"] = "Register"
-    register_form = CustomUserCreationForm()
+    register_form = UserCreationForm()
     if request.method == "POST":
-        register_form = CustomUserCreationForm(request.POST)
+        register_form = UserCreationForm(request.POST)
         if register_form.is_valid():
             register_form.save()
             return redirect('login')
@@ -154,7 +153,6 @@ def borrowing(request):
 def user(request):
     context = context_data()
     context["page_title"] = "Users"
-    context["user"] = models.MyUser.objects.all()
     return render(request, "ad/user.html", context)
 
 # @login_required
