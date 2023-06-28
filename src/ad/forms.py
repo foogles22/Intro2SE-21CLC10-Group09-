@@ -1,7 +1,17 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+# from django.contrib.auth.models import User
 from . import models
+
+class CustomUserCreationForm(UserCreationForm):
+    class Meta:
+        model = models.MyUser
+        fields = ('username','password1','password2')
+    
+class CustomUserChangeForm(UserChangeForm):
+    class Meta:
+        model = models.MyUser
+        fields = ('username','email','role','phone','sex','date_of_birth')
 
 class SaveCategory(forms.ModelForm):
     # name = forms.CharField(max_length=250)
@@ -11,17 +21,6 @@ class SaveCategory(forms.ModelForm):
     class Meta:
         model = models.Category
         fields = ('name', 'description', 'status', )
-
-class UserFormRegister(UserCreationForm):
-    class meta:
-        model = User
-        fields = ('username', 'password1', 'password2')
-
-        # widgets = {
-        #     'username' : forms.CharField(attrs={'class' : 'form-control', 'id':'username'}), 
-        #     'password1' : forms.CharField(attrs={'class' : 'form-control', 'id':'password1'}), 
-        #     'password2' : forms.CharField(attrs={'class' : 'form-control', 'id':'password2'}), 
-        # }
 
 class SaveSourceType(forms.ModelForm):
     class Meta:
