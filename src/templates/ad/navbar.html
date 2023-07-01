@@ -37,7 +37,7 @@
 
                 <ul class="navbar-nav d-flex flex-row">
                     <li class="nav-item">
-                        <a class="nav-link"  href=""><b>{{user.username}}</b></a>
+                        <a class="nav-link" href="{% url 'edit_profile' request.user.id%}"><b>{{user.username}}</b></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="{% url 'logout' %}">Logout</a>

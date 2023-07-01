@@ -1,13 +1,37 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 # Create your models here.
 
 
 # -User-User--User--User--User--User--User--User--User--User--User--User--User--User--User--User--User--User-
 class Profile(models.Model):
-    user = models.OneToOneField(User, null= True, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=50, blank=True)
+    last_name = models.CharField(max_length=50, blank=True)
+    email = models.EmailField(max_length=50, blank=True)
+    phone = models.CharField(max_length=15, blank=True)
+    date_of_birth = models.DateField(default= timezone.now, blank=True)
+    sex = models.CharField(max_length=2, choices=(('1','MALE'), ('2', 'FEMALE')), blank=True)
+    profile_img = models.ImageField(blank=True)
+    first_time = models.BooleanField(null=False, default=True)    
+    class ROLE(models.TextChoices):
+        ADMIN = "ADMIN", "Admin"
+        READER = "READER", "Reader"
+        LIBRARIAN = "LIBRARIAN", "Librarian"
     
+    role = models.CharField(max_length=20, choices=ROLE.choices, default = ROLE.READER)
+
+    def __str__(self):
+        return str(self.user)
+
+@receiver(post_save, sender = User)
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        user_profile = Profile(user = instance)
+        user_profile.save()
 
 
 # -ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN

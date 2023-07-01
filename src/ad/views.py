@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from . import models
@@ -21,9 +22,6 @@ def context_data():
 # AUTHENTICATE-AUTHENTICATE-AUTHENTICATE-AUTHENTICATE-AUTHENTICATE-AUTHENTICATE-AUTHENTICATE-AUTHENTICATE
 
 
-def testing(request):
-    pass
-
 @user_is_authenticated
 def login_user(request):
     context = context_data()
@@ -34,6 +32,10 @@ def login_user(request):
         )
         if auth is not None:
             login(request, auth)
+            if request.user.profile.first_time == True:
+                return redirect('edit_profile', request.user.id)
+            else:
+                return redirect('home')
     return render(request, "authenticate/login.html", context)
 
 
@@ -45,15 +47,14 @@ def logout_user(request):
 def register_user(request, *args, **kwargs):
     context = context_data()
     context["page_title"] = "Register"
-    register_form = UserCreationForm()
+    register_form = forms.CustomUserCreationForm()
     if request.method == "POST":
-        register_form = UserCreationForm(request.POST)
+        register_form = forms.CustomUserCreationForm(request.POST)
         if register_form.is_valid():
             register_form.save()
             return redirect('login')
     context["register_form"] = register_form
     return render(request, "authenticate/register.html", context)
-
 
 # ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN
 # --------HOME--------
@@ -153,42 +154,59 @@ def borrowing(request):
 def user(request):
     context = context_data()
     context["page_title"] = "Users"
+    context["users"] = User.objects.all()
     return render(request, "ad/user.html", context)
 
-# @login_required
-# def manage_user(request, id=None):
-#     context = context_data()
-#     context["page_title"] = "Manage Categories"
-#     if id:
-#         context["user"] = models.user.objects.get(pk=id)
-#         context["type"] = "Save"
-#     else:
-#         context["user"] = {}
-#         context["type"] = "Add"
-#     return render(request, "ad/manage_user.html", context)
+@login_required
+def manage_user(request):
+    context = context_data()
+    context["page_title"] = "Manage Categories"
+    context["user"] = {}
+    context["type"] = "Add"
+    return render(request, "ad/manage_user.html", context)
+
+def save_profile(profile, post):
+    profile.role = post['role']
+    profile.first_name = post['first_name'] 
+    profile.last_name = post['last_name']
+    profile.email = post['email']
+    profile.first_time = False
+    profile.save(update_fields = ['role','first_name','last_name','email'])
+
+@login_required
+def save_user(request):
+    if request.method == "POST":
+        post = request.POST
+        user = User.objects.create_user(username = post['username'], password = post['password'])
+        user.save()
+        profile = user.profile
+        save_profile(profile,post)
+        return redirect("user")
+    else:
+        pass
 
 
-# @login_required
-# def save_user(request):
-#     if request.method == "POST":
-#         post = request.POST
-#         if post["id"]:
-#             user = models.user.objects.get(pk=post["id"])
-#             user = forms.Saveuser(post, instance=user)
-#         else:
-#             user = forms.Saveuser(post)
-#         user.save()
-#         return redirect("user")
-#     else:
-#         pass
+@login_required
+def delete_user(request, id):
+    user = User.objects.get(pk = id)
+    user.delete()
+    return redirect("user")
 
-
-# @login_required
-# def delete_user(request, id):
-#     user = models.user.objects.get(pk=id)
-#     user.delete()
-#     return redirect("user")
-
+@login_required
+def edit_profile(request, id):
+    context = context_data()
+    context["page_title"] = "Edit Profile"
+    if request.method == "POST":
+        profile = models.Profile.objects.get(pk = id)
+        profile.first_time = False
+        profile.save()
+        profile = forms.EditProfile(request.POST, instance = profile)
+        if profile.is_valid():
+            profile.save()
+            return redirect('home')
+    context["profile"] = models.Profile.objects.get(pk = id)
+    return render(request, 'ad/edit_profile.html', context)
+    
 
 # @login_required
 # def view_user(request, id):

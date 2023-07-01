@@ -1,10 +1,19 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from . import models
 
+class CustomUserCreationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ('username', 'password1', 'password2')
+
+class EditProfile(forms.ModelForm):
+    class Meta:
+        model = models.Profile
+        fields = ('first_name','last_name','email','phone','date_of_birth','sex','profile_img')
+
 class SaveCategory(forms.ModelForm):
-    # name = forms.CharField(max_length=250)
-    # description = forms.Textarea()
-    # status = forms.CharField(max_length=2)
     class Meta:
         model = models.Category
         fields = ('name', 'description', 'status', )

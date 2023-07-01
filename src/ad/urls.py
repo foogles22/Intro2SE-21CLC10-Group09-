@@ -38,9 +38,10 @@ urlpatterns = [
 
     # --------------User------------------
     path('user/', views.user, name = 'user'),
-    # path('manage_user/', views.manage_user, name = 'manage_user'),
+    path('manage_user/', views.manage_user, name = 'manage_user'),
     # path('manage_user/<int:id>', views.manage_user, name = 'manage_user_pk'),
-    # path('save_user/', views.save_user, name = 'save_user'),
-    # path('delete_user/<int:id>', views.delete_user, name = 'delete_user'),
+    path('save_user/', views.save_user, name = 'save_user'),
+    path('delete_user/<int:id>', views.delete_user, name = 'delete_user'),
     # path('view_user/<int:id>', views.view_user, name= 'view_user'),
+    path('edit_profile/<int:id>', views.edit_profile, name='edit_profile'),
 ]
