@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -6,7 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from . import models
 from . import forms
-from .decorators import user_is_authenticated
+from .decorators import user_is_authenticated, allowed_users
 
 # Create your views here.
 
@@ -33,9 +34,14 @@ def login_user(request):
         if auth is not None:
             login(request, auth)
             if request.user.profile.first_time == True:
+                messages.info(request, 'Please edit your profile!')
                 return redirect('edit_profile', request.user.id)
             else:
-                return redirect('home')
+                messages.success(request, 'You have logged in!')
+                return redirect('home')        
+        else:
+            messages.error(request, 'Login failed!')
+            return render(request, "authenticate/login.html", context)        
     return render(request, "authenticate/login.html", context)
 
 
@@ -59,6 +65,7 @@ def register_user(request, *args, **kwargs):
 # ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN
 # --------HOME--------
 @login_required
+@allowed_users(allowed_roles=['ADMIN'])
 def home(request):
     context = context_data()
     context["page_title"] = "Admin Home"
@@ -67,6 +74,7 @@ def home(request):
 
 # --------CATEGORY--------
 @login_required
+@allowed_users(allowed_roles=['ADMIN'])
 def category(request):
     context = context_data()
     context["page_title"] = "Categories"
@@ -75,6 +83,7 @@ def category(request):
 
 
 @login_required
+@allowed_users(allowed_roles=['ADMIN'])
 def manage_category(request, id=None):
     context = context_data()
     context["page_title"] = "Manage Categories"
@@ -88,6 +97,7 @@ def manage_category(request, id=None):
 
 
 @login_required
+@allowed_users(allowed_roles=['ADMIN'])
 def save_category(request):
     if request.method == "POST":
         post = request.POST
@@ -103,6 +113,7 @@ def save_category(request):
 
 
 @login_required
+@allowed_users(allowed_roles=['ADMIN'])
 def delete_category(request, id):
     category = models.Category.objects.get(pk=id)
     category.delete()
@@ -110,6 +121,7 @@ def delete_category(request, id):
 
 
 @login_required
+@allowed_users(allowed_roles=['ADMIN'])
 def view_category(request, id):
     context = context_data()
     context["page_title"] = "View Categories"
@@ -119,6 +131,7 @@ def view_category(request, id):
 
 # --------SOURCE TYPE--------
 @login_required
+@allowed_users(allowed_roles=['ADMIN'])
 def source_type(request):
     context = context_data()
     context["page_title"] = "Source Types"
@@ -127,6 +140,7 @@ def source_type(request):
 
 # --------LANGUAGE------------
 @login_required
+@allowed_users(allowed_roles=['ADMIN'])
 def language(request):
     context = context_data()
     context["page_title"] = "Language"
@@ -135,6 +149,7 @@ def language(request):
 
 # --------BOOK--------
 @login_required
+@allowed_users(allowed_roles=['ADMIN'])
 def book(request):
     context = context_data()
     context["page_title"] = "Books"
@@ -143,6 +158,7 @@ def book(request):
 
 # ---------Borrowing Transaction-----------
 @login_required
+@allowed_users(allowed_roles=['ADMIN'])
 def borrowing(request):
     context = context_data()
     context["page_title"] = "Borrowing Transaction"
@@ -151,6 +167,7 @@ def borrowing(request):
 
 # ---------------------Users----------------
 @login_required
+@allowed_users(allowed_roles=['ADMIN'])
 def user(request):
     context = context_data()
     context["page_title"] = "Users"
@@ -158,6 +175,7 @@ def user(request):
     return render(request, "ad/user.html", context)
 
 @login_required
+@allowed_users(allowed_roles=['ADMIN'])
 def manage_user(request):
     context = context_data()
     context["page_title"] = "Manage Categories"
@@ -165,6 +183,7 @@ def manage_user(request):
     context["type"] = "Add"
     return render(request, "ad/manage_user.html", context)
 
+@allowed_users(allowed_roles=['ADMIN'])
 def save_profile(profile, post):
     profile.role = post['role']
     profile.first_name = post['first_name'] 
@@ -174,6 +193,7 @@ def save_profile(profile, post):
     profile.save(update_fields = ['role','first_name','last_name','email'])
 
 @login_required
+@allowed_users(allowed_roles=['ADMIN'])
 def save_user(request):
     if request.method == "POST":
         post = request.POST
@@ -187,6 +207,7 @@ def save_user(request):
 
 
 @login_required
+@allowed_users(allowed_roles=['ADMIN'])
 def delete_user(request, id):
     user = User.objects.get(pk = id)
     user.delete()
