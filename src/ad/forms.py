@@ -29,5 +29,5 @@ class SaveSourceType(forms.ModelForm):
     st_code = forms.CharField(max_length=5)
 
     class Meta:
-        model = models.Category
+        model = models.SourceType
         fields = ('name', 'description', 'st_code', )
