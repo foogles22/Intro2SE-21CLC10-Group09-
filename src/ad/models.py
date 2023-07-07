@@ -12,3 +12,14 @@ class Category(models.Model):
 
     def __str__(self):
         return str(f'{self.name}')
+    
+
+class SourceType(models.Model):
+    name = models.CharField(max_length=250)
+    description = models.TextField(blank=True, null = True)
+    st_code = models.CharField(max_length=5, unique = True)
+    delete_flag = models.IntegerField(default = 0)
+    date_added = models.DateTimeField(default = timezone.now)
+
+    def __str__(self):
+        return str(f'{self.name}')

@@ -11,7 +11,6 @@ urlpatterns = [
     # path('homepage/', views.homepage, name = 'homepage'), 
 
     # ----------------------------------LIBRARIAN--------------------------------------------
-
     
     # ----------------------------------ADMIN------------------------------------------------
     # --------CATEGORY--------
@@ -25,7 +24,12 @@ urlpatterns = [
 
     # --------Source Type--------
     path('source_type/', views.source_type, name = 'source_type'),
-
+    path('manage_source_type/', views.manage_source_type, name = 'manage_source_type'),
+    path('manage_source_type/<int:id>', views.manage_source_type, name = 'manage_source_type_pk'),
+    path('save_source_type/', views.save_source_type, name = 'save_source_type'),
+    path('delete_source_type/<int:id>', views.delete_source_type, name = 'delete_source_type'),
+    path('view_source_type/<int:id>', views.view_source_type, name= 'view_source_type'),    
+    
     # --------Languages----------
     path('language/', views.language, name = 'language'),
 

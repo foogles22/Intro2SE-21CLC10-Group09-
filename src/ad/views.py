@@ -48,8 +48,6 @@ def home(request):
     context = context_data()
     context['page_title'] = 'Admin Home'
     return render(request, 'ad/home.html', context)
-#Comment stupid stuff
-#add more comment
 
 # --------CATEGORY--------
 @login_required
@@ -105,6 +103,44 @@ def source_type(request):
     context = context_data()
     context['page_title'] = 'Source Types'
     return render(request, 'ad/source_type.html', context)
+
+def manage_source_type(request, id = None):
+    context = context_data()
+    context['page_title'] = 'Manage Source Type'
+    if id:
+        context['source_type'] = models.SourceType.objects.get(pk = id)
+        context['type'] = 'Save'
+    else:
+        context['source_type'] = {}
+        context['type'] = 'Add'
+    return render(request, 'ad/manage_source_type.html', context)
+
+@login_required
+def save_source_type(request):
+    if request.method == "POST":
+        post = request.POST
+        if post['id']:
+            source_type = models.SourceType.objects.get(pk = post['id'])
+            source_type = forms.SaveSourceType(request.POST, instance=source_type) 
+        else:
+            source_type = forms.SaveSourceType(request.POST)
+        source_type.save()
+        return HttpResponseRedirect('/source_type/')
+    else:
+        pass
+
+@login_required
+def delete_source_type(request, id):
+    source_type = models.SourceType.objects.get(pk = id)
+    source_type.delete()
+    return HttpResponseRedirect('/source_type/')
+
+@login_required
+def view_source_type(request, id):
+    context = context_data()
+    context['page_title'] = 'View Categories'
+    context['source_type'] = models.SourceType.objects.get(pk = id)
+    return render(request, 'ad/view_source_type.html', context)
 
 # --------LANGUAGE------------
 @login_required

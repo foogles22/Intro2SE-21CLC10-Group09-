@@ -21,3 +21,13 @@ class SaveCategory(forms.ModelForm):
     #     except:
     #         return name
     #     raise forms.ValidationError("Category Name already exists.")
+
+
+class SaveSourceType(forms.ModelForm):
+    name = forms.CharField(max_length=250)
+    description = forms.Textarea()
+    st_code = forms.CharField(max_length=5)
+
+    class Meta:
+        model = models.Category
+        fields = ('name', 'description', 'st_code', )
