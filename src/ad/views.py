@@ -183,7 +183,6 @@ def manage_user(request):
     context["type"] = "Add"
     return render(request, "ad/manage_user.html", context)
 
-@allowed_users(allowed_roles=['ADMIN'])
 def save_profile(profile, post):
     profile.role = post['role']
     profile.first_name = post['first_name'] 
