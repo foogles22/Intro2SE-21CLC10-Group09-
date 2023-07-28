@@ -28,9 +28,12 @@
 	<link rel="stylesheet" href="css/flaticon.css">
 	<link rel="stylesheet" href="css/icomoon.css">
 	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/searchbar.css">
+
 </head>
 
 <body>
+	<!-- navbar -->
 	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 		<div class="container">
 			<a class="navbar-brand" href="index.html">Wellib<small>book for life</small></a>
@@ -59,12 +62,15 @@
 								class="icon icon-shopping_cart"></span><span
 								class="bag d-flex justify-content-center align-items-center"><small>1</small></span></a>
 					</li>
+					<li class="nav-item"><a href="profile.html" class="nav-link">Profile</a></li>
+					<!-- <li class="nav-item"><a href="profile.html" class="nav-item btn btn-primary p-3 px-xl-2 py-xl-2 nav-link" style="border-radius: 15px; left: 25px;">Profile</a></li> -->
 				</ul>
 			</div>
 		</div>
 	</nav>
 	<!-- END nav -->
 
+	<!-- banner -->
 	<section class="home-slider owl-carousel">
 		<div class="slider-item" style="background-image: url(images/bg_1.jpg);">
 			<div class="overlay"></div>
@@ -108,7 +114,6 @@
 			<div class="overlay"></div>
 			<div class="container">
 				<div class="row slider-text justify-content-center align-items-center" data-scrollax-parent="true">
-
 					<div class="col-md-8 col-sm-12 text-center ftco-animate">
 						<span class="subheading">Welcome</span>
 						<h1 class="mb-4">A Heanven on Earth and Ready to Serve</h1>
@@ -152,7 +157,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="book p-4">
+				<div class="book p-4" style="border-radius: 15px;">
 					<h3>Quotes for the day</h3>
 					<span style="color: black;">“The more that you read, the more things you will know. The more that
 						you learn, the more places you’ll go.”</span>
@@ -162,6 +167,7 @@
 		</div>
 	</section>
 
+	<!-- book history -->
 	<section class="ftco-about d-md-flex">
 		<div class="one-half img" style="background-image: url(images/about.jpg);"></div>
 		<div class="one-half ftco-animate">
@@ -187,37 +193,34 @@
 		</div>
 	</section>
 
-	<section class="ftco-section ftco-services">
+	<!-- search bar -->
+	<section class="ftco-section ftco-services" style="background-color: black;">
 		<div class="container">
-			<div class="row">
-				<div class="col-md-6 ftco-animate">
-					<div class="media d-block text-center block-6 services">
-						<div class="icon d-flex justify-content-center align-items-center mb-5">
-							<span class="flaticon-choices"></span>
+			<div class="s130">
+				<form>
+					<h2 class="mb-4" style = "text-align: center;">	SEARCH FOR THOUSAND BOOKS</h1>
+					<div class="inner-form">
+						<div class="input-field first-wrap">
+							<div class="svg-wrapper">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+									<path
+										d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
+									</path>
+								</svg>
+							</div>
+							<input id="search" type="text" placeholder="What are you looking for?" />
 						</div>
-						<div class="media-body">
-							<h3 class="heading">Easy to Search</h3>
-							<p>Even the all-powerful Pointing has no control about the blind texts it is an almost
-								unorthographic.</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6 ftco-animate">
-					<div class="media d-block text-center block-6 services">
-						<div class="icon d-flex justify-content-center align-items-center mb-5">
-							<span class="flaticon-coffee-bean"></span>
-						</div>
-						<div class="media-body">
-							<h3 class="heading">Quality Book Information</h3>
-							<p>Even the all-powerful Pointing has no control about the blind texts it is an almost
-								unorthographic.</p>
+						<div class="input-field second-wrap">
+							<button class="btn-search" type="button">SEARCH</button>
 						</div>
 					</div>
-				</div>
+					<span class="info">ex. Book, Author, Category</span>
+				</form>
 			</div>
-		</div>
+			<script src="js/choices.js"></script>
 	</section>
 
+	<!-- top category -->
 	<section class="ftco-section">
 		<div class="container">
 			<div class="row align-items-center">
@@ -290,6 +293,7 @@
 			</div>
 	</section>
 
+	<!-- count service status -->
 	<section class="ftco-counter ftco-bg-dark img" id="section-counter" style="background-image: url(images/bg_2.jpg);"
 		data-stellar-background-ratio="0.5">
 		<div class="overlay"></div>
@@ -339,6 +343,7 @@
 		</div>
 	</section>
 
+	<!-- books popular among collections -->
 	<section class="ftco-section">
 		<div class="container">
 			<div class="row justify-content-center mb-5 pb-3">
@@ -353,7 +358,7 @@
 				<div class="col-md-2">
 					<div class="menu-entry">
 						<a href="#" class="img"
-							style="background-image: url(images/menu-1.jpg);height: 270px; border-radius: 20px;"></a>
+							style="background-image: url(images/menu-1.jpg);height: 250px; border-radius: 20px;"></a>
 						<div class="text text-center pt-4">
 							<h3><a href="#">Title</a></h3>
 							<p class="price"><span>Author name</span></p>
@@ -366,7 +371,7 @@
 				<div class="col-md-2">
 					<div class="menu-entry">
 						<a href="#" class="img"
-							style="background-image: url(images/menu-2.jpg);height: 270px; border-radius: 20px;"></a>
+							style="background-image: url(images/menu-2.jpg);height: 250px; border-radius: 20px;"></a>
 						<div class="text text-center pt-4">
 							<h3><a href="#">Title</a></h3>
 							<p class="price"><span>Author name</span></p>
@@ -379,7 +384,7 @@
 				<div class="col-md-2">
 					<div class="menu-entry">
 						<a href="#" class="img"
-							style="background-image: url(images/menu-3.jpg); height: 270px; border-radius: 20px;"></a>
+							style="background-image: url(images/menu-3.jpg); height: 250px; border-radius: 20px;"></a>
 						<div class="text text-center pt-4">
 							<h3><a href="#">Title</a></h3>
 							<p class="price"><span>Author name</span></p>
@@ -392,7 +397,7 @@
 				<div class="col-md-2">
 					<div class="menu-entry">
 						<a href="#" class="img"
-							style="background-image: url(images/menu-4.jpg); height: 270px; border-radius: 20px;"></a>
+							style="background-image: url(images/menu-4.jpg); height: 250px; border-radius: 20px;"></a>
 						<div class="text text-center pt-4">
 							<h3><a href="#">Title</a></h3>
 							<p class="price"><span>Author name</span></p>
@@ -405,7 +410,7 @@
 				<div class="col-md-2">
 					<div class="menu-entry">
 						<a href="#" class="img"
-							style="background-image: url(images/menu-4.jpg); height: 270px; border-radius: 20px;"></a>
+							style="background-image: url(images/menu-4.jpg); height: 250px; border-radius: 20px;"></a>
 						<div class="text text-center pt-4">
 							<h3><a href="#">Title</a></h3>
 							<p class="price"><span>Author name</span></p>
@@ -418,7 +423,7 @@
 				<div class="col-md-2">
 					<div class="menu-entry">
 						<a href="#" class="img"
-							style="background-image: url(images/menu-4.jpg); height: 270px; border-radius: 20px;"></a>
+							style="background-image: url(images/menu-4.jpg); height: 250px; border-radius: 20px;"></a>
 						<div class="text text-center pt-4">
 							<h3><a href="#">Title</a></h3>
 							<p class="price"><span>Author name</span></p>
@@ -433,7 +438,7 @@
 				<div class="col-md-2">
 					<div class="menu-entry">
 						<a href="#" class="img"
-							style="background-image: url(images/menu-1.jpg);height: 270px; border-radius: 20px;"></a>
+							style="background-image: url(images/menu-1.jpg);height: 250px; border-radius: 20px;"></a>
 						<div class="text text-center pt-4">
 							<h3><a href="#">Title</a></h3>
 							<p class="price"><span>Author name</span></p>
@@ -446,7 +451,7 @@
 				<div class="col-md-2">
 					<div class="menu-entry">
 						<a href="#" class="img"
-							style="background-image: url(images/menu-2.jpg);height: 270px; border-radius: 20px;"></a>
+							style="background-image: url(images/menu-2.jpg);height: 250px; border-radius: 20px;"></a>
 						<div class="text text-center pt-4">
 							<h3><a href="#">Title</a></h3>
 							<p class="price"><span>Author name</span></p>
@@ -459,7 +464,7 @@
 				<div class="col-md-2">
 					<div class="menu-entry">
 						<a href="#" class="img"
-							style="background-image: url(images/menu-3.jpg); height: 270px; border-radius: 20px;"></a>
+							style="background-image: url(images/menu-3.jpg); height: 250px; border-radius: 20px;"></a>
 						<div class="text text-center pt-4">
 							<h3><a href="#">Title</a></h3>
 							<p class="price"><span>Author name</span></p>
@@ -472,7 +477,7 @@
 				<div class="col-md-2">
 					<div class="menu-entry">
 						<a href="#" class="img"
-							style="background-image: url(images/menu-4.jpg); height: 270px; border-radius: 20px;"></a>
+							style="background-image: url(images/menu-4.jpg); height: 250px; border-radius: 20px;"></a>
 						<div class="text text-center pt-4">
 							<h3><a href="#">Title</a></h3>
 							<p class="price"><span>Author name</span></p>
@@ -485,7 +490,7 @@
 				<div class="col-md-2">
 					<div class="menu-entry">
 						<a href="#" class="img"
-							style="background-image: url(images/menu-4.jpg); height: 270px; border-radius: 20px;"></a>
+							style="background-image: url(images/menu-4.jpg); height: 250px; border-radius: 20px;"></a>
 						<div class="text text-center pt-4">
 							<h3><a href="#">Title</a></h3>
 							<p class="price"><span>Author name</span></p>
@@ -498,7 +503,7 @@
 				<div class="col-md-2">
 					<div class="menu-entry">
 						<a href="#" class="img"
-							style="background-image: url(images/menu-4.jpg); height: 270px; border-radius: 20px;"></a>
+							style="background-image: url(images/menu-4.jpg); height: 250px; border-radius: 20px;"></a>
 						<div class="text text-center pt-4">
 							<h3><a href="#">Title</a></h3>
 							<p class="price"><span>Author name</span></p>
@@ -732,23 +737,25 @@
 		</div>
 	</section> -->
 
-	<section class="ftco-section" style = "background-color: #343a40;">
+	<!-- New book added  -->
+	<section class="ftco-section" style="background-color: #343a40;">
 		<div class="container">
 			<div class="row align-items-center">
 				<div class="col-md-4">
 					<div class="menu-entry">
-						<a href="#" class="img"style="background-image: url(images/menu-1.jpg);  border-radius: 15px; height: 450px; width: 300px"></a>
+						<a href="#" class="img"
+							style="background-image: url(images/menu-1.jpg);  border-radius: 15px; height: 450px; width: 300px"></a>
 					</div>
 				</div>
-				<div class="col-md-4 pr-md-5" style = "text-align: center">
-						<h2 class="mb-6">Book title</h2>
-						<h4 class="mb-6">Author</h4>
-						<h4 class="mb-6">Date of publication</h4>
-						<p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and
-							Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the
-							coast of the Semantics, a large language ocean.</p>
-						<p><a href="#" class="btn btn-primary btn-outline-primary px-4 py-3"
-								style="border-radius: 15px">Read more</a></p>
+				<div class="col-md-4 pr-md-5" style="text-align: center">
+					<h2 class="mb-6">Book title</h2>
+					<h4 class="mb-6">Author</h4>
+					<h4 class="mb-6">Date of publication</h4>
+					<p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and
+						Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the
+						coast of the Semantics, a large language ocean.</p>
+					<p><a href="#" class="btn btn-primary btn-outline-primary px-4 py-3"
+							style="border-radius: 15px">Read more</a></p>
 				</div>
 				<div class="col-md-4 pr-md-5">
 					<div class="heading-section text-md-right ftco-animate">
@@ -761,6 +768,7 @@
 		</div>
 	</section>
 
+	<!-- Service feedback -->
 	<section class="ftco-section img" id="ftco-testimony" style="background-image: url(images/bg_1.jpg);"
 		data-stellar-background-ratio="0.5">
 		<div class="overlay"></div>
@@ -858,6 +866,7 @@
 		</div>
 	</section>
 
+	<!-- news -->
 	<section class="ftco-section">
 		<div class="container">
 			<div class="row justify-content-center mb-5 pb-3">
@@ -924,7 +933,7 @@
 	</section>
 
 
-	<section class="ftco-appointment">
+	<!-- <section class="ftco-appointment">
 		<div class="overlay"></div>
 		<div class="container-wrap">
 			<div class="row no-gutters d-md-flex align-items-center">
@@ -972,7 +981,7 @@
 				</div>
 			</div>
 		</div>
-	</section>
+	</section> -->
 
 	<footer class="ftco-footer ftco-section img">
 		<div class="overlay"></div>
@@ -992,7 +1001,7 @@
 				</div>
 				<div class="col-lg-4 col-md-6 mb-5 mb-md-5">
 					<div class="ftco-footer-widget mb-4">
-						<h2 class="ftco-heading-2">Recent Blog</h2>
+						<h2 class="ftco-heading-2">Recent News</h2>
 						<div class="block-21 mb-4 d-flex">
 							<a class="blog-img mr-4" style="background-image: url(images/image_1.jpg);"></a>
 							<div class="text">
