@@ -8,6 +8,7 @@ admin.site.register(Category)
 admin.site.register(SourceType)
 admin.site.register(Language)
 admin.site.register(Book)
+admin.site.register(LoanTransaction)
 
 class ProfileInline(admin.StackedInline):
     model = Profile

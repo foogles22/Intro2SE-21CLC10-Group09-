@@ -15,6 +15,7 @@
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="{% url 'home'%}">Home</a>
                     </li>
+                    {% if request.user.profile.role == "ADMIN"  %}
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="{% url 'category'%}">Categories</a>
                     </li>
@@ -28,11 +29,16 @@
                         <a class="nav-link" aria-current="page" href="{% url 'book'%}">Books</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{% url 'borrowing'%}">Borrowing Transactions</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="{% url 'user'%}">Users</a>
                     </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'loan'%}">Loan Transaction</a>
+                    </li>
+                    {% comment %} <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'reader_info'%}">Reader Info</a>
+                    </li> {% endcomment %}
+                    {% endif %}
                 </ul>
 
                 <ul class="navbar-nav d-flex flex-row">

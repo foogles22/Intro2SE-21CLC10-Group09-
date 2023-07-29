@@ -11,8 +11,16 @@ urlpatterns = [
     # path('homepage/', views.homepage, name = 'homepage'), 
 
     # ----------------------------------LIBRARIAN--------------------------------------------
-
-    
+    # --------Borrowing Transactions-------
+    path('loan/', views.loan, name = 'loan'),
+    path('manage_loan/', views.manage_loan, name = 'manage_loan'),
+    path('manage_loan/<int:id>', views.manage_loan, name = 'manage_loan_pk'),
+    path('save_loan/', views.save_loan, name = 'save_loan'),
+    path('delete_loan/<int:id>', views.delete_loan, name = 'delete_loan'),
+    path('identity_search/', views.identity_search, name ='identity_search'),
+    path('book_search/', views.book_search, name ='book_search'),
+    path('return_book/<int:id>', views.return_book, name ='return_book'),
+    path('renew_book/<int:id>', views.renew_book, name ='renew_book'),
     # ----------------------------------ADMIN------------------------------------------------
     path('home/', views.home, name = 'home'),
     # --------CATEGORY--------
@@ -32,9 +40,6 @@ urlpatterns = [
 
     # --------Book--------
     path('book/', views.book, name = 'book'),
-
-    # --------Borrowing Transactions-------
-    path('borrowing/', views.borrowing, name = 'borrowing'),
 
     # --------------User------------------
     path('user/', views.user, name = 'user'),

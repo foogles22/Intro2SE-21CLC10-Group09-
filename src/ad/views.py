@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http.response import HttpResponse, HttpResponseRedirect
+from django.http import JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
@@ -8,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 from . import models
 from . import forms
 from .decorators import user_is_authenticated, allowed_users
+from datetime import timedelta
+from django.core.paginator import Paginator
 
 # Create your views here.
 
@@ -65,7 +68,7 @@ def register_user(request, *args, **kwargs):
 # ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN
 # --------HOME--------
 @login_required
-@allowed_users(allowed_roles=['ADMIN'])
+@allowed_users(allowed_roles=['ADMIN','LIBRARIAN'])
 def home(request):
     context = context_data()
     context["page_title"] = "Admin Home"
@@ -156,13 +159,83 @@ def book(request):
     return render(request, "ad/book.html", context)
 
 
-# ---------Borrowing Transaction-----------
+# Librarian-Librarian-Librarian-Librarian-Librarian-Librarian-Librarian-Librarian-Librarian-Librarian
+
+# ---------LOAN Transaction-----------
 @login_required
-@allowed_users(allowed_roles=['ADMIN'])
-def borrowing(request):
+@allowed_users(allowed_roles=['LIBRARIAN'])
+def loan(request):
     context = context_data()
-    context["page_title"] = "Borrowing Transaction"
-    return render(request, "ad/borrowing.html", context)
+    context["page_title"] = "Loan Transaction"
+    loans = models.LoanTransaction.objects.all()
+
+    # setup pagination
+    p = Paginator(loans, 2)
+    page = request.GET.get('page')
+    loan_p = p.get_page(page)
+    context["loan"] = loan_p
+    return render(request, "ad/loan.html", context)
+
+@login_required
+@allowed_users(allowed_roles=['LIBRARIAN'])
+def manage_loan(request, id=None):
+    context = context_data()
+    context["page_title"] = "Manage Loan Transaction"
+    if id:
+        context["loan"] = models.LoanTransaction.objects.get(pk=id)
+        context["type"] = "Save"
+    else:
+        context["loan"] = {}
+        context["type"] = "Add"
+    return render(request, "ad/manage_loan.html", context)
+
+@login_required
+@allowed_users(allowed_roles=['LIBRARIAN'])
+def save_loan(request):
+    if request.method == "POST":
+        post = request.POST
+        if post["id"]:
+            loan = models.LoanTransaction.objects.get(pk=post["id"])
+            profile = models.Profile.objects.get(identity = post['identity'])
+            user = User.objects.get(pk = profile.id)
+            book = models.Book.objects.get(pk = post['book'])
+            loan.user = user
+            loan.book = book
+            loan.save(update_fields=['user','book'])
+        else:
+            profile = models.Profile.objects.get(identity = post['identity'])
+            user = User.objects.get(pk = profile.id)
+            book = models.Book.objects.get(pk = post['book'])
+            loan = models.LoanTransaction(user=user, book=book)
+        loan.save()
+        return redirect("loan")
+    else:
+        return redirect("loan")
+
+@login_required
+@allowed_users(allowed_roles=['LIBRARIAN'])
+def delete_loan(request, id):
+    loan = models.LoanTransaction.objects.get(pk=id)
+    loan.delete()
+    return redirect("loan")
+
+
+@login_required
+@allowed_users(allowed_roles=['LIBRARIAN'])
+def return_book(request, id):
+    loan = models.LoanTransaction.objects.get(pk=id)
+    loan.returned = True
+    loan.save(update_fields=['returned'])
+    return redirect("loan")
+
+@login_required
+@allowed_users(allowed_roles=['LIBRARIAN'])
+def renew_book(request, id):
+    loan = models.LoanTransaction.objects.get(pk=id)
+    loan.date_expired += timedelta(7)
+    loan.save(update_fields=['date_expired'])
+    return redirect("loan")
+
 
 
 # ---------------------Users----------------
@@ -178,18 +251,20 @@ def user(request):
 @allowed_users(allowed_roles=['ADMIN'])
 def manage_user(request):
     context = context_data()
-    context["page_title"] = "Manage Categories"
+    context["page_title"] = "Manage Users"
     context["user"] = {}
     context["type"] = "Add"
     return render(request, "ad/manage_user.html", context)
-
+    
 def save_profile(profile, post):
     profile.role = post['role']
     profile.first_name = post['first_name'] 
     profile.last_name = post['last_name']
     profile.email = post['email']
     profile.first_time = False
-    profile.save(update_fields = ['role','first_name','last_name','email'])
+    profile.save(update_fields = ['role','first_name','last_name','email','first_time'])
+    profile.init_identity()
+    profile.save()
 
 @login_required
 @allowed_users(allowed_roles=['ADMIN'])
@@ -198,19 +273,12 @@ def save_user(request):
         post = request.POST
         user = User.objects.create_user(username = post['username'], password = post['password'])
         user.save()
-        profile = user.profile
+        profile = models.Profile.objects.get(pk = user.id)
         save_profile(profile,post)
         return redirect("user")
     else:
         pass
 
-
-@login_required
-@allowed_users(allowed_roles=['ADMIN'])
-def delete_user(request, id):
-    user = User.objects.get(pk = id)
-    user.delete()
-    return redirect("user")
 
 @login_required
 def edit_profile(request, id):
@@ -226,7 +294,15 @@ def edit_profile(request, id):
             return redirect('home')
     context["profile"] = models.Profile.objects.get(pk = id)
     return render(request, 'ad/edit_profile.html', context)
-    
+
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def delete_user(request, id):
+    user = User.objects.get(pk = id)
+    user.delete()
+    return redirect("user")
+
 
 # @login_required
 # def view_user(request, id):
@@ -234,3 +310,22 @@ def edit_profile(request, id):
 #     context["page_title"] = "View Categories"
 #     context["user"] = models.user.objects.get(pk=id)
 #     return render(request, "ad/view_user.html", context)
+
+
+# SEARCHING
+
+def identity_search(request):
+    if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        search_query = request.GET.get('query', '')
+        items = models.Profile.objects.filter(identity__contains=search_query)[:10]
+        item_list = [item.identity for item in items]
+        return JsonResponse(item_list, safe=False)
+    return render(request, 'manage_loan.html')
+
+def book_search(request):
+    if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        search_query = request.GET.get('query', '')
+        items = models.Book.objects.filter(pk__contains=search_query)[:10]
+        item_list = [item.pk for item in items]
+        return JsonResponse(item_list, safe=False)
+    return render(request, 'manage_loan.html')

@@ -1,6 +1,7 @@
 {% extends 'ad/base.html' %}
 {% load static %}
 
+{% block authentication %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,44 +42,11 @@
               <!--  FORM  -->
               <form action="{% url 'register' %}" method="POST">
                 {% csrf_token %}
-                <!-- 2 column grid layout with text inputs for the first and last names -->
-                {% comment %} <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <div class="form-outline">
-                      <input type="text" id="form3Example1" class="form-control" />
-                      <label class="form-label" for="form3Example1">First name</label>
-                    </div>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <div class="form-outline">
-                      <input type="text" id="form3Example2" class="form-control" />
-                      <label class="form-label" for="form3Example2">Last name</label>
-                    </div>
-                  </div>
-                </div>
-                {% endcomment %}
-
                 <!-- User ID input -->
                 <div class="form-outline mb-4">
                   {{register_form.username}}
                   <label class="form-label" for="username">User ID</label>
                 </div>
-
-                {% comment %} <div class="form-outline mb-4">
-                  {{register_form.first_name}}
-                  <label class="form-label" for="first_name">First Name</label>
-                </div>
-
-                <div class="form-outline mb-4">
-                  {{register_form.last_name}}
-                  <label class="form-label" for="last_name">Last Name</label>
-                </div>
-
-                <div class="form-outline mb-4">
-                  {{register_form.email}}
-                  <label class="form-label" for="email">Email</label>
-                </div> {% endcomment %}
-
                 <!-- Password input -->
                 <div class="form-outline mb-4">
                   {{register_form.password1}}
@@ -100,7 +68,6 @@
             </div>
           </div>
         </div>
-  
         <div class="col-lg-6 mb-5 mb-lg-0">
           <img src="{% static 'img/library_registerPage.jpg' %}" class="rounded-4 shadow-4"alt="" style="height: 690px;" />
         </div>
@@ -112,3 +79,4 @@
 
 </body>
 </html>
+{% endblock authentication %}

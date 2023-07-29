@@ -1,3 +1,5 @@
-a = '20000'
+def rang(num):
+    return range()
 
-print(str(int(a) + 1))
+for i in range(3,6):
+    print(i)

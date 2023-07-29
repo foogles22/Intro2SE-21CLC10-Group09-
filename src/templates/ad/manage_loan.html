@@ -1,0 +1,81 @@
+{% extends 'ad/base.html' %}
+
+{% block Page_content %}
+
+<div class="container mt-3" style = "width: 95%; font-size: 14px;">
+    {% if type == 'Save' %}
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fa fa-edit text-primary"></i> Edit</a>
+            </div>
+        </div>
+    {% else %}
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fa fa-plus text-danger"></i> Add</a>
+            </div>
+        </div>
+    {% endif %}
+    <form action="{% url 'save_loan' %}" method = "POST" class = "card p-3 mt-1">
+        {% csrf_token %}
+        {% comment %} Dùng này để giấu ID khi Edit {% endcomment %}
+        <input type="hidden" name="id" value="{{loan.id}}">
+
+        <div class="mb-3">
+            <label for="identity" class="control-label">User ID</label>
+            <input type="text" id="identity" name="identity" class="form-control form-control-sm rounded-0" value="{{loan.user.profile.identity}}" required>
+            <ul style="list-style: none;" id="hint-list-identity"></ul>
+        </div>
+
+        <div class="mb-3">
+            <label for="book" class="control-label">Book Title</label>
+            <input type="text" id="book" name="book" class="form-control form-control-sm rounded-0" value="{{loan.book}}" required>
+            <ul style="list-style: none;" id="hint-list-book"></ul>
+        </div>
+        {% comment %} <div class="mb-3">
+            <label for="date_loan" class="control-label">Date Loan</label>
+            <input type="date" id="date_loan" name="date_loan" class="form-control form-control-sm rounded-0" value="{{loan.date_loan}}">
+        </div>
+        <div class="mb-3">
+            <label for="date_return" class="control-label">Date Return</label>
+            <input type="date" id="date_return" name="date_return" class="form-control form-control-sm rounded-0" value="{{loan.date_return}}">
+        </div> {% endcomment %}
+        <div class="d-flex justify-content-between mt-3">
+            <a href="{% url 'loan' %}" class="btn btn-dark">Back</a>    
+            <input class="btn btn-dark" type="submit" value="{{type}}">
+        </div>
+    </form>
+</div>
+<script>
+    function showHints(inputId, hintListId, url_) {
+        var query = $('#' + inputId).val();
+        if (query.length >= 2) {
+            $.ajax({
+                url: url_,
+                data: { query: query },
+                success: function(data) {
+                    var hintList = $('#' + hintListId);
+                    hintList.empty();
+                    $.each(data, function(index, item) {
+                        hintList.append("<li>" + item + "</li>");
+                    });
+                }
+            });
+        } else {
+            $('#' + hintListId).empty();
+        }
+    }
+
+    $(document).ready(function() {
+        $("#identity").on("input", function() {
+            showHints('identity', 'hint-list-identity', "/identity_search/");
+        });
+
+        $("#book").on("input", function() {
+            showHints('book', 'hint-list-book', "/book_search/");
+        });
+    });
+</script>
+{% endblock Page_content %}
+
+        

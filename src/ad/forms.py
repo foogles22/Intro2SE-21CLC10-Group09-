@@ -16,7 +16,7 @@ class EditProfile(forms.ModelForm):
 class SaveCategory(forms.ModelForm):
     class Meta:
         model = models.Category
-        fields = ('name', 'description', 'status', )
+        fields = ('name', 'description')
 
 class SaveSourceType(forms.ModelForm):
     class Meta:
@@ -33,4 +33,3 @@ class SaveBook(forms.ModelForm):
     class Meta:
         model = models.Book
         fields  = ('title', 'publication_year', 'author', 'category', 'description', 'sourcetype', 'language', 'image', 'quantity', 'status')
-
