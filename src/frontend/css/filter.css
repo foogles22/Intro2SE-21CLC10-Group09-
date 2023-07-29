@@ -4,7 +4,7 @@
     grid-template-columns: 32.666% 32.666% 32.666%;
     column-gap: 1%;
     row-gap: 20px;
-    background-color: #a29779;
+    background-color: rgb(186, 201, 240);
     
 }
 
@@ -34,9 +34,15 @@
     padding: 0 10px;
 }
 
+.filter .item.submit {
+    background-color: #6f9af6;
+
+}
+
 .filter .item.submit button{
-    background-color: yellow;
-    color: #fff;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 20px;
 }
 
 .countResult{

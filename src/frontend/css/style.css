@@ -5,15 +5,17 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 :root {
-  --blue: #007bff;
+  --blue: #669bd5;
+  --blue2: #5d7895;
   --indigo: #6610f2;
   --purple: #6f42c1;
-  --pink: #e83e8c;
-  --red: #dc3545;
-  --orange: #fd7e14;
-  --yellow: #ffc107;
+  --pink: #d28bac;
+  --red: #c85964;
+  --orange: #db8c4b;
+  --yellow: #e3a270;
+  --yellow1:rgb(227, 196, 112);
   --green: #28a745;
-  --teal: #20c997;
+  --teal: #449079;
   --cyan: #17a2b8;
   --white: #fff;
   --gray: #6c757d;
@@ -75,7 +77,8 @@ hr {
 
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
-  margin-bottom: 0.5rem; }
+  margin-bottom: 0.5rem; 
+}
 
 p {
   margin-top: 0;
@@ -7268,14 +7271,16 @@ a.text-dark:hover, a.text-dark:focus {
   .table-bordered td {
     border: 1px solid #dee2e6 !important; } }
 
+/* change color */
 body {
   font-family: "Poppins", Arial, sans-serif;
-  background: #151111;
+  background: #fff;
   font-size: 15px;
   line-height: 1.8;
   font-weight: 300;
   color: gray;
-  background: url(../images/bg_4.jpg) no-repeat fixed;
+  background-color: white;
+  /* background: url(../images/bg_4.jpg) no-repeat fixed; */
   background-size: cover; }
   body.menu-show {
     overflow: hidden;
@@ -7290,7 +7295,7 @@ a {
   -webkit-transition: .3s all ease;
   -o-transition: .3s all ease;
   transition: .3s all ease;
-  color: #c49b63; }
+  color: black; }
   a:hover, a:active, a:focus {
     color: #c49b63;
     outline: none !important;
@@ -7299,7 +7304,7 @@ a {
 h1, h2, h3, h4, h5,
 .h1, .h2, .h3, .h4, .h5 {
   line-height: 1.4;
-  color: #fff;
+  color: #030202;
   font-weight: 400;
   font-family: "Josefin Sans", Arial, sans-serif; }
 
@@ -7817,7 +7822,9 @@ h1, h2, h3, h4, h5,
     .ftco-about .one-half .overlap {
       margin-left: -150px;
       padding: 40px;
-      background: rgba(0, 0, 0, 0.5); } }
+      background-color: rgb(225, 213, 160);
+    } }
+
 
 .ftco-services {
   color: #1d150b;
@@ -9282,3 +9289,77 @@ textarea.form-control {
   100% {
     stroke-dasharray: 89, 200;
     stroke-dashoffset: -136px; } }
+
+/* .ftco-section .container .img{
+  height: 500px;
+} */
+
+.categorytext{
+  font-weight: bold;  
+  position: absolute;
+  bottom: 8px;
+  left: 16px;
+  color: white;
+  text-align: left;
+}
+.categorytext h2{
+  font-weight: bold;
+  color: white;
+  font-size: 40px;
+  display: inline-block;
+  
+}
+
+.categorytext h4{
+  color: white;
+
+}
+/* 
+.titlebook{
+  font-size:14px;
+  font-weight: bold;
+  overflow-wrap: break-word;
+  inline-size: 160px;
+  color: black;
+}
+
+.author{
+  font-size:12px;
+  font-weight: bold;
+  overflow-wrap: break-word;
+  inline-size: 160px;
+  color: black;
+} */
+
+.othercategory{
+  font-weight: bold;  
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  text-align: center;
+}
+
+
+.othercategory h2{
+  font-weight: bold;
+  color: white;
+  font-size: 40px;
+  display: inline-block;
+}
+
+.othercategory h4{
+  color: white;
+  font-size: 17px;
+}
+
+.newtitle{
+  font-weight: bold;  
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  color: white;
+  text-align: left;
+  font-size: 25px;
+}
