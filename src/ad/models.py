@@ -101,8 +101,8 @@ class LoanTransaction(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     date_loan = models.DateField(default=timezone.now, null= False)
     date_expired = models.DateField(default=(timezone.now() + timedelta(7)), null= False)
-    returned = models.BooleanField(
-        choices=((0, "No"), (1, "Yes")), default=0
+    returned = models.CharField(
+        max_length=2, choices=(("0", "No"), ("1", "Yes")), default=0
     )
     class Meta:
             unique_together = ('user', 'book')

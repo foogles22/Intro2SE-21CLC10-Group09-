@@ -19,7 +19,7 @@
             <input type="text" onkeyup="searchFunction()" class="form-control" id="search" placeholder="Search for...">
             <a href="" class="btn btn-dark"><i class="fas fa-sync-alt"></i></a>  
           </div>
-          <table class="table table-bordered table-sm-mt-4" id="myTable" style="text-align: center;">
+          <table class="table table-bordered table-sm-mt-4" id="example" style="text-align: center;">
             <colcategory>
               <col width="5%"  />
               <col width="15%" />
@@ -50,10 +50,12 @@
                     <td class="text-center">{{ l.date_loan}}</td>
                     <td class="text-center">{{ l.date_expired}}</td>
                     <td class="text-center">
-                      {% if l.returned == 0%}
+                      {% if l.returned == "0"%}
                       <i class="fa-solid fa-x text-danger">
+                      <span style="display: none;">0</span>
                       {% else %}
                       <i class="fa-solid fa-check text-success">
+                      <span style="display: none;">1</span>
                       {% endif %}
                     </td>
                     <td class="text-center">
@@ -78,35 +80,8 @@
             </tbody>
           </table>
         <div class="d-flex justify-content-center">
-        <span class="text-danger" id="no-data"></span>
+        <span class="text-danger" id="no-data" style="font-size: 20px;"></span>
         </div>
-        <nav aria-label="Page">
-          <ul class="pagination  justify-content-end">
-            {% if loan.has_previous %}
-            <li class="page-item"><a class="page-link" href="?page={{loan.previous_page_number}}"><i class="fa-solid fa-backward"></i></a></li>
-            {% else %}
-            <li class="page-item disabled"><a class="page-link"><i class="fa-solid fa-backward"></i></a></li>
-            {% endif %}
-
-            {% if loan.number|moreB%}
-            <li class="page-item"><a class="page-link" style="pointer-events: none;"><i class="fa-solid fa-ellipsis"></i></a></li>
-            {% endif %}
-
-            {% for i in loan.number|range_list:loan.paginator.num_pages %}
-            <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
-            {% endfor %}
-
-            {% if loan.number|moreF:loan.paginator.num_pages%}
-            <li class="page-item"><a class="page-link" style="pointer-events: none;"><i class="fa-solid fa-ellipsis"></i></a></li>
-            {% endif %}
-
-            {% if loan.has_next %}
-            <li class="page-item"><a class="page-link" href="?page={{loan.next_page_number}}"><i class="fa-solid fa-forward"></i></a></li>
-            {% else %}
-            <li class="page-item disabled"><a class="page-link"><i class="fa-solid fa-forward"></i></a></li>
-            {% endif %}
-          </ul>
-        </nav>
         </div>
       </div>
     </div>

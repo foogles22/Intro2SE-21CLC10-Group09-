@@ -167,13 +167,7 @@ def book(request):
 def loan(request):
     context = context_data()
     context["page_title"] = "Loan Transaction"
-    loans = models.LoanTransaction.objects.all()
-
-    # setup pagination
-    p = Paginator(loans, 2)
-    page = request.GET.get('page')
-    loan_p = p.get_page(page)
-    context["loan"] = loan_p
+    context["loan"] = models.LoanTransaction.objects.all()
     return render(request, "ad/loan.html", context)
 
 @login_required
