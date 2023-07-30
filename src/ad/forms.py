@@ -33,3 +33,44 @@ class SaveBook(forms.ModelForm):
     class Meta:
         model = models.Book
         fields  = ('title', 'publication_year', 'author', 'category', 'description', 'sourcetype', 'language', 'image', 'quantity', 'status')
+
+class SaveTransaction(forms.ModelForm):
+    user = forms.ModelChoiceField(queryset=User.objects.all())
+    book = forms.ModelChoiceField(queryset=models.Book.objects.all())
+    class Meta:
+        model = models.LoanTransaction
+        fields = ('user','book')
+
+    def __init__(self,data = None, *args, **kwargs):
+        try:
+            profile = models.Profile.objects.get(identity = data['identity'])
+            user = User.objects.get(pk = profile.id)
+        except:
+            user = None
+        new_data = {'user': user, 'book': data['book']}
+        super().__init__(new_data, *args, **kwargs)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        user = cleaned_data.get('user')
+        book = cleaned_data.get('book')
+        if not user:
+            self.add_error('user', forms.ValidationError('The user is not existed'))
+            self.errors['user'].pop(0)
+
+        if not book:
+            self.add_error('book', forms.ValidationError('The book is not existed'))
+            self.errors['book'].pop(0)  
+
+    def check_book_status(self):
+        book = self.cleaned_data['book']
+        if book.status == '1':
+            book.quantity -= 1
+            if book.quantity == 0:
+                book.status = '2'
+                book.save(update_fields = ['status'])
+            book.save(update_fields = ['quantity'])
+            return 1
+        else:
+            return 0
+

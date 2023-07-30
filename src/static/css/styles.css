@@ -23,3 +23,17 @@
     margin-top: 10px !important; 
 }
 
+.list-group{
+    position: absolute;
+    top: 37px;
+    z-index: 2;
+}
+
+.input-group .form-control{
+    z-index: 1 !important;
+}
+
+.list-group-item:hover{
+    cursor: pointer;
+    background-color: #d3d3d3;
+}

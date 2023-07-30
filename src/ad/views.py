@@ -175,35 +175,30 @@ def loan(request):
 def manage_loan(request, id=None):
     context = context_data()
     context["page_title"] = "Manage Loan Transaction"
-    if id:
-        context["loan"] = models.LoanTransaction.objects.get(pk=id)
-        context["type"] = "Save"
-    else:
-        context["loan"] = {}
-        context["type"] = "Add"
+    context["loan"] = {}
     return render(request, "ad/manage_loan.html", context)
 
 @login_required
 @allowed_users(allowed_roles=['LIBRARIAN'])
 def save_loan(request):
     if request.method == "POST":
-        post = request.POST
-        if post["id"]:
-            loan = models.LoanTransaction.objects.get(pk=post["id"])
-            profile = models.Profile.objects.get(identity = post['identity'])
-            user = User.objects.get(pk = profile.id)
-            book = models.Book.objects.get(pk = post['book'])
-            loan.user = user
-            loan.book = book
-            loan.save(update_fields=['user','book'])
+        loan = forms.SaveTransaction(request.POST)
+        if loan.is_valid():
+            loan.save()
+            flag = loan.check_book_status()
+            if not flag:
+                messages.info(request, 'Book is out of quantity')
+            else:
+                messages.success(request,'Adding New Transaction succeed')
+            return redirect("loan")
         else:
-            profile = models.Profile.objects.get(identity = post['identity'])
-            user = User.objects.get(pk = profile.id)
-            book = models.Book.objects.get(pk = post['book'])
-            loan = models.LoanTransaction(user=user, book=book)
-        loan.save()
-        return redirect("loan")
+            for field in loan.errors.values():
+                for error in field:
+                    messages.error(request, error)
+                
+            return redirect("loan")
     else:
+        messages.error(request, 'No data has been sent')
         return redirect("loan")
 
 @login_required
@@ -211,6 +206,12 @@ def save_loan(request):
 def delete_loan(request, id):
     loan = models.LoanTransaction.objects.get(pk=id)
     loan.delete()
+    book = loan.book
+    book.quantity += 1
+    if book.quantity == 1:
+        book.status = '1'
+    book.save(update_fields=['quantity', 'status'])
+    messages.success(request, 'Deleting transaction succeed!')
     return redirect("loan")
 
 
@@ -220,6 +221,12 @@ def return_book(request, id):
     loan = models.LoanTransaction.objects.get(pk=id)
     loan.returned = True
     loan.save(update_fields=['returned'])
+    book = loan.book
+    book.quantity += 1
+    if book.quantity == 1:
+        book.status = '1'
+    book.save(update_fields=['quantity', 'status'])
+    messages.success(request, 'Reader returning book succeed!')
     return redirect("loan")
 
 @login_required
@@ -228,6 +235,7 @@ def renew_book(request, id):
     loan = models.LoanTransaction.objects.get(pk=id)
     loan.date_expired += timedelta(7)
     loan.save(update_fields=['date_expired'])
+    messages.success(request, 'Reader renew book succeed!')
     return redirect("loan")
 
 
