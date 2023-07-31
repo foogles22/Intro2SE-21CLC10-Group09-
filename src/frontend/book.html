@@ -31,6 +31,9 @@
   <link rel="stylesheet" href="css/searchbar.css">
   <link rel="stylesheet" href="css/filter.css">
 
+  <link href="lib/slick/slick.css" rel="stylesheet">
+  <link href="lib/slick/slick-theme.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/d7c6a7cb66.js" crossorigin="anonymous"></script>
 
 </head>
 
@@ -44,8 +47,8 @@
       </button>
       <div class="collapse navbar-collapse" id="ftco-nav">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item active"><a href="index.html" class="nav-link">Home</a></li>
-          <li class="nav-item"><a href="services.html" class="nav-link">Books</a></li>
+          <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+          <li class="nav-item active"><a href="book.html" class="nav-link">Books</a></li>
           <li class="nav-item"><a href="blog.html" class="nav-link">Events</a></li>
           <li class="nav-item"><a href="about.html" class="nav-link">Help</a></li>
           <li class="nav-item dropdown">
@@ -72,7 +75,6 @@
   <!-- END nav -->
 
   <section class="home-slider owl-carousel">
-
     <div class="slider-item" style="background-image: url(images/bg_3.jpg);" data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       <div class="container">
@@ -137,7 +139,7 @@
             <option value="scholarly journals">Scholarly Journals</option>
           </select>
         </div>
-        
+
         <div class="item">
           <label for="">Language</label>
           <select name="language">
@@ -166,7 +168,7 @@
       </div>
       <div id="list">
         <!-- <div class="item"> -->
-          <!-- <div class="row">
+        <!-- <div class="row">
             <div class="col-md-3">
               <div class="menu-entry">
                 <a href="#" class="img"
@@ -225,7 +227,7 @@
           </div> -->
 
 
-          
+
         <!-- <div class = "item">
           <img src = "images/menu-1.jpg">
           <div class = "title"> Title</div>
@@ -246,9 +248,173 @@
           <div class = "author"> Author</div>
           <div class = "datepb">Date of public</div>  
         </div>  -->
+
+
       </div>
     </div>
   </section>
+
+
+  <section class="ftco-section">
+    <div class="container">
+      <div class="row" style="align-items:center; background-color:  rgb(217, 224, 245); border-radius: 15px; margin-bottom: 25px; box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;">
+        <div class="col-lg-4 ftco-animate"
+          style="align-items: right; text-align: center; justify-content: center; padding-top: 30px">
+          <a href="images/menu-2.jpg" class="image-popup"><img src="images/menu-2.jpg" class="img-fluid"
+              alt="Colorlib Template" style="border-radius: 20px; height: 200px; width: 160px; object-fit: cover;"></a>
+          <p style="font-size: 13px;"><a href="#"><i class="fa fa-heart"
+                style="color: #0f3060;padding-right: 40px; width: 10px"></i></a>Book mark</p>
+        </div>
+        <div class="col-lg-4 product-details pl-md-5 ftco-animate"
+          style="padding-top: 30px; font-size: 90%; color:black; right:100px; margin-top: 20px; margin-bottom: 20px;">
+          <h4 class="mb-6" style="font-weight: bold;">Book title</h4>
+          <div class="ratting" style="justify-content: center;font-size: 11px; padding-bottom: 10px;">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+          </div>
+          <p class="mb-6" style="font-weight: bold;">Author</p>
+          <p class="mb-6">Date of publication</p>
+          <p class="mb-6">Category</p>
+          <p class="mb-6">Source type</p>
+          <p class="mb-6">Language</p>
+          <p class="mb-6" style="color:black;font-weight: bold; font-size: 12px;">Call-number: <span
+              style="font-style: italic;">number</span></p>
+        </div>
+        <div class="col-lg-4 ftco-animate">
+            <!-- <a href="#" class="btn btn-white btn-outline-blue" style="width:80%; height: 50%;border-radius: 20px;"
+              style="border-radius: 15px">Book Detail</a></p>
+            <a href="#" class="btn btn-white btn-outline-blue" style="width:80%; height: 50%;border-radius: 20px;"
+              style="border-radius: 15px">Loan History</a></p>
+            <a href="#" class="btn btn-white btn-outline-blue" style="width:80%; height: 50%;border-radius: 20px;"
+              style="border-radius: 15px">View in Category</a></p> -->
+            <p><a href ="#"><button class ="buttonview">Book Detail</button> </a></p>
+            <p><a href ="#"><button class ="buttonview">View in Catgegory</button> </a></p>
+            <p><a href ="#"><button class ="buttonview">Loan History</button> </a></p>
+        </div>
+      </div>
+
+      <div class="row" style="align-items:center; background-color:  rgb(237, 240, 246); border-radius: 15px; margin-bottom: 25px; box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;">
+        <div class="col-lg-4 ftco-animate"
+          style="align-items: right; text-align: center; justify-content: center; padding-top: 30px">
+          <a href="images/menu-2.jpg" class="image-popup"><img src="images/menu-2.jpg" class="img-fluid"
+              alt="Colorlib Template" style="border-radius: 20px; height: 200px; width: 160px; object-fit: cover;"></a>
+          <p style="font-size: 13px;"><a href="#"><i class="fa fa-heart"
+                style="color: #0f3060;padding-right: 40px; width: 10px"></i></a>Book mark</p>
+        </div>
+        <div class="col-lg-4 product-details pl-md-5 ftco-animate"
+          style="padding-top: 30px; font-size: 90%; color:black; right:100px; margin-top: 20px; margin-bottom: 20px;">
+          <h4 class="mb-6" style="font-weight: bold;">Book title</h4>
+          <div class="ratting" style="justify-content: center;font-size: 11px; padding-bottom: 10px;">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+          </div>
+          <p class="mb-6" style="font-weight: bold;">Author</p>
+          <p class="mb-6">Date of publication</p>
+          <p class="mb-6">Category</p>
+          <p class="mb-6">Source type</p>
+          <p class="mb-6">Language</p>
+          <p class="mb-6" style="color:black;font-weight: bold; font-size: 12px;">Call-number: <span
+              style="font-style: italic;">number</span></p>
+        </div>
+        <div class="col-lg-4 ftco-animate">
+            <!-- <a href="#" class="btn btn-white btn-outline-blue" style="width:80%; height: 50%;border-radius: 20px;"
+              style="border-radius: 15px">Book Detail</a></p>
+            <a href="#" class="btn btn-white btn-outline-blue" style="width:80%; height: 50%;border-radius: 20px;"
+              style="border-radius: 15px">Loan History</a></p>
+            <a href="#" class="btn btn-white btn-outline-blue" style="width:80%; height: 50%;border-radius: 20px;"
+              style="border-radius: 15px">View in Category</a></p> -->
+            <p><a href ="#"><button class ="buttonview">Book Detail</button> </a></p>
+            <p><a href ="#"><button class ="buttonview">View in Catgegory</button> </a></p>
+            <p><a href ="#"><button class ="buttonview">Loan History</button> </a></p>
+        </div>
+      </div>
+
+      <div class="row" style="align-items:center; background-color:  rgb(237, 240, 246); border-radius: 15px; margin-bottom: 25px; box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;">
+        <div class="col-lg-4 ftco-animate"
+          style="align-items: right; text-align: center; justify-content: center; padding-top: 30px">
+          <a href="images/menu-2.jpg" class="image-popup"><img src="images/menu-2.jpg" class="img-fluid"
+              alt="Colorlib Template" style="border-radius: 20px; height: 200px; width: 160px; object-fit: cover;"></a>
+          <p style="font-size: 13px;"><a href="#"><i class="fa fa-heart"
+                style="color: #0f3060;padding-right: 40px; width: 10px"></i></a>Book mark</p>
+        </div>
+        <div class="col-lg-4 product-details pl-md-5 ftco-animate"
+          style="padding-top: 30px; font-size: 90%; color:black; right:100px; margin-top: 20px; margin-bottom: 20px;">
+          <h4 class="mb-6" style="font-weight: bold;">Book title</h4>
+          <div class="ratting" style="justify-content: center;font-size: 11px; padding-bottom: 10px;">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+          </div>
+          <p class="mb-6" style="font-weight: bold;">Author</p>
+          <p class="mb-6">Date of publication</p>
+          <p class="mb-6">Category</p>
+          <p class="mb-6">Source type</p>
+          <p class="mb-6">Language</p>
+          <p class="mb-6" style="color:black;font-weight: bold; font-size: 12px;">Call-number: <span
+              style="font-style: italic;">number</span></p>
+        </div>
+        <div class="col-lg-4 ftco-animate">
+            <!-- <a href="#" class="btn btn-white btn-outline-blue" style="width:80%; height: 50%;border-radius: 20px;"
+              style="border-radius: 15px">Book Detail</a></p>
+            <a href="#" class="btn btn-white btn-outline-blue" style="width:80%; height: 50%;border-radius: 20px;"
+              style="border-radius: 15px">Loan History</a></p>
+            <a href="#" class="btn btn-white btn-outline-blue" style="width:80%; height: 50%;border-radius: 20px;"
+              style="border-radius: 15px">View in Category</a></p> -->
+            <p><a href ="#"><button class ="buttonview">Book Detail</button> </a></p>
+            <p><a href ="#"><button class ="buttonview">View in Catgegory</button> </a></p>
+            <p><a href ="#"><button class ="buttonview">Loan History</button> </a></p>
+        </div>
+      </div>
+
+      <div class="row" style="align-items:center; background-color:  rgb(237, 240, 246); border-radius: 15px; margin-bottom: 25px; box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;">
+        <div class="col-lg-4 ftco-animate"
+          style="align-items: right; text-align: center; justify-content: center; padding-top: 30px">
+          <a href="images/menu-2.jpg" class="image-popup"><img src="images/menu-2.jpg" class="img-fluid"
+              alt="Colorlib Template" style="border-radius: 20px; height: 200px; width: 160px; object-fit: cover;;"></a>
+          <p style="font-size: 13px;"><a href="#"><i class="fa fa-heart"
+                style="color: #0f3060;padding-right: 40px; width: 10px"></i></a>Book mark</p>
+        </div>
+        <div class="col-lg-4 product-details pl-md-5 ftco-animate"
+          style="padding-top: 30px; font-size: 90%; color:black; right:100px; margin-top: 20px; margin-bottom: 20px;">
+          <h4 class="mb-6" style="font-weight: bold;">Book title</h4>
+          <div class="ratting" style="justify-content: center;font-size: 11px; padding-bottom: 10px;">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+          </div>
+          <p class="mb-6" style="font-weight: bold;">Author</p>
+          <p class="mb-6">Date of publication</p>
+          <p class="mb-6">Category</p>
+          <p class="mb-6">Source type</p>
+          <p class="mb-6">Language</p>
+          <p class="mb-6" style="color:black;font-weight: bold; font-size: 12px;">Call-number: <span
+              style="font-style: italic;">number</span></p>
+        </div>
+        <div class="col-lg-4 ftco-animate">
+            <!-- <a href="#" class="btn btn-white btn-outline-blue" style="width:80%; height: 50%;border-radius: 20px;"
+              style="border-radius: 15px">Book Detail</a></p>
+            <a href="#" class="btn btn-white btn-outline-blue" style="width:80%; height: 50%;border-radius: 20px;"
+              style="border-radius: 15px">Loan History</a></p>
+            <a href="#" class="btn btn-white btn-outline-blue" style="width:80%; height: 50%;border-radius: 20px;"
+              style="border-radius: 15px">View in Category</a></p> -->
+            <p><a href ="#"><button class ="buttonview">Book Detail</button> </a></p>
+            <p><a href ="#"><button class ="buttonview">View in Catgegory</button> </a></p>
+            <p><a href ="#"><button class ="buttonview">Loan History</button> </a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
 
 
 
