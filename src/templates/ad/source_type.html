@@ -24,7 +24,7 @@
             <thead>
               <tr>
                 <th class="text-center" scope="col">#</th>
-                <th class="text-center" scope="col">Source Type Code</th>
+                <th class="text-center" scope="col">Code</th>
                 <th class="text-center" scope="col">Name</th>
                 <th class="text-center" scope="col">Description</th>
                 <th class="text-center" class="text-center">Action</th>
@@ -35,7 +35,7 @@
                 {% for st in source_type %}
                   <tr>
                     <th class="text-center" scope="row">{{ forloop.counter }}</th>
-                    <td class="text-center">{{ st.st_code }}</td>
+                    <td class="text-center">{{ st.code }}</td>
                     <td class="text-center">{{ st.name }}</td>
                     <td class="text-center">
                         <p class="m-0 trunste-1">{{st.description}}</p>
@@ -45,13 +45,13 @@
                         <button class="btn btn-light btn-sm rounded-0 border dropdown-toggle" type="button" id="{{ st.pk }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
                         <ul class="dropdown-menu" aria-labelledby="{{ st.pk }}">
                           <li>
-                            <a class="dropdown-item view-data" href="{% url 'view_source_type' st.id%}"><i class="fa fa-eye text-dark"></i> View</a>
+                            <a class="dropdown-item view-data" href="{% url 'view_source_type' st.pk%}"><i class="fa fa-eye text-dark"></i> View</a>
                           </li>
                           <li>
-                            <a class="dropdown-item edit-data" href="{% url 'manage_source_type_pk' st.id%}"><i class="fa fa-edit text-primary"></i> Edit</a>
+                            <a class="dropdown-item edit-data" href="{% url 'manage_source_type_pk' st.pk%}"><i class="fa fa-edit text-primary"></i> Edit</a>
                           </li>
                           <li>
-                            <a class="dropdown-item delete-data" href="{% url 'delete_source_type' st.id%}"><i class="fa fa-trash text-danger"></i> Delete</a>
+                            <a class="dropdown-item delete-data" href="{% url 'delete_source_type' st.pk%}"><i class="fa fa-trash text-danger"></i> Delete</a>
                           </li>
                         </ul>
                       </div>

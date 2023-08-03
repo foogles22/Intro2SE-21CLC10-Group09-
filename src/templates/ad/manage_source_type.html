@@ -19,10 +19,10 @@
     <form action="{% url 'save_source_type' %}" method = "POST" class = "card p-3 mt-1">
         {% csrf_token %}
         {% comment %} Dùng này để giấu ID khi Edit {% endcomment %}
-        <input type="hidden" name="id" value="{{source_type.id}}">
+        <input type="hidden" name="id" value="{{source_type.code}}">
         <div class="mb-3">
-            <label for="st_code" class="control-label">Source Type Code</label>
-            <input type="text" id="st_code" name="st_code" class="form-control form-control-sm rounded-0" value="{{source_type.st_code}}" required>
+            <label for="code" class="control-label">Code</label>
+            <input type="text" id="code" name="code" class="form-control form-control-sm rounded-0" value="{{source_type.code}}" required>
         </div>
         <div class="mb-3">
             <label for="name" class="control-label">Name</label>

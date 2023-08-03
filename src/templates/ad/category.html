@@ -26,7 +26,6 @@
                 <th class="text-center" scope="col">#</th>
                 <th class="text-center" scope="col">Name</th>
                 <th class="text-center" scope="col">Description</th>
-                <th class="text-center" scope="col">Status</th>
                 <th class="text-center" class="text-center">Action</th>
               </tr>
             </thead>
@@ -37,26 +36,20 @@
                     <th class="text-center" scope="row">{{ forloop.counter }}</th>
                     <td class="text-center">{{ cat.name }}</td>
                     <td class="text-center">
-                        <p class="m-0 truncate-1">{{cat.description}}</p>
-                    </td>
-                    <td class="text-center">
-                        {% if cat.status == '1' %}
-                        <span class="badge badge-success bg-gradient bg-success px-3 rounded-pill bg-opacity-75 text-sm py-1">Active</span> {% else %}
-                        <span class="badge badge-secondary bg-gradient bg-secondary px-3 rounded-pill bg-opacity-75 text-sm py-1">Inactive</span> {% endif %}
-                    </td>
-
+                        <p class="m-0 trunste-1">{{cat.description}}</p>
+                    </td> 
                     <td class="text-center">
                       <div class="dropdown">
                         <button class="btn btn-light btn-sm rounded-0 border dropdown-toggle" type="button" id="{{ cat.pk }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
                         <ul class="dropdown-menu" aria-labelledby="{{ cat.pk }}">
                           <li>
-                            <a class="dropdown-item view-data" href="{% url 'view_category' cat.id%}"><i class="fa fa-eye text-dark"></i> View</a>
+                            <a class="dropdown-item view-data" href="{% url 'view_category' cat.pk%}"><i class="fa fa-eye text-dark"></i> View</a>
                           </li>
                           <li>
-                            <a class="dropdown-item edit-data" href="{% url 'manage_category_pk' cat.id%}"><i class="fa fa-edit text-primary"></i> Edit</a>
+                            <a class="dropdown-item edit-data" href="{% url 'manage_category_pk' cat.pk%}"><i class="fa fa-edit text-primary"></i> Edit</a>
                           </li>
                           <li>
-                            <a class="dropdown-item delete-data" href="{% url 'delete_category' cat.id%}"><i class="fa fa-trash text-danger"></i> Delete</a>
+                            <a class="dropdown-item delete-data" href="{% url 'delete_category' cat.pk%}"><i class="fa fa-trash text-danger"></i> Delete</a>
                           </li>
                         </ul>
                       </div>
