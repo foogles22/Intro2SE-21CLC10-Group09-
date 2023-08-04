@@ -241,9 +241,9 @@ def save_book(request):
         else:
             book = forms.SaveBook(request.POST, request.FILES)
         if book.is_valid():
-            book.save() 
+            book.save()
         else:
-            print(book.errors.as_ul)
+            print(book.errors.as_text)
         return HttpResponseRedirect('/book/')
     else:
         pass
