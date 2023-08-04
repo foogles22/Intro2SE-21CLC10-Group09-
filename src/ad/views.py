@@ -76,9 +76,9 @@ def save_category(request):
         post = request.POST
         if post['id']:
             category = models.Category.objects.get(pk = post['id'])
-            category = forms.EditCategory(request.POST, instance=category)
+            category = forms.EditCategory(request.POST,request.FILES, instance=category)
         else:
-            category = forms.SaveCategory(request.POST)
+            category = forms.SaveCategory(request.POST,request.FILES)
         if category.is_valid():
             category.save()
             messages.success(request, 'New category added')
@@ -237,13 +237,13 @@ def save_book(request):
         post = request.POST
         if post['id']:
             book = models.Book.objects.get(pk = post['id'])
-            book = forms.SaveBook(request.POST, request.FILES, instance=book)
+            book = forms.EditBook(request.POST, request.FILES, instance=book)
         else:
             book = forms.SaveBook(request.POST, request.FILES)
         if book.is_valid():
             book.save() 
         else:
-            print(book.errors.keys(), book.errors.values())
+            print(book.errors.as_ul)
         return HttpResponseRedirect('/book/')
     else:
         pass
