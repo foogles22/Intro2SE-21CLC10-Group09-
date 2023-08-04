@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from . import models
 from . import forms
+import os
 # Create your views here.
 
 def context_data():
@@ -59,11 +60,11 @@ def category(request):
     return render(request, 'ad/category.html', context)
 
 @login_required
-def manage_category(request, name = None):
+def manage_category(request, id = None):
     context = context_data()
     context['page_title'] = 'Manage Categories'
-    if name:
-        context['category'] = models.Category.objects.get(pk = name)
+    if id:
+        context['category'] = models.Category.objects.get(pk = id)
         context['type'] = 'Save'
     else:
         context['category'] = {}
@@ -76,13 +77,14 @@ def save_category(request):
         post = request.POST
         if post['id']:
             category = models.Category.objects.get(pk = post['id'])
-            category = forms.EditCategory(request.POST,request.FILES, instance=category)
+            category = forms.SaveCategory(request.POST,request.FILES, instance=category)
         else:
             category = forms.SaveCategory(request.POST,request.FILES)
         if category.is_valid():
             category.save()
             messages.success(request, 'New category added')
         else:
+            print(category.errors.as_text)
             for field in category.errors.values():
                 for error in field:
                     messages.error(request, error)
@@ -91,16 +93,18 @@ def save_category(request):
         pass
 
 @login_required
-def delete_category(request, name):
-    category = models.Category.objects.get(pk = name)
+def delete_category(request, id):
+    category = models.Category.objects.get(pk = id)
+    if len(category.image) > 0:
+        os.remove(category.image.path)
     category.delete()
     return HttpResponseRedirect('/category/')
 
 @login_required
-def view_category(request, name):
+def view_category(request, id):
     context = context_data()
     context['page_title'] = 'View Categories'
-    context['category'] = models.Category.objects.get(pk = name)
+    context['category'] = models.Category.objects.get(pk = id)
     return render(request, 'ad/view_category.html', context)
 
 
@@ -112,11 +116,11 @@ def source_type(request):
     context['source_type'] = models.SourceType.objects.all()
     return render(request, 'ad/source_type.html', context)
 
-def manage_source_type(request, code = None):
+def manage_source_type(request, id = None):
     context = context_data()
     context['page_title'] = 'Manage Source Type'
-    if code:
-        context['source_type'] = models.SourceType.objects.get(pk = code)
+    if id:
+        context['source_type'] = models.SourceType.objects.get(pk = id)
         context['type'] = 'Save'
     else:
         context['source_type'] = {}
@@ -129,13 +133,14 @@ def save_source_type(request):
         post = request.POST
         if post['id']:
             source_type = models.SourceType.objects.get(pk = post['id'])
-            source_type = forms.EditCategory(request.POST, instance=source_type) 
+            source_type = forms.SaveSourceType(request.POST, instance=source_type) 
         else:
-            source_type = forms.SaveSourceType(request.POST)
+            source_type = forms.SaveSourceType(request.POST)    
         if source_type.is_valid():
             source_type.save()
             messages.success(request, 'New source type added')
         else:
+            print(source_type.errors.as_text)
             for field in source_type.errors.values():
                 for error in field:
                     messages.error(request, error)
@@ -144,16 +149,16 @@ def save_source_type(request):
         pass
 
 @login_required
-def delete_source_type(request, code):
-    source_type = models.SourceType.objects.get(pk = code)
+def delete_source_type(request, id):
+    source_type = models.SourceType.objects.get(pk = id)
     source_type.delete()
     return HttpResponseRedirect('/source_type/')
 
 @login_required
-def view_source_type(request, code):
+def view_source_type(request, id):
     context = context_data()
     context['page_title'] = 'View Source Types'
-    context['source_type'] = models.SourceType.objects.get(pk = code)
+    context['source_type'] = models.SourceType.objects.get(pk = id)
     return render(request, 'ad/view_source_type.html', context)
 
 # --------LANGUAGE------------
@@ -164,11 +169,11 @@ def language(request):
     context['language'] = models.Language.objects.all()
     return render(request, 'ad/language.html', context)
 
-def manage_language(request, code = None):
+def manage_language(request, id = None):
     context = context_data()
     context['page_title'] = 'Manage Language'
-    if code:
-        context['language'] = models.Language.objects.get(pk = code)
+    if id:
+        context['language'] = models.Language.objects.get(pk = id)
         context['type'] = 'Save'
     else:
         context['language'] = {}
@@ -181,13 +186,14 @@ def save_language(request):
         post = request.POST
         if post['id']:
             language = models.Language.objects.get(pk = post['id'])
-            language = forms.EditLanguage(request.POST, instance=language) 
+            language = forms.SaveLanguage(request.POST, instance=language) 
         else:
             language = forms.SaveLanguage(request.POST)
         if language.is_valid():
             language.save()
             messages.success(request, 'New language added')
         else:
+            print(language.errors.as_text)
             for field in language.errors.values():
                 for error in field:
                     messages.error(request, error)
@@ -196,16 +202,16 @@ def save_language(request):
         pass
 
 @login_required
-def delete_language(request, code):
-    language = models.Language.objects.get(pk = code)
+def delete_language(request, id):
+    language = models.Language.objects.get(pk = id)
     language.delete()
     return HttpResponseRedirect('/language/')
 
 @login_required
-def view_language(request, code):
+def view_language(request, id):
     context = context_data()
     context['page_title'] = 'View Languages'
-    context['language'] = models.Language.objects.get(pk = code)
+    context['language'] = models.Language.objects.get(pk = id)
     return render(request, 'ad/view_language.html', context)
 
 # --------BOOK--------
@@ -216,12 +222,12 @@ def book(request):
     context['book'] = models.Book.objects.all()
     return render(request, 'ad/book.html', context)
 
-def manage_book(request, title = None):
+def manage_book(request, id = None):
     context = context_data()
     context['page_title'] = 'Manage Book'
     context['category'] = models.Category.objects.all()
-    if title:
-        context['book'] = models.Book.objects.get(pk = title)
+    if id:
+        context['book'] = models.Book.objects.get(pk = id)
         context['type'] = 'Save'
     else:
         context['book'] = {}
@@ -237,7 +243,7 @@ def save_book(request):
         post = request.POST
         if post['id']:
             book = models.Book.objects.get(pk = post['id'])
-            book = forms.EditBook(request.POST, request.FILES, instance=book)
+            book = forms.SaveBook(request.POST, request.FILES, instance=book)
         else:
             book = forms.SaveBook(request.POST, request.FILES)
         if book.is_valid():
@@ -249,16 +255,18 @@ def save_book(request):
         pass
 
 @login_required
-def delete_book(request, title):
-    book = models.Book.objects.get(pk = title)
+def delete_book(request, id):
+    book = models.Book.objects.get(pk = id)
+    if len(book.image) > 0:
+        os.remove(book.image.path)
     book.delete()
     return HttpResponseRedirect('/book/')
 
 @login_required
-def view_book(request, title):
+def view_book(request, id):
     context = context_data()
     context['page_title'] = 'View Books'
-    context['book'] = models.Book.objects.get(pk = title)
+    context['book'] = models.Book.objects.get(pk = id)
     return render(request, 'ad/view_book.html', context)
 
 # ---------Borrowing Transaction-----------

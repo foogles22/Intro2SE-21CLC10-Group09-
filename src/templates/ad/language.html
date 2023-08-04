@@ -38,16 +38,16 @@
                     <td class="text-center">{{ lang.fullname }}</td>
                     <td class="text-center">
                       <div class="dropdown">
-                        <button class="btn btn-light btn-sm rounded-0 border dropdown-toggle" type="button" id="{{ lang.pk }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
-                        <ul class="dropdown-menu" aria-labelledby="{{ lang.pk }}">
+                        <button class="btn btn-light btn-sm rounded-0 border dropdown-toggle" type="button" id="{{ lang.id }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
+                        <ul class="dropdown-menu" aria-labelledby="{{ lang.id }}">
                           <li>
-                            <a class="dropdown-item view-data" href="{% url 'view_language' lang.pk%}"><i class="fa fa-eye text-dark"></i> View</a>
+                            <a class="dropdown-item view-data" href="{% url 'view_language' lang.id%}"><i class="fa fa-eye text-dark"></i> View</a>
                           </li>
                           <li>
-                            <a class="dropdown-item edit-data" href="{% url 'manage_language_pk' lang.pk%}"><i class="fa fa-edit text-primary"></i> Edit</a>
+                            <a class="dropdown-item edit-data" href="{% url 'manage_language_pk' lang.id%}"><i class="fa fa-edit text-primary"></i> Edit</a>
                           </li>
                           <li>
-                            <a class="dropdown-item delete-data" href="{% url 'delete_language' lang.pk%}"><i class="fa fa-trash text-danger"></i> Delete</a>
+                            <a class="dropdown-item delete-data" href="{% url 'delete_language' lang.id%}"><i class="fa fa-trash text-danger"></i> Delete</a>
                           </li>
                         </ul>
                       </div>

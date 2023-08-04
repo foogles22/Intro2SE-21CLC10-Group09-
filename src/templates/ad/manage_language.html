@@ -19,7 +19,7 @@
     <form action="{% url 'save_language' %}" method = "POST" class = "card p-3 mt-1">
         {% csrf_token %}
         {% comment %} Dùng này để giấu ID khi Edit {% endcomment %}
-        <input type="hidden" name="id" value="{{language.code}}">
+        <input type="hidden" name="id" value="{{language.id}}">
         <div class="mb-3">
             <label for="code" class="control-label">Code</label>
             <input type="text" id="code" name="code" class="form-control form-control-sm rounded-0" value="{{language.code}}" required>

@@ -19,7 +19,7 @@
     <form action="{% url 'save_category' %}" method = "POST" enctype="multipart/form-data" class = "card p-3 mt-1">
         {% csrf_token %}
         {% comment %} Dùng này để giấu ID khi Edit {% endcomment %}
-        <input type="hidden" name="id" value="{{category.name}}">
+        <input type="hidden" name="id" value="{{category.id}}">
         <div class="mb-3">
             <label for="name" class="control-label">Name</label>
             <input type="text" id="name" name="name" class="form-control form-control-sm rounded-0" value="{{category.name}}" required>
