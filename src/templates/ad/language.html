@@ -1,5 +1,65 @@
-{% extends 'ad/base.html'%}
+{% extends 'ad/base.html' %}
 
-{% block Page_content%}
-    <div class = "text-center">Đây là Language Page</div>
-{% endblock Page_content%}
+{% block Page_content %}
+<section class="py-4">
+  <div class="container">
+    <h3 class="fw-bolder text-center">List of Languages</h3>
+    <center>
+      <hr class="bg-primary opacity-100" style="height:3px" width="5%" />
+    </center>
+    <div class="card rounded-0 shadow">
+      <div class="card-body">
+        <div class="container-fluid">
+          <div class="text-start mb-3">
+            <a href="{% url 'manage_language'%}" class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" type="button"><i class="fa fa-plus"></i> Add New</a>
+          </div>
+          <table class="table">
+            <collanguage>
+              <col width="5%" />
+              <col width="15%" />
+              <col width="50%" />
+              <col width="20%" />
+              <col width="10%" />
+            </collanguage>
+            <thead>
+              <tr>
+                <th class="text-center" scope="col">#</th>
+                <th class="text-center" scope="col">Code</th>
+                <th class="text-center" scope="col">Full name</th>
+                <th class="text-center" class="text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if language %}
+                {% for lang in language %}
+                  <tr>
+                    <th class="text-center" scope="row">{{ forloop.counter }}</th>
+                    <td class="text-center">{{ lang.code }}</td>
+                    <td class="text-center">{{ lang.fullname }}</td>
+                    <td class="text-center">
+                      <div class="dropdown">
+                        <button class="btn btn-light btn-sm rounded-0 border dropdown-toggle" type="button" id="{{ lang.id }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
+                        <ul class="dropdown-menu" aria-labelledby="{{ lang.id }}">
+                          <li>
+                            <a class="dropdown-item view-data" href="{% url 'view_language' lang.id%}"><i class="fa fa-eye text-dark"></i> View</a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item edit-data" href="{% url 'manage_language_pk' lang.id%}"><i class="fa fa-edit text-primary"></i> Edit</a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item delete-data" href="{% url 'delete_language' lang.id%}"><i class="fa fa-trash text-danger"></i> Delete</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

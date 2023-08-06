@@ -16,11 +16,10 @@
             </div>
         </div>
     {% endif %}
-    <form action="{% url 'save_category' %}" method = "POST" class = "card p-3 mt-1">
+    <form action="{% url 'save_category' %}" method = "POST" enctype="multipart/form-data" class = "card p-3 mt-1">
         {% csrf_token %}
         {% comment %} Dùng này để giấu ID khi Edit {% endcomment %}
         <input type="hidden" name="id" value="{{category.id}}">
-
         <div class="mb-3">
             <label for="name" class="control-label">Name</label>
             <input type="text" id="name" name="name" class="form-control form-control-sm rounded-0" value="{{category.name}}" required>
@@ -30,26 +29,14 @@
             <textarea rows="3" id="description" name="description" class="form-control form-control-sm rounded-0" required>{{category.description}}</textarea>
         </div>
         <div class="mb-3">
-            <label for="status" class="control-label">Status</label>
-            <select type="text" id="status" name="status" class="form-select form-select-sm rounded-0" required>
-                {% if category.status == '1' %}
-                <option value="1" selected>Active</option>
-                {% else %}
-                <option value="1">Active</option>
-                {% endif %}
-                {% if category.status == '2' %}
-                <option value="2" selected>Inactive</option>
-                {% else %}
-                <option value="2">Inactive</option>
-                {% endif %}
-            </select>
+            <label for="image" class="control-label">Image</label>
+            <input type="file" id="image" name="image" class="form-control" accept="image/*" required>
         </div>
         <div class="d-flex justify-content-between mt-3">
-            <a href="{% url 'category' %}" class="btn btn-dark">Back</a>    
+            <a href="{% url 'category' %}" class="btn btn-dark">Back</a>
             <input class="btn btn-dark" type="submit" value="{{type}}">
         </div>
     </form>
 </div>
 {% endblock Page_content %}
-
         

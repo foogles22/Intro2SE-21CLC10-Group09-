@@ -8,14 +8,12 @@
         <dd class="mb-2">{{ category.name }}</dd>
         <dt class="mb-2">Description</dt>
         <dd class="mb-2">{{ category.description }}</dd>
-        <dt class="mb-2">Status</dt>
-        <dd class="">
-          {% if category.status == '1' %}
-            <span class="badge badge-success bg-gradient bg-success px-3 rounded-pill bg-opacity-75 text-sm py-1">Active</span>
-          {% else %}
-            <span class="badge badge-secondary bg-gradient bg-secondary px-3 rounded-pill bg-opacity-75 text-sm py-1">Inactive</span>
-          {% endif %}
-        </dd>
+        <dt class="mb-2">Image</dt>
+        {% if category.image %}
+        <img src= "{{category.image.url}}" alt="img">
+        {% else %}
+        <dd class="mb-2">No image attached</dd>
+        {% endif %}
       </dl>
     </div>
   </div>

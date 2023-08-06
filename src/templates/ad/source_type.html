@@ -1,5 +1,69 @@
-{% extends 'ad/base.html'%}
+{% extends 'ad/base.html' %}
 
-{% block Page_content%}
-    <div class = "text-center">Đây là Source Types Page</div>
-{% endblock Page_content%}
+{% block Page_content %}
+<section class="py-4">
+  <div class="container">
+    <h3 class="fw-bolder text-center">List of Source types</h3>
+    <center>
+      <hr class="bg-primary opacity-100" style="height:3px" width="5%" />
+    </center>
+    <div class="card rounded-0 shadow">
+      <div class="card-body">
+        <div class="container-fluid">
+          <div class="text-start mb-3">
+            <a href="{% url 'manage_source_type'%}" class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" type="button"><i class="fa fa-plus"></i> Add New</a>
+          </div>
+          <table class="table">
+            <colsource_type>
+              <col width="5%" />
+              <col width="15%" />
+              <col width="50%" />
+              <col width="20%" />
+              <col width="10%" />
+            </colsource_type>
+            <thead>
+              <tr>
+                <th class="text-center" scope="col">#</th>
+                <th class="text-center" scope="col">Code</th>
+                <th class="text-center" scope="col">Name</th>
+                <th class="text-center" scope="col">Description</th>
+                <th class="text-center" class="text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if source_type %}
+                {% for st in source_type %}
+                  <tr>
+                    <th class="text-center" scope="row">{{ forloop.counter }}</th>
+                    <td class="text-center">{{ st.code }}</td>
+                    <td class="text-center">{{ st.name }}</td>
+                    <td class="text-center">
+                        <p class="m-0 trunste-1">{{st.description}}</p>
+                    </td>
+                    <td class="text-center">
+                      <div class="dropdown">
+                        <button class="btn btn-light btn-sm rounded-0 border dropdown-toggle" type="button" id="{{ st.id }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
+                        <ul class="dropdown-menu" aria-labelledby="{{ st.id }}">
+                          <li>
+                            <a class="dropdown-item view-data" href="{% url 'view_source_type' st.id%}"><i class="fa fa-eye text-dark"></i> View</a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item edit-data" href="{% url 'manage_source_type_pk' st.id%}"><i class="fa fa-edit text-primary"></i> Edit</a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item delete-data" href="{% url 'delete_source_type' st.id%}"><i class="fa fa-trash text-danger"></i> Delete</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

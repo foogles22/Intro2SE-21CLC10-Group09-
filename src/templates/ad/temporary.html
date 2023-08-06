@@ -1,0 +1,46 @@
+<form action="{% url 'save_request_book' %}" method = "POST" autocomplete="off" class = "card p-3 mt-1 border-dark was-validated" enctype = "multipart/form-data">
+    {% csrf_token %}
+    <div class="input-group mb-3 mt-3">
+        <span class="input-group-text border-dark" >Title</span>
+        <input type="text" id="title" name="title" class="form-control" placeholder="Title" required>
+    </div>
+    <div class="input-group mb-3 mt-3">
+        <span class="input-group-text border-dark">Publication Year</span>
+        <input type="date" id="publication_year" name="publication_year" class="form-control" placeholder="Publication Year" required>
+    </div>
+    <div class="input-group mb-3 mt-3">
+        <span class="input-group-text border-dark" >Author</span>
+        <input type="text" id="author" name="author" class="form-control" placeholder="Author" required>
+    </div>
+    <div class="input-group mb-3 mt-3">
+        <span class="input-group-text border-dark">Category</span>
+        <select type="text" id="category" name="category" class="form-select form-select-sm" required>
+            {% for category in categories %}
+            <option value="{{category.name}}">{{category.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="input-group mb-3 mt-3">
+        <span class="input-group-text border-dark">Description</span>
+        <textarea class="form-control" name="description" id="description" cols="30" rows="5"></textarea>
+    </div>
+    <div class="input-group mb-3 mt-3">
+        <span class="input-group-text border-dark" >Source Type</span>
+        <select type="text" id="sourcetype" name="sourcetype" class="form-select form-select-sm" required>
+            {% for source_type in source_types %}
+            <option value="{{source_type.code}}">{{source_type.code}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="input-group mb-3 mt-3">
+        <span class="input-group-text border-dark">Language</span>
+        <select type="text" id="language" name="language" class="form-select form-select-sm" required>
+            {% for language in languages %}
+            <option value="{{language.code}}">{{language.code}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="input-group mb-3 mt-3">
+        <span class="input-group-text border-dark">Cover Photo</span>
+        <input type="file" id="image" name="image" class="form-control" placeholder="Last Name" required>
+    </div>
