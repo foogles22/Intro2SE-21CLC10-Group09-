@@ -19,7 +19,7 @@
     <div class="card-body">
         <div class="container-fluid">
             <div class="text-start mb-3">
-                <button class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#modal"><i class="fa fa-plus"></i> Add New</button>
+                <button class="btn btn-success rounded-1 bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#modal"><i class="fa fa-plus"></i> Add New</button>
             </div>
             <!-- input search + reset button-->
             <div class="input-group input-group-sm mb-3">
@@ -70,7 +70,7 @@
                         </td>
                         <td class="text-center">
                         <div class="dropdown">
-                            <button class="btn btn-light btn-sm rounded-0 border dropdown-toggle" type="button" id="{{ r.pk }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
+                            <button class="btn btn-light rounded-0 border dropdown-toggle" type="button" id="{{ r.pk }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
                             <ul class="dropdown-menu" aria-labelledby="{{ r.pk }}">
                             <li>
                                 <a class="dropdown-item" href="{% url 'delete_request_book' r.pk %}"><i class="fa fa-trash text-danger"></i> Delete</a>
@@ -130,7 +130,7 @@
     <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
         <div class="modal-header">
-        <i class="fa fa-plus text-info"> Request Book</i>
+        <i class="fa fa-plus text-success"> Request Book</i>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -138,19 +138,19 @@
         <form action="{% url 'save_request_book' %}" method = "POST" autocomplete="off" class = "card p-3 mt-1 border-dark was-validated" enctype = "multipart/form-data">
             {% csrf_token %}
             <div class="input-group mb-3 mt-3">
-                <span class="input-group-text border-dark" >Title</span>
+                <span class="input-group-text border-dark" style="width: 138px;" >Title</span>
                 <input type="text" id="title" name="title" class="form-control" placeholder="Title" required>
             </div>
             <div class="input-group mb-3 mt-3">
-                <span class="input-group-text border-dark">Publication Year</span>
+                <span class="input-group-text border-dark" style="width: 138px;">Publication Year</span>
                 <input type="number" id="datepicker" name="publication_year" class="form-control" placeholder="Publication Year" required>
             </div>
             <div class="input-group mb-3 mt-3">
-                <span class="input-group-text border-dark" >Author</span>
+                <span class="input-group-text border-dark" style="width: 138px;" >Author</span>
                 <input type="text" id="author" name="author" class="form-control" placeholder="Author" required>
             </div>
             <div class="input-group mb-3 mt-3">
-                <span class="input-group-text border-dark">Category</span>
+                <span class="input-group-text border-dark" style="width: 138px;">Category</span>
                 <select type="text" id="category" name="category" data-live-search="true" class="selectpicker form-control" multiple data-container="body" required>
                     {% for category in categories %}
                     <option value="{{category.pk}}">{{category.name}}</option>
@@ -158,11 +158,11 @@
                 </select>
             </div>
             <div class="input-group mb-3 mt-3">
-                <span class="input-group-text border-dark">Description</span>
-                <textarea class="form-control" name="description" id="description" cols="30" rows="5"></textarea>
+                <span class="input-group-text border-dark" style="width: 138px;">Description</span>
+                <input type="text" id="description" name="description" class="form-control" placeholder="Description" required>
             </div>
             <div class="input-group mb-3 mt-3">
-                <span class="input-group-text border-dark" >Source Type</span>
+                <span class="input-group-text border-dark" style="width: 138px;" >Source Type</span>
                 <select type="text" id="sourcetype" name="sourcetype" class="form-control selectpicker" data-size='1' data-container="body" required>
                     {% for source_type in source_types %}
                     <option value="{{source_type.pk}}">{{source_type.code}}</option>
@@ -170,7 +170,7 @@
                 </select>
             </div>
             <div class="input-group mb-3 mt-3">
-                <span class="input-group-text border-dark">Language</span>
+                <span class="input-group-text border-dark" style="width: 138px;">Language</span>
                 <select type="text" id="language" name="language" class="form-control selectpicker" data-size='1' data-container="body" required>
                     {% for language in languages %}
                     <option value="{{language.pk}}">{{language.code}}</option>
@@ -178,11 +178,11 @@
                 </select>
             </div>
             <div class="input-group mb-3 mt-3">
-                <span class="input-group-text border-dark">Cover Photo</span>
+                <span class="input-group-text border-dark" style="width: 138px;">Cover Photo</span>
                 <input type="file" id="image" name="image" class="form-control" placeholder="Last Name" required>
             </div>
             <div class="text-end mt-3">
-                <input class="btn btn-dark" type="submit" value="Request">
+                <input class="btn btn-danger" type="submit" value="Request">
             </div>
         </form>
 

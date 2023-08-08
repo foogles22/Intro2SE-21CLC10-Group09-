@@ -19,10 +19,10 @@
             <div class="container-fluid">
                <div class="d-flex justify-content-between">
                   <div class="mb-3">
-                     <button class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#modal"><i class="fa fa-plus"></i> Add New</button>
+                     <button class="btn btn-success rounded-1 bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#modal"><i class="fa fa-plus"></i> Add New</button>
                   </div>
                   <div class="mb-3">
-                     <a href="{% url 'manage_reader_request' %}" class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" type="button"><i class="fa fa-plus"></i> Manage Request</a>
+                     <a href="{% url 'manage_reader_request' %}" class="btn btn-success rounded-1" type="button"><i class="fa-solid fa-question"></i></i> Manage Request</a>
                   </div>
                </div>
                <!-- input search + reset button-->
@@ -63,7 +63,7 @@
                               <button class="btn btn-light btn-sm rounded-0 border dropdown-toggle" type="button" id="{{ cat.pk }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
                               <ul class="dropdown-menu" aria-labelledby="{{ causert.pk }}">
                                  <li>
-                                    <a class="dropdown-item" href="{% url 'view_user' user.id%}"><i class="fa fa-eye text-dark"></i> View</a>
+                                    <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal{{ forloop.counter }}"><i class="fa fa-eye text-dark"></i> View</button>
                                  </li>
                                  <li>
                                     <a class="dropdown-item" href="{% url 'delete_user' user.id%}"><i class="fa fa-trash text-danger"></i> Delete</a>
@@ -110,7 +110,7 @@
          </div>
       </div>
    </div>
-   <!-- Modal -->
+   <!-- Modal ADD-->
    <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
          <div class="modal-content">
@@ -161,6 +161,29 @@
          </div>
       </div>
    </div>
+
+   {% if users %}
+   {% for user in users %}
+     <!-- Modal View-->
+     <div class="modal fade" id="modal{{ forloop.counter }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+       <div class="modal-dialog modal-xl modal-dialog-centered">
+         <div class="modal-content">
+           <div class="modal-header">
+             <h5 class="modal-title" id="exampleModalLabel">Profile</h5>
+             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+           </div>
+           <div class="modal-body">
+               {% if user.profile.role == "READER" %}
+                  {% include "ad/reader_profile.html" %}
+               {% else %}
+                  {% include "ad/ad_lib_info.html" %}
+               {% endif %}
+           </div>
+         </div>
+       </div>
+     </div>
+   {% endfor %}
+ {% endif %}
 </section>
 <script>
    function searchFunction(){

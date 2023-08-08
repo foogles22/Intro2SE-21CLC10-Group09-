@@ -10,7 +10,9 @@
     <div class="card rounded-0 shadow">
       <div class="card-body">
         <div class="container-fluid">
-          </div>
+          <div class="mb-3">
+            <a href="{% url 'user' 'id'%}" class="btn btn-warning rounded-1"><i class="fa-solid fa-arrow-rotate-left"></i> Back</a>    
+         </div>
           <table class="table">
             <colcategory>
               <col width="5%" />
@@ -56,9 +58,6 @@
               {% endif %}
             </tbody>
           </table>
-          <div class="d-flex justify-content-between mt-3">
-              <a href="{% url 'user' 'id'%}" class="btn btn-dark">Back</a>    
-          </div>
         </div>
       </div>
     </div>

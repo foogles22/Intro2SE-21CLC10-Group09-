@@ -11,7 +11,7 @@ from . import forms
 from .decorators import user_is_authenticated, allowed_users
 from datetime import timedelta
 from django.core.paginator import Paginator
-from datetime import date
+from django.utils import timezone
 import os
 # Create your views here.
 
@@ -94,7 +94,7 @@ def delete_user(request, id):
     user = User.objects.get(pk = id)
     messages.success(request, 'Deleting acount succeed')
     user.delete()
-    return redirect("user")
+    return redirect("user", 'id')
 
 # ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN
 # --------HOME--------
@@ -106,10 +106,14 @@ def home(request):
 
 # --------CATEGORY--------
 @login_required
-def category(request):
+def category(request, order = 'id'):
     context = context_data()
     context['page_title'] = 'Categories'
-    context['category'] = models.Category.objects.all()
+    users = models.Category.objects.all().order_by(order)
+    p = Paginator(users, 3)
+    page = request.GET.get('page')
+    category = p.get_page(page)
+    context["category"] = category
     return render(request, 'ad/category.html', context)
 
 @login_required
@@ -141,9 +145,10 @@ def save_category(request):
             for field in category.errors.values():
                 for error in field:
                     messages.error(request, error)
-        return HttpResponseRedirect('/category/')
     else:
-        pass
+        messages.error(request, 'No data has been sent')
+    return HttpResponseRedirect('/manage_category/')
+    
 
 @login_required
 def delete_category(request, id):
@@ -151,22 +156,19 @@ def delete_category(request, id):
     if len(category.image) > 0:
         os.remove(category.image.path)
     category.delete()
-    return HttpResponseRedirect('/category/')
-
-@login_required
-def view_category(request, id):
-    context = context_data()
-    context['page_title'] = 'View Categories'
-    context['category'] = models.Category.objects.get(pk = id)
-    return render(request, 'ad/view_category.html', context)
-
+    messages.success(request,'Delete category successfully')
+    return HttpResponseRedirect('/category/id')
 
 # --------SOURCE TYPE--------
 @login_required
-def source_type(request):
+def source_type(request, order = 'id'):
     context = context_data()
     context['page_title'] = 'Source Types'
-    context['source_type'] = models.SourceType.objects.all()
+    source_type = models.SourceType.objects.all().order_by(order)
+    p = Paginator(source_type, 3)
+    page = request.GET.get('page')
+    source_type = p.get_page(page)
+    context["source_type"] = source_type
     return render(request, 'ad/source_type.html', context)
 
 def manage_source_type(request, id = None):
@@ -197,29 +199,28 @@ def save_source_type(request):
             for field in source_type.errors.values():
                 for error in field:
                     messages.error(request, error)
-        return HttpResponseRedirect('/source_type/')
     else:
-        pass
+        messages.error(request,'No data has been sent')
+    return HttpResponseRedirect('/manage_source_type/')
+    
 
 @login_required
 def delete_source_type(request, id):
     source_type = models.SourceType.objects.get(pk = id)
     source_type.delete()
-    return HttpResponseRedirect('/source_type/')
-
-@login_required
-def view_source_type(request, id):
-    context = context_data()
-    context['page_title'] = 'View Source Types'
-    context['source_type'] = models.SourceType.objects.get(pk = id)
-    return render(request, 'ad/view_source_type.html', context)
+    messages.success(request, 'Delete source type successfully')
+    return HttpResponseRedirect('/source_type/id')
 
 # --------LANGUAGE------------
 @login_required
-def language(request):
+def language(request, order = 'id'):
     context = context_data()
     context['page_title'] = 'Languages'
-    context['language'] = models.Language.objects.all()
+    language = models.Language.objects.all().order_by(order)
+    p = Paginator(language, 3)
+    page = request.GET.get('page')
+    language = p.get_page(page)
+    context["language"] = language
     return render(request, 'ad/language.html', context)
 
 def manage_language(request, id = None):
@@ -250,44 +251,43 @@ def save_language(request):
             for field in language.errors.values():
                 for error in field:
                     messages.error(request, error)
-        return HttpResponseRedirect('/language/')
     else:
-        pass
+        messages.error(request, "No data has been sent")
+    return HttpResponseRedirect('/manage_language/')
+
 
 @login_required
 def delete_language(request, id):
     language = models.Language.objects.get(pk = id)
     language.delete()
-    return HttpResponseRedirect('/language/')
-
-@login_required
-def view_language(request, id):
-    context = context_data()
-    context['page_title'] = 'View Languages'
-    context['language'] = models.Language.objects.get(pk = id)
-    return render(request, 'ad/view_language.html', context)
+    messages.success(request,'Delete language successfully')
+    return HttpResponseRedirect('/language/id')
 
 # --------BOOK--------
 @login_required
-def book(request):
+def book(request, order = 'id'):
     context = context_data()
     context['page_title'] = 'Books'
-    context['book'] = models.Book.objects.all()
+    book = models.Book.objects.all().order_by(order)
+    p = Paginator(book, 3)
+    page = request.GET.get('page')
+    book = p.get_page(page)
+    context["book"] = book
     return render(request, 'ad/book.html', context)
 
 def manage_book(request, id = None):
     context = context_data()
     context['page_title'] = 'Manage Book'
-    context['category'] = models.Category.objects.all()
+    context['categorys'] = models.Category.objects.all()
     if id:
         context['book'] = models.Book.objects.get(pk = id)
         context['type'] = 'Save'
     else:
         context['book'] = {}
         context['type'] = 'Add'
-    context['category'] = models.Category.objects.all()
-    context['sourcetype'] = models.SourceType.objects.all()
-    context['language'] = models.Language.objects.all()
+    context['categories'] = models.Category.objects.all()
+    context['source_types'] = models.SourceType.objects.all()
+    context['languages'] = models.Language.objects.all()
     return render(request, 'ad/manage_book.html', context)
 
 @login_required
@@ -301,26 +301,24 @@ def save_book(request):
             book = forms.SaveBook(request.POST, request.FILES)
         if book.is_valid():
             book.save()
+            messages.success(request, 'Save book successfully')
         else:
-            print(book.errors.as_text)
-        return HttpResponseRedirect('/book/')
+            for field in book.errors.values():
+                for error in field:
+                    messages.error(request, error)
     else:
-        pass
-
+        messages.error(request, 'No data has been sent')
+    return HttpResponseRedirect('/manage_book/')
+    
 @login_required
 def delete_book(request, id):
     book = models.Book.objects.get(pk = id)
     if len(book.image) > 0:
         os.remove(book.image.path)
     book.delete()
+    messages.success(request, 'Delete successfully')
     return HttpResponseRedirect('/book/')
 
-@login_required
-def view_book(request, id):
-    context = context_data()
-    context['page_title'] = 'View Books'
-    context['book'] = models.Book.objects.get(pk = id)
-    return render(request, 'ad/view_book.html', context)
 # Librarian-Librarian-Librarian-Librarian-Librarian-Librarian-Librarian-Librarian-Librarian-Librarian
 
 # ---------LOAN Transaction-----------
@@ -389,7 +387,7 @@ def return_book(request, id):
     loan = models.LoanTransaction.objects.get(pk=id)
     loan.returned = '1'
     loan.save(update_fields=['returned'])
-    if date.today() > loan.date_expired:
+    if timezone.now() > loan.date_expired:
         loan.overdue = '1'
         messages.warning(request, 'Overdue !!!')
     else:
@@ -439,7 +437,7 @@ def reader_info(request, order = 'id'):
 @allowed_users(allowed_roles=['LIBRARIAN'])
 def request_reader(request, order = 'id'):
     context = context_data()
-    context["page_title"] = "Reader Infomation"
+    context["page_title"] = "Request Reader Account"
     if request.method == "POST":
         request_reader = forms.SaveRequestReader(request.POST)
         request_reader.save()

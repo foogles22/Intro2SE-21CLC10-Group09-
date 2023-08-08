@@ -17,8 +17,8 @@
       <div class="card rounded-0 shadow">
          <div class="card-body">
             <div class="container-fluid">
-               <div class="text-start mb-3">
-                  <button class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#modal"><i class="fa fa-plus"></i> Add New</button>
+               <div class="text-end mb-3">
+                  <button class="btn btn-success rounded-1 bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#modal"><i class="fa fa-plus"></i> Add New</button>
                </div>
                <!-- input search + reset button-->
                <div class="input-group input-group-sm mb-3">
@@ -68,10 +68,10 @@
                               <button class="btn btn-light btn-sm rounded-0 border dropdown-toggle" type="button" id="{{ l.pk }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
                               <ul class="dropdown-menu" aria-labelledby="{{ l.pk }}">
                                  <li>
-                                    <a class="dropdown-item" href="{% url 'return_book' l.pk%}"><i class="fa fa-eye text-dark"></i> Return</a>
+                                    <a class="dropdown-item" href="{% url 'return_book' l.pk%}"><i class="fa-solid fa-house text-primary"></i> Return</a>
                                  </li>
                                  <li>
-                                    <a class="dropdown-item" href="{% url 'renew_book' l.pk%}"><i class="fa fa-edit text-primary"></i> Renew</a>
+                                    <a class="dropdown-item" href="{% url 'renew_book' l.pk%}"><i class="fa-solid fa-book text-warning"></i> Renew</a>
                                  </li>
                                  <li>
                                     <a class="dropdown-item" href="{% url 'delete_loan' l.pk%}"><i class="fa fa-trash text-danger"></i> Delete</a>
@@ -126,25 +126,24 @@
       <div class="modal-dialog modal-dialog-centered">
          <div class="modal-content">
             <div class="modal-header">
-               <i class="fa fa-plus text-info"> Add Loan Transaction</i>
+               <i class="fa fa-plus text-success"> Add Loan Transaction</i>
                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                <form action="{% url 'save_loan' %}" method = "POST" autocomplete="off" class = "card p-3 mt-1 border-dark was-validated">
                   {% csrf_token %}
                   <div class="input-group mb-3 mt-3">
-                     <span class="input-group-text border-dark" >User ID</span>
+                     <span class="input-group-text border-dark" style="width: 96px;">User ID</span>
                      <input type="text" id="identity" name="identity" class="form-control" placeholder="User Identity" value="{{loan.user.profile.identity}}" required>
                      <ul class ="list-group rounded-0" style="list-style: none;" id="hint-list-identity"></ul>
                   </div>
                   <div class="input-group mb-3 mt-3">
-                     <span class="input-group-text border-dark">Book Title</span>
+                     <span class="input-group-text border-dark" style="width: 96px;">Book Title</span>
                      <input type="text" id="book" name="book" class="form-control" placeholder="Book Title" value="{{loan.book}}" required>
                      <ul class ="list-group rounded-0" style="list-style: none;" id="hint-list-book"></ul>
                   </div>
-                  <div class="d-flex justify-content-between mt-3">
-                     <a href="{% url 'loan' %}" class="btn btn-dark">Back</a>    
-                     <input class="btn btn-dark" type="submit" value="Add">
+                  <div class="text-end mt-3">
+                     <input class="btn btn-danger" type="submit" value="Add">
                   </div>
                </form>
             </div>

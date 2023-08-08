@@ -3,7 +3,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from . import models
 from django.db.models import Q
-from datetime import date
+from datetime import datetime
+from django.utils import timezone
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
@@ -45,10 +46,10 @@ class SaveProfile(forms.ModelForm):
         super().__init__(new_data, *args, **kwargs)
     
     def clean_email(self):
-        email = self.clean_data['email']
+        email = self.cleaned_data['email']
         try:
             models.Profile.objects.get(email = email)
-            self.add_error(forms.ValidationError('email', 'Email is already taken!'))
+            self.add_error('email', forms.ValidationError('Email is already taken!'))
         except:
             return email
 
@@ -65,8 +66,8 @@ class EditProfile(forms.ModelForm):
     def clean_email(self):
         email = self.cleaned_data['email']
         try:
-            models.Profile.objects.get(email = email)
-            self.add_error(forms.ValidationError('email', 'Email is already taken!'))
+            models.Profile.objects.exclude(id = self.instance.id).get(email = email)
+            self.add_error('email', forms.ValidationError('Email is already taken!'))
         except:
             return email
 
@@ -225,15 +226,10 @@ class SaveTransaction(forms.ModelForm):
 
         try:
             loan = models.LoanTransaction.objects.get(user= user, book = book)
-            if loan.date_loan != date.today():
+            if loan.date_loan <= timezone.now():
                 if loan.returned == '0':
                     self.add_error('book', forms.ValidationError('Reader has not returned this book yet!'))
-        except:
-            pass
-
-        try:
-            loan = models.LoanTransaction.objects.get(user= user, book = book, date_loan = date.today())
-            self.add_error('__all__', forms.ValidationError('The transaction is already existed!'))
+                    print(1)
         except:
             return {'user': user, 'book' : book}
 

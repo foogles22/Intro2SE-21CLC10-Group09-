@@ -18,8 +18,9 @@ class Profile(models.Model):
     phone = models.CharField(max_length=15, blank=True)
     date_of_birth = models.DateField(default= timezone.now, blank=True)
     sex = models.CharField(max_length=2, choices=(('1','MALE'), ('2', 'FEMALE')), blank=True)
-    profile_img = models.ImageField(upload_to=('avatars/'),blank=True)
+    profile_img = models.ImageField(upload_to=('avatars/'),default=('avatars/default.jpg'))
     first_time = models.BooleanField(null=False, default=True)    
+    created_at = models.DateField(default=timezone.now)
     class ROLE(models.TextChoices):
         ADMIN = "ADMIN", "Admin"
         READER = "READER", "Reader"
@@ -52,7 +53,7 @@ class ReaderRequest(models.Model):
     last_name = models.CharField(max_length=50, blank=False, null= False)
     email = models.EmailField(max_length=50, blank=False, null= False)
     status = models.CharField(
-        max_length=2, choices=(("1", "Wait"), ("2", "Accept"), ("3", "Decline")), default=1
+        max_length=2, choices=(("1", "Wait"), ("2", "Accept"), ("3", "Decline")), default="1"
     )
     def __str__(self):
         return str('Request_' + self.email)
@@ -99,7 +100,7 @@ class Book(models.Model):
     image = models.ImageField(null=False, blank=False, upload_to="images/")
     quantity = models.IntegerField(null=False, blank=False, validators=[MinValueValidator(0)])
     status = models.CharField(
-        max_length=2, choices=(("1", "Active"), ("2", "Inactive")), default=1
+        max_length=2, choices=(("1", "Active"), ("2", "Inactive")), default="1"
     )
     date_added = models.DateTimeField(null=False, default=timezone.now)
 
@@ -117,9 +118,9 @@ class BookRequest(models.Model):
     description = models.TextField(max_length=250, blank=False, null=False)
     sourcetype = models.ForeignKey(SourceType, null=True, on_delete=models.SET_NULL)
     language = models.ForeignKey(Language, null=True, on_delete=models.SET_NULL)
-    image = models.ImageField(upload_to="images/")
+    image = models.ImageField(upload_to="images/")  
     status = models.CharField(
-        max_length=2, choices=(("1", "Wait"), ("2", "Accept"), ("3", "Decline")), default=1
+        max_length=2, choices=(("1", "Wait"), ("2", "Accept"), ("3", "Decline")), default="1"
     )
 
     def __str__(self):
@@ -128,13 +129,13 @@ class BookRequest(models.Model):
 class LoanTransaction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    date_loan = models.DateField(default=timezone.now, null= False)
-    date_expired = models.DateField(default=(timezone.now() + timedelta(7)), null= False)
+    date_loan = models.DateTimeField(default=timezone.now, null= False)
+    date_expired = models.DateTimeField(default=(timezone.now() + timedelta(7)), null= False)
     overdue = models.CharField(
-        max_length=2, choices=(("0", "No"), ("1", "Yes")), default=0
+        max_length=2, choices=(("0", "No"), ("1", "Yes")), default="0"
     )
     returned = models.CharField(
-        max_length=2, choices=(("0", "No"), ("1", "Yes")), default=0
+        max_length=2, choices=(("0", "No"), ("1", "Yes")), default="0"
     )
     class Meta:
             unique_together = ('user', 'book', 'date_loan')

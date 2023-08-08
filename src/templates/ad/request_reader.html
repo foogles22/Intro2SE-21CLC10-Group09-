@@ -18,9 +18,14 @@
     <div class="card rounded-0 shadow">
     <div class="card-body">
         <div class="container-fluid">
-            <div class="text-start mb-3">
-                <button class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#modal"><i class="fa fa-plus"></i> Add New</button>
-            </div>
+            <div class="d-flex justify-content-between">
+                <div class="mb-3">
+                  <a href="{% url 'reader_info' 'id'%}" class="btn btn-sm btn-warning rounded-1 bg-gradient-primary" type="button"><i class="fa-solid fa-arrow-rotate-left"></i> Back</a>
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-sm btn-success rounded-1 bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#modal"><i class="fa fa-plus"></i> Add New</button>
+                </div>
+              </div>
             <!-- input search + reset button-->
             <div class="input-group input-group-sm mb-3">
                 <input type="text" onkeyup="searchFunction()" class="form-control" id="search" placeholder="Search for...">
@@ -126,26 +131,26 @@
     <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
         <div class="modal-header">
-            <i class="fa fa-plus text-info"> Request Reader Account</i>
+            <i class="fa fa-plus text-success"> Request Reader Account</i>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
         <form action="" method = "POST" autocomplete="off" class = "card p-3 mt-1 border-dark was-validated">
             {% csrf_token %}
             <div class="input-group mb-3 mt-3">
-                <span class="input-group-text border-dark" >First Name</span>
+                <span class="input-group-text border-dark" style="width: 102px;">First Name</span>
                 <input type="text" id="first_name" name="first_name" class="form-control" placeholder="First Name" required>
             </div>
             <div class="input-group mb-3 mt-3">
-                <span class="input-group-text border-dark">Last Name</span>
+                <span class="input-group-text border-dark"style="width: 102px;">Last Name</span>
                 <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Last Name" required>
             </div>
             <div class="input-group mb-3 mt-3">
-                <span class="input-group-text border-dark">Email</span>
+                <span class="input-group-text border-dark" style="width: 102px;">Email</span>
                 <input type="text" id="email" name="email" class="form-control" placeholder="Email" required>
             </div>
             <div class="text-end mt-3">
-                <input class="btn btn-dark" type="submit" value="Request">
+                <input class="btn btn-danger" type="submit" value="Request">
             </div>
         </form>
         </div>
