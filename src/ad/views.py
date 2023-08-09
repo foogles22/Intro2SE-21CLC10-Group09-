@@ -109,8 +109,8 @@ def home(request):
 def category(request, order = 'id'):
     context = context_data()
     context['page_title'] = 'Categories'
-    users = models.Category.objects.all().order_by(order)
-    p = Paginator(users, 3)
+    category = models.Category.objects.all().order_by(order)
+    p = Paginator(category, 3)
     page = request.GET.get('page')
     category = p.get_page(page)
     context["category"] = category

@@ -30,7 +30,7 @@
                   <input type="text" onkeyup="searchFunction()" class="form-control" id="search" placeholder="Search for...">
                   <a href="" class="btn btn-dark"><i class="fas fa-sync-alt"></i></a>  
                </div>
-               <table class="table table-bordered table-sm-mt-4" id="myTable" style="text-align: center;">
+               <table class="table table-bordered table-sm-mt-4" style="text-align: center;">
                   <colcategory>
                      <col width="5%" />
                      <col width="25%" />
@@ -49,7 +49,7 @@
                         <th class="text-center" class="text-center">Action</th>
                      </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="myTable">
                      {% if users %}
                      {% for user in users %}
                      <tr>
@@ -76,9 +76,6 @@
                      {% endif %}
                   </tbody>
                </table>
-               <div class="d-flex justify-content-center">
-                  <span class="text-danger" id="no-data" style="font-size: 20px;"></span>
-               </div>
                <nav aria-label="Page">
                   <ul class="pagination  justify-content-end">
                      {% if users.has_previous %}
@@ -185,36 +182,4 @@
    {% endfor %}
  {% endif %}
 </section>
-<script>
-   function searchFunction(){
-     let input, filter, table, tr, td, j;
-     input = document.getElementById("search");
-     filter = input.value.toUpperCase();
-     table = document.getElementById("myTable");
-     tr = table.getElementsByTagName("tr");
-   
-     for (j=0; j<tr.length; j++){
-       td = tr[j].getElementsByTagName("td");
-       msg = document.getElementById("no-data");
-   
-       if(td.length>0){
-         if (td[0].innerHTML.toLocaleUpperCase().indexOf(filter)>-1 ||
-             td[1].innerHTML.toLocaleUpperCase().indexOf(filter)>-1 ||
-             td[2].innerHTML.toLocaleUpperCase().indexOf(filter)>-1 ||
-             td[3].innerHTML.toLocaleUpperCase().indexOf(filter)>-1 ||
-             td[4].innerHTML.toLocaleUpperCase().indexOf(filter)>-1 ||
-             td[5].innerHTML.toLocaleUpperCase().indexOf(filter)>-1){
-               tr[j].style.display = "";
-               msg.innerHTML ="";
-         }
-         else {
-           tr[j].style.display ="none"
-         }
-       }
-       if(td.length==0){
-         msg.innerHTML = "User not found"
-       }
-     }
-   }
-</script>
 {% endblock %}

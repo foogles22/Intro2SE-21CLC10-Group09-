@@ -30,7 +30,7 @@
                 <th class="text-center" class="text-center">Action</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="myTable">
               {% if requests %}
                 {% for request in requests %}
                 {% if request.status == '1' %}
