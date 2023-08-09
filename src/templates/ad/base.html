@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,23 +10,139 @@
     {% else %}
     <title>{{system_name}}</title>
     {% endif%}
-
+    <!-- Static CSS-->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/jquery.toast.css' %}"/>
+    <!-- BT5 CSS-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <!-- FontAwsome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <!-- BT5 JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-
+    <!-- Jquerry-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTable CSS-->
+    <link href="https://cdn.datatables.net/v/bs5/dt-1.13.5/datatables.min.css" rel="stylesheet">
+    <!-- DataTables Jquerry-->
+    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.5/datatables.min.js"></script>
 </head>
 <body>
     {% comment %} Navbar {% endcomment %}
     {% comment %} {% if navbar %} {% block Navbar %}  {% endblock Navbar %} {% endif %} {% endcomment %}
-
-    {% include "ad/navbar.html" %}
-    
-    <div class="wrapper py-5 mt-4">
-        <div class="container mb-3">
-            {% block Page_content%}{% endblock Page_content%}
+    {% if request.user.is_authenticated  %}
+        {% include "ad/navbar.html" %}
+        
+        <div class="wrapper py-5 mt-4">
+            <div class="container mb-3">
+                {% block Page_content%}{% endblock Page_content%}
+            </div>
         </div>
-    </div>
+    {% endif %}
+
+    {% block authentication %}{% endblock authentication %}
+
+    {% for message in messages%}
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="{% static "js/jquery.toast.js"%}"></script>
+        <script>
+            var upperCaseTag = '{{message.tags}}'.toUpperCase();
+            $.toast({
+              heading: upperCaseTag,
+              text: '{{message}}',
+              showHideTransition: 'slide',
+              icon: '{{message.tags}}',
+              position: 'top-right',
+              hideAfter: 5000,
+          });
+        </script>
+    {% endfor %} 
     
+    <script>
+      function searchFunction(){
+        let input, filter, table, tr, td, j;
+        input = document.getElementById("search");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+
+        for (j=0; j<tr.length; j++){
+          td = tr[j].getElementsByTagName("td");
+          msg = document.getElementById("no-data");
+
+          if(td.length>0){
+            if (td[0].innerHTML.toLocaleUpperCase().indexOf(filter)>-1 ||
+                td[1].innerHTML.toLocaleUpperCase().indexOf(filter)>-1 ||
+                td[2].innerHTML.toLocaleUpperCase().indexOf(filter)>-1 ||
+                td[3].innerHTML.toLocaleUpperCase().indexOf(filter)>-1 ||
+                td[4].innerHTML.toLocaleUpperCase().indexOf(filter)>-1 ||
+                td[5].innerHTML.toLocaleUpperCase().indexOf(filter)>-1){
+                  tr[j].style.display = "";
+                  msg.innerHTML ="";
+            }
+            else {
+              tr[j].style.display ="none"
+            }
+          }
+          if(td.length==0){
+            msg.innerHTML = "Transaction not found"
+          }
+        }
+      }
+    
+    <!-- Datatables pagination-->
+    $(document).ready(function() {
+        $('#myTable').DataTable({
+          paging: true, // Pagination
+          pageLength: 5, //Data per page
+          lengthChange: false,
+          autoWidth: false,
+          searching: false,
+          bInfo: false,
+          bSort: true,
+        })
+    });
+        function showHints(inputId, hintListId, url_) {
+          var query = $('#' + inputId).val();
+          if (query.length >= 2) {
+              $.ajax({
+                  url: url_,
+                  data: { query: query },
+                  success: function(data) {
+                      var hintList = $('#' + hintListId);
+                      hintList.empty();
+                      $.each(data, function(index, item) {
+                          hintList.append("<li class = 'list-group-item border-black'>" + item + "</li>");
+                      });
+  
+                      $('#' + hintListId + ' li').on('click', function() {
+                          var selectedValue = $(this).text();
+                          $('#' + inputId).val(selectedValue);
+                          hintList.empty();
+                      });
+                  }
+              });
+          } else {
+              $('#' + hintListId).empty();
+          }
+      }
+
+      const list_special_list = document.querySelectorAll('.input-group .list-group');
+      const input_text_list = document.querySelectorAll('.input-group .input-group-text');
+      const input_field_list = document.querySelectorAll('.input-group .form-control');
+
+      input_text_list.forEach((input_text, index) => {
+          const input_text_width = window.getComputedStyle(input_text).width;
+      
+          const list_special = list_special_list[index];
+          list_special.style.left = input_text_width;
+        });
+
+      input_field_list.forEach((input_field, index) => {
+      const input_field_width = window.getComputedStyle(input_field).width;
+
+      const list_special = list_special_list[index];
+      list_special.style.width = input_field_width;
+      });
+    </script>
 </body>
 </html>
