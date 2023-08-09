@@ -7,8 +7,22 @@ urlpatterns = [
     path('login/', views.login_user, name='login'),
     path('logout/', views.logout_user, name='logout'),
     path('register/', views.register_user, name='register'),
+    path('change_password/', views.change_password, name='change_password'),
     # ----------------------------------READER------------------------------------------------
-    # path('homepage/', views.homepage, name = 'homepage'), 
+    path('homepage/', views.homepage, name = 'homepage'), 
+    path('searchbook/<int:cate>', views.searchbook, name = 'searchbook'), 
+    path('events/', views.events, name = 'events'), 
+    path('about/', views.about, name = 'about'), 
+    path('help/', views.help, name = 'help'), 
+    path('profile/<int:id>', views.profile, name = 'profile'), 
+    path('edit_profile/<int:id>', views.edit_profile, name = 'edit_profile'), 
+    path('edit_avatar/<int:id>', views.edit_avatar, name = 'edit_avatar'), 
+    path('bookdetail/<int:id>', views.bookdetail, name = 'bookdetail'), 
+    path('save_comment/<int:id>', views.save_comment, name='save_comment'),
+    path('blog/<int:id>', views.blog, name='blog'),
+
+
+
 
     # ----------------------------------LIBRARIAN--------------------------------------------
     # --------Borrowing Transactions-------

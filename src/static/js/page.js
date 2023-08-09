@@ -1,4 +1,4 @@
-const productsPerPage = 3; // Number of products to display per page
+productsPerPage = 6; // Number of products to display per page
 let currentPage = 1;
 
 function displayProducts() {
@@ -67,3 +67,5 @@ function displayPagination() {
 
 displayProducts();
 displayPagination();
+
+

@@ -19,8 +19,9 @@ class Profile(models.Model):
     date_of_birth = models.DateField(default= timezone.now, blank=True)
     sex = models.CharField(max_length=2, choices=(('1','MALE'), ('2', 'FEMALE')), blank=True)
     profile_img = models.ImageField(upload_to=('avatars/'),default=('avatars/default.jpg'))
-    first_time = models.BooleanField(null=False, default=True)    
-    created_at = models.DateField(default=timezone.now)
+    first_time = models.BooleanField(null=False, default=True)
+    bio = models.CharField(null=True, max_length=50, default="Edit profile for more.")
+    date_joined = models.DateField(null=True, default=timezone.now)    
     class ROLE(models.TextChoices):
         ADMIN = "ADMIN", "Admin"
         READER = "READER", "Reader"
@@ -148,8 +149,19 @@ class Comment(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now)
-    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
 
     def __str__(self):
         return f"Comment by {self.user.profile.first_name} {self.user.profile.last_name} on {self.book.title} at {self.created_at}"
- 
+    
+    
+class Post(models.Model):
+    title = models.CharField(max_length=250, null=False, blank=False)
+    writer = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    content = models.TextField(blank=False, null=False, max_length=200)
+    main_content = models.TextField(blank=False, null=False)
+    created_at = models.DateTimeField(default=timezone.now)
+    image_blog = models.ImageField(null = True)
+
+    def __str__(self):
+        return str(f"{self.title}")
+    

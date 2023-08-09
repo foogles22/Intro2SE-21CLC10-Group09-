@@ -53,15 +53,10 @@ class SaveProfile(forms.ModelForm):
         except:
             return email
 
-class SaveRequestReader(forms.ModelForm):
-    class Meta:
-        model = models.ReaderRequest
-        fields = ('first_name','last_name','email')
-
 class EditProfile(forms.ModelForm):
     class Meta:
         model = models.Profile
-        fields = ('first_name','last_name','email','phone','date_of_birth','sex','profile_img')
+        fields = ('first_name','last_name','email','phone','date_of_birth','sex','bio')
 
     def clean_email(self):
         email = self.cleaned_data['email']
@@ -70,6 +65,11 @@ class EditProfile(forms.ModelForm):
             self.add_error('email', forms.ValidationError('Email is already taken!'))
         except:
             return email
+
+class EditAvatar(forms.ModelForm):
+    class Meta:
+        model = models.Profile
+        fields = ('profile_img',)
 
 class SaveCategory(forms.ModelForm):
     name = forms.CharField(max_length=250)
@@ -244,4 +244,9 @@ class SaveTransaction(forms.ModelForm):
             return 1
         else:
             return 0
+
+class SaveComment(forms.ModelForm):
+    class Meta:
+        model = models.Comment
+        fields = ('user','book','content')
 

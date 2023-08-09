@@ -1,6 +1,5 @@
 from django import template
 from ad import models
-
 register = template.Library()
 
 @register.filter
@@ -41,3 +40,7 @@ def loan(user):
 @register.filter
 def nocomma(i, length):
     return i < len(length)
+
+@register.filter
+def bookcount(category):
+    return models.Book.objects.all().filter(category = category).count()

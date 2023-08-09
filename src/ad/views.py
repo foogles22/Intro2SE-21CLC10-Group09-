@@ -13,6 +13,9 @@ from datetime import timedelta
 from django.core.paginator import Paginator
 from django.utils import timezone
 import os
+from django.db.models import Q
+from django.contrib.auth.forms import PasswordChangeForm
+
 # Create your views here.
 
 
@@ -73,10 +76,11 @@ def edit_profile(request, id):
     context = context_data()
     context["page_title"] = "Edit Profile"
     if request.method == "POST":
+        print(request.POST)
         profile = models.Profile.objects.get(pk = id)
         profile.first_time = False
         profile.save()
-        profile = forms.EditProfile(request.POST, request.FILES , instance = profile)
+        profile = forms.EditProfile(request.POST, instance = profile)
         if profile.is_valid():
             profile.save()
             messages.success(request, 'Edited profile successfully')
@@ -85,8 +89,22 @@ def edit_profile(request, id):
                 for error in field:
                     messages.error(request, error)
     context["profile"] = models.Profile.objects.get(pk = id)
-    return render(request, 'ad/edit_profile.html', context)
+    return render(request, 'homepage/edit_profile.html', context)
 
+@login_required
+def edit_avatar(request, id):
+    context = context_data()
+    if request.method == "POST":
+        profile = models.Profile.objects.get(pk = id)
+        profile = forms.EditAvatar(request.POST, request.FILES, instance = profile)
+        if profile.is_valid():
+            profile.save()
+            messages.success(request, "Edit avatar successfully")
+        else:
+            messages.error(request, "Can not change your avatar")
+    
+    context["profile"] = models.Profile.objects.get(pk = id)
+    return render(request, 'homepage/edit_profile.html', context)
 
 @login_required
 @allowed_users(allowed_roles=['ADMIN'])
@@ -99,10 +117,11 @@ def delete_user(request, id):
 # ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN
 # --------HOME--------
 @login_required
+@allowed_users(allowed_roles=['ADMIN','LIBRARIAN'])
 def home(request):
     context = context_data()
-    context['page_title'] = 'Admin Home'
-    return render(request, 'ad/home.html', context)
+    context["page_title"] = "Admin Home"
+    return render(request, "ad/home.html", context)
 
 # --------CATEGORY--------
 @login_required
@@ -117,18 +136,21 @@ def category(request, order = 'id'):
     return render(request, 'ad/category.html', context)
 
 @login_required
-def manage_category(request, id = None):
+@allowed_users(allowed_roles=['ADMIN'])
+def manage_category(request, id=None):
     context = context_data()
-    context['page_title'] = 'Manage Categories'
+    context["page_title"] = "Manage Categories"
     if id:
-        context['category'] = models.Category.objects.get(pk = id)
-        context['type'] = 'Save'
+        context["category"] = models.Category.objects.get(pk=id)
+        context["type"] = "Save"
     else:
-        context['category'] = {}
-        context['type'] = 'Add'
-    return render(request, 'ad/manage_category.html', context)
+        context["category"] = {}
+        context["type"] = "Add"
+    return render(request, "ad/manage_category.html", context)
+
 
 @login_required
+@allowed_users(allowed_roles=['ADMIN'])
 def save_category(request):
     if request.method == "POST":
         post = request.POST
@@ -624,7 +646,126 @@ def identity_search(request):
 def book_search(request):
     if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         search_query = request.GET.get('query', '')
-        items = models.Book.objects.filter(title__contains=search_query)[:10]
-        item_list = [item.title for item in items]
+        items = models.Book.objects.filter(pk__contains=search_query)[:10]
+        item_list = [item.pk for item in items]
         return JsonResponse(item_list, safe=False)
     return render(request, 'manage_loan.html')
+
+def homepage(request):
+    context = {}
+    categories = models.Category.objects.all()[0:6]
+    context['categories'] = categories
+    books = models.Book.objects.all()[0:12]
+    context['books'] = books
+    allcategory = models.Category.objects.all()
+    context['allcategory'] = allcategory
+    newbooks = models.Book.objects.all().order_by('-date_added')[0]
+    context['newbooks'] = newbooks
+    blogs = models.Post.objects.all().order_by('-created_at')[0:3]
+    context['blogs'] = blogs
+    blogs_footer = models.Post.objects.all().order_by('-created_at')[0:2]
+    context['blogs_footer'] = blogs_footer
+    context['categories_footer'] = models.Category.objects.all().order_by('-date_added')[0:4]
+    return render(request,'homepage/index.html', context)
+
+def events(request):
+    context={}
+    context['blogs'] = models.Post.objects.all()
+    blogs_footer = models.Post.objects.all().order_by('-created_at')[0:2]
+    context['blogs_footer'] = blogs_footer
+    context['categories_footer'] = models.Category.objects.all().order_by('-date_added')[0:4]
+    return render(request,'homepage/event.html', context)
+
+def help(request):
+    context = {}
+    blogs_footer = models.Post.objects.all().order_by('-created_at')[0:2]
+    context['blogs_footer'] = blogs_footer
+    context['categories_footer'] = models.Category.objects.all().order_by('-date_added')[0:4]
+    return render(request,'homepage/help.html', context)
+    
+def about(request):
+    context = {}
+    blogs_footer = models.Post.objects.all().order_by('-created_at')[0:2]
+    context['blogs_footer'] = blogs_footer
+    context['categories_footer'] = models.Category.objects.all().order_by('-date_added')[0:4]
+    return render(request,'homepage/aboutus.html')
+
+def blog(request, id = None):
+    context = {}
+    context['blog'] = models.Post.objects.all().get(pk = id)
+    blog_recently = models.Post.objects.all().exclude(pk = id).order_by('-created_at')[0:3]
+    context['blog_recently'] = blog_recently
+    blogs_footer = models.Post.objects.all().order_by('-created_at')[0:2]
+    context['blogs_footer'] = blogs_footer
+    context['categories_footer'] = models.Category.objects.all().order_by('-date_added')[0:4]
+    return render(request,'homepage/blog-single.html', context)
+
+def profile(request, id = None):
+    context = {}
+    context['profile'] = models.Profile.objects.get(pk = id)
+    context['booksloan'] = models.LoanTransaction.objects.all().filter(user = id).order_by('returned')
+    blogs_footer = models.Post.objects.all().order_by('-created_at')[0:2]
+    context['blogs_footer'] = blogs_footer
+    context['categories_footer'] = models.Category.objects.all().order_by('-date_added')[0:4]
+    return render(request,'homepage/profile.html',context)
+
+def editprofile(request, id = None):
+    context = {}
+    context['profile'] = models.Profile.objects.get(pk = id)
+    blogs_footer = models.Post.objects.all().order_by('-created_at')[0:2]
+    context['blogs_footer'] = blogs_footer
+    context['categories_footer'] = models.Category.objects.all().order_by('-date_added')[0:4]
+    return render(request,'homepage/editprofile.html', context)
+
+def bookdetail(request, id = None):
+    context = {}
+    book = models.Book.objects.all().get(pk = id)
+    context['book'] = book
+    context['categories']  = models.Category.objects.all()
+    context['comments']  = models.Comment.objects.all().filter(book = id)
+    context['bookralated'] = models.Book.objects.all().exclude(pk = id).filter(category__in = book.category.all())[0:6]
+    blogs_footer = models.Post.objects.all().order_by('-created_at')[0:2]
+    context['blogs_footer'] = blogs_footer
+    context['categories_footer'] = models.Category.objects.all().order_by('-date_added')[0:4]
+    return render(request,'homepage/book-single.html', context)
+
+def save_comment(request, id = None):
+    comment = forms.SaveComment(request.POST)
+    if comment.is_valid():
+        comment.save()
+        messages.success(request,'Comment successfully')
+    else:
+        messages.error(request,'Something wrong')
+    return redirect('bookdetail', id)
+
+def filtervalue(post):
+    searchs = post.split(' ')
+
+    q_objects = [Q(category__name__contains = search) | Q(title__contains  = search)  | Q(author__contains  = search)  
+                                                | Q(language__fullname__contains  = search) | Q(sourcetype__name__contains  = search)
+                                                | Q(publication_year__contains  = search) for search in searchs]
+    
+    combined_q_objects = Q()
+    for q_object in q_objects:
+        combined_q_objects |= q_object
+
+    filtered_objects = models.Book.objects.all().filter(combined_q_objects)
+
+    return filtered_objects
+
+def searchbook(request, cate = None):
+    context = {}
+    if request.method == "POST":
+        books = filtervalue(request.POST['searchbox'])
+    else:
+        books = models.Book.objects.all()
+        if cate != 0:
+            books = books.filter(category = cate)
+    context['books'] = books
+    context['categories'] = models.Category.objects.all()
+    context['languages'] = models.Language.objects.all()
+    context['sourcetypes'] = models.SourceType.objects.all()
+    blogs_footer = models.Post.objects.all().order_by('-created_at')[0:2]
+    context['blogs_footer'] = blogs_footer
+    context['categories_footer'] = models.Category.objects.all().order_by('-date_added')[0:4]
+    return render(request,'homepage/book.html', context)

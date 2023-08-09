@@ -26,7 +26,6 @@
     <link rel="stylesheet" href="{% static 'css/jquery.timepicker.css' %}">
 
 
-    <link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
     <link rel="stylesheet" href="{% static 'css/icomoon.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
@@ -69,18 +68,18 @@
                                         <div class="col-lg-4">
                                             <div class="menu-entry" style="position: relative; text-align: center;">
                                                 <a href="#" class="img"
-                                                    style="height : 270px; width:270px; background-image: url('{% static "images/readnews.jpg" %}'); border-radius: 15px;"></a>
+                                                    style="height : 270px; width:270px; background-image:  url('{{profile.profile_img.url}}'); border-radius: 15px;"></a>
                                             </div>
                                         </div>
                                         <div class="col-lg-4 align-self-center">
                                             <div class="main-info header-text">
-                                                <h4>Alan Smithee</h4>
-                                                <h5>Email</h5>
-                                                <p>First-time joined</p>
-                                                <p>Bio: You Haven't Gone Live yet. Go Live By Touching The Button Below.
-                                                </p>
+                                                <h4>{{request.user.profile.first_name}}&ensp;{{request.user.profile.last_name}}</h4>
+                                                <h5>{{profile.email}}</h5>
+                                                <p>{{profile.date_joined}}</p>
+
+                                                <p>{{profile.bio}}</p>
                                                 <div class="main-border-button">
-                                                    <p><a href="{% url 'editprofile' %}"><button class="buttonview"
+                                                    <p><a href="{% url 'edit_profile' request.user.id %}"><button class="buttonview"
                                                                 style="color: rgb(13, 13, 79)"> Edit Profile</button>
                                                         </a></p>
 
@@ -89,7 +88,7 @@
                                         </div>
                                         <div class="col-lg-4 align-self-center">
                                             <ul>
-                                                <li>ID number <span>3232323124</span></li>
+                                                <li>Identity<span>{{profile.identity}}</span></li>
                                                 <li>Book Loans<span>16</span></li>
                                             </ul>
                                         </div>
@@ -110,30 +109,36 @@
                                         <h2 class="mb-6">Books Loan History</h2>
                                     </div>
                                 </div>
+                                {% for loan in booksloan %}
                                 <div class="item">
                                     <ul>
-                                        <li><img src="{% static 'images/menu-1.jpg' %}" alt="" class="templatemo-item"
-                                                style="height:90pxpx; width:90px; border-radius: 15px; box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;">
+                                        <li><img src="{{loan.book.image.url}}" alt="" class="templatemo-item"
+                                                style="object-fit:cover; height:120px; width:90px; border-radius: 15px; box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;">
                                         </li>
                                         <li>
-                                            <h4>Book name</h4><span>Kha cho dien</span>
+                                            <h4>Book name</h4><span>{{loan.book}}</span>
                                         </li>
                                         <li>
-                                            <h4>Author</h4><span>Kha khung</span>
+                                            <h4>Author</h4><span>{{loan.book.author}}</span>
                                         </li>
                                         <li>
-                                            <h4>Date Loaned</h4><span>24/08/2036</span>
+                                            <h4>Date Loaned</h4><span>{{loan.date_loan}}</span>
                                         </li>
                                         <li>
+                                            {% if loan.returned == 0%}
                                             <h4>Status</h4><span>Returned</span>
+                                            {% else %}
+                                            <h4>Status</h4><span>Taken</span>
+                                            {% endif %}
                                         </li>
                                         <li>
-                                            <div class="main-border-button border-no-active"><a
-                                                    href="#">View Book Detail</a>
+                                            <div class="main-border-button border-no-active">
+                                                <a class="btn btn-dark" href="{% url 'bookdetail' loan.book.id%}">View Book Detail</a>
                                             </div>
                                         </li>
                                     </ul>
                                 </div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
@@ -144,94 +149,79 @@
 
 
     <footer class="ftco-footer ftco-section img">
-        <div class="overlay"></div>
-        <div class="container">
-            <div class="row mb-5">
-                <div class="col-lg-3 col-md-6 mb-5 mb-md-5">
-                    <div class="ftco-footer-widget mb-4">
-                        <h2 class="ftco-heading-2">About Us</h2>
-                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-                            there live the
-                            blind texts.</p>
-                        <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
-                            <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
-                            <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
-                            <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-5 mb-md-5">
-                    <div class="ftco-footer-widget mb-4">
-                        <h2 class="ftco-heading-2">Recent Blog</h2>
-                        <div class="block-21 mb-4 d-flex">
-                            <a class="blog-img mr-4" style="background-image: url('{% static "images/bg_2.jpg" %}');"></a>
-                            <div class="text">
-                                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about</a>
-                                </h3>
-                                <div class="meta">
-                                    <div><a href="#"><span class="icon-calendar"></span> Sept 15, 2018</a></div>
-                                    <div><a href="#"><span class="icon-person"></span> Admin</a></div>
-                                    <div><a href="#"><span class="icon-chat"></span> 19</a></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="block-21 mb-4 d-flex">
-                            <a class="blog-img mr-4" style="background-image: url('{% static "images/bg_2.jpg" %}');"></a>
-                            <div class="text">
-                                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about</a>
-                                </h3>
-                                <div class="meta">
-                                    <div><a href="#"><span class="icon-calendar"></span> Sept 15, 2018</a></div>
-                                    <div><a href="#"><span class="icon-person"></span> Admin</a></div>
-                                    <div><a href="#"><span class="icon-chat"></span> 19</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6 mb-5 mb-md-5">
-                    <div class="ftco-footer-widget mb-4 ml-md-4">
-                        <h2 class="ftco-heading-2">Services</h2>
-                        <ul class="list-unstyled">
-                            <li><a href="#" class="py-2 d-block">Cooked</a></li>
-                            <li><a href="#" class="py-2 d-block">Deliver</a></li>
-                            <li><a href="#" class="py-2 d-block">Quality Foods</a></li>
-                            <li><a href="#" class="py-2 d-block">Mixed</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-5 mb-md-5">
-                    <div class="ftco-footer-widget mb-4">
-                        <h2 class="ftco-heading-2">Have a Questions?</h2>
-                        <div class="block-23 mb-3">
-                            <ul>
-                                <li><span class="icon icon-map-marker"></span><span class="text">203 Fake St. Mountain
-                                        View, San
-                                        Francisco, California, USA</span></li>
-                                <li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929
-                                            210</span></a></li>
-                                <li><a href="#"><span class="icon icon-envelope"></span><span
-                                            class="text">info@yourdomain.com</span></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 text-center">
+		<div class="overlay"></div>
+		<div class="container">
+			<div class="row mb-5">
+				<div class="col-lg-3 col-md-6 mb-5 mb-md-5">
+					<div class="ftco-footer-widget mb-4">
+						<h2 class="ftco-heading-2">About Us</h2>
+						<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
+							there live the blind texts.</p>
+						<ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
+							<li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
+							<li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
+							<li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 mb-5 mb-md-5">
+					<div class="ftco-footer-widget mb-4">
+						<h2 class="ftco-heading-2">Recent News</h2>
+						{% for blog in blogs_footer%}
+						<div class="block-21 mb-4 d-flex">
+							<a href = "{%url 'blog' blog.id%}" class="blog-img mr-4" style="background-image: url('{{blog.image_blog.url}}');"></a>
+							<div class="text">
+								<h3 class="heading"><a href="{%url 'blog' blog.id%}">{{blog.title}}</a>
+								</h3>
+								<div class="meta">
+									<div><a href="#"><span class="icon-calendar"></span> {{blog.created_at}}</a></div>
+									<div><a href="#"><span class="icon-person"></span> {{blog.writer}}</a></div>
+									<div><a href="#"><span class="icon-chat"></span> 19</a></div>
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+				<div class="col-lg-2 col-md-6 mb-5 mb-md-5">
+					<div class="ftco-footer-widget mb-4 ml-md-4">
+						<h2 class="ftco-heading-2">Catggory</h2>
+						<ul class="list-unstyled">
+							{% for category in categories_footer%}
+							<li><a href="{% url 'searchbook' category.id %}" class="py-2 d-block">{{category.name}}</a></li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-5 mb-md-5">
+					<div class="ftco-footer-widget mb-4">
+						<h2 class="ftco-heading-2">Have a Questions?</h2>
+						<div class="block-23 mb-3">
+							<ul>
+								<li><span class="icon icon-map-marker"></span><span class="text">2227 Nguyen Van Cu street, District 5, Ho Chi Minh city</span></li>
+								<li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929
+											210</span></a></li>
+								<li><a href="#"><span class="icon icon-envelope"></span><span
+											class="text">wellib@gmail.com</span></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 text-center">
 
-                    <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        Copyright &copy;
-                        <script>document.write(new Date().getFullYear());</script> All rights reserved | This template
-                        is made with
-                        <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com"
-                            target="_blank">Colorlib</a>
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    </p>
-                </div>
-            </div>
-        </div>
-    </footer>
+					<p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+						Copyright &copy;
+						<script>document.write(new Date().getFullYear());</script> All rights reserved | This template
+						is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com"
+							target="_blank">Colorlib</a>
+						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+					</p>
+				</div>
+			</div>
+		</div>
+	</footer>
 
 
 
