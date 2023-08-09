@@ -102,13 +102,16 @@ class Book(models.Model):
 class LoanTransaction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    date_loan = models.DateField(default=timezone.now, null= False)
-    date_expired = models.DateField(default=(timezone.now() + timedelta(7)), null= False)
+    date_loan = models.DateTimeField(default=timezone.now, null= False)
+    date_expired = models.DateTimeField(default=(timezone.now() + timedelta(7)), null= False)
+    overdue = models.CharField(
+        max_length=2, choices=(("0", "No"), ("1", "Yes")), default="0"
+    )
     returned = models.CharField(
-        max_length=2, choices=(("0", "No"), ("1", "Yes")), default=0
+        max_length=2, choices=(("0", "No"), ("1", "Yes")), default="0"
     )
     class Meta:
-            unique_together = ('user', 'book')
+            unique_together = ('user', 'book', 'date_loan')
     def __str__(self):
         return str(f'{self.user.profile.identity}_{self.book}')
     
@@ -121,4 +124,16 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Comment by {self.user.profile.first_name} {self.user.profile.last_name} on {self.book.title} at {self.created_at}"
+    
+    
+class Post(models.Model):
+    title = models.CharField(max_length=250, null=False, blank=False)
+    writer = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    content = models.TextField(blank=False, null=False, max_length=200)
+    main_content = models.TextField(blank=False, null=False)
+    created_at = models.DateTimeField(default=timezone.now)
+    image_blog = models.ImageField(null = True)
+
+    def __str__(self):
+        return str(f"{self.title}")
     

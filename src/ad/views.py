@@ -69,19 +69,6 @@ def register_user(request, *args, **kwargs):
                 messages.error(request, error)
     return render(request, "authenticate/register.html", context)
 
-def change_password(request):
-    print('hihih')
-    if request.method == "POST":
-        form = PasswordChangeForm(request.user, request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request,'Change password successfully')
-        else:
-            for field in form.errors.values():
-                for error in field:
-                    messages.error(request, error)
-    return redirect('edit_profile', request.user.id)
-
 @login_required
 def edit_profile(request, id):
     context = context_data()
@@ -377,28 +364,60 @@ def homepage(request):
     context['allcategory'] = allcategory
     newbooks = models.Book.objects.all().order_by('-date_added')[0]
     context['newbooks'] = newbooks
+    blogs = models.Post.objects.all().order_by('-created_at')[0:3]
+    context['blogs'] = blogs
+    blogs_footer = models.Post.objects.all().order_by('-created_at')[0:2]
+    context['blogs_footer'] = blogs_footer
+    context['categories_footer'] = models.Category.objects.all().order_by('-date_added')[0:4]
     return render(request,'homepage/index.html', context)
 
-def searchbook(request):
-    return render(request,'homepage/book.html')
-
 def events(request):
-    return render(request,'homepage/blog.html')
+    context={}
+    context['blogs'] = models.Post.objects.all()
+    blogs_footer = models.Post.objects.all().order_by('-created_at')[0:2]
+    context['blogs_footer'] = blogs_footer
+    context['categories_footer'] = models.Category.objects.all().order_by('-date_added')[0:4]
+    return render(request,'homepage/event.html', context)
 
 def help(request):
-    return render(request,'homepage/help.html')
+    context = {}
+    blogs_footer = models.Post.objects.all().order_by('-created_at')[0:2]
+    context['blogs_footer'] = blogs_footer
+    context['categories_footer'] = models.Category.objects.all().order_by('-date_added')[0:4]
+    return render(request,'homepage/help.html', context)
     
 def about(request):
+    context = {}
+    blogs_footer = models.Post.objects.all().order_by('-created_at')[0:2]
+    context['blogs_footer'] = blogs_footer
+    context['categories_footer'] = models.Category.objects.all().order_by('-date_added')[0:4]
     return render(request,'homepage/aboutus.html')
+
+def blog(request, id = None):
+    context = {}
+    context['blog'] = models.Post.objects.all().get(pk = id)
+    blog_recently = models.Post.objects.all().exclude(pk = id).order_by('-created_at')[0:3]
+    context['blog_recently'] = blog_recently
+    blogs_footer = models.Post.objects.all().order_by('-created_at')[0:2]
+    context['blogs_footer'] = blogs_footer
+    context['categories_footer'] = models.Category.objects.all().order_by('-date_added')[0:4]
+    return render(request,'homepage/blog-single.html', context)
 
 def profile(request, id = None):
     context = {}
     context['profile'] = models.Profile.objects.get(pk = id)
+    context['booksloan'] = models.LoanTransaction.objects.all().filter(user = id).order_by('returned')
+    blogs_footer = models.Post.objects.all().order_by('-created_at')[0:2]
+    context['blogs_footer'] = blogs_footer
+    context['categories_footer'] = models.Category.objects.all().order_by('-date_added')[0:4]
     return render(request,'homepage/profile.html',context)
 
 def editprofile(request, id = None):
     context = {}
     context['profile'] = models.Profile.objects.get(pk = id)
+    blogs_footer = models.Post.objects.all().order_by('-created_at')[0:2]
+    context['blogs_footer'] = blogs_footer
+    context['categories_footer'] = models.Category.objects.all().order_by('-date_added')[0:4]
     return render(request,'homepage/editprofile.html', context)
 
 def bookdetail(request, id = None):
@@ -408,6 +427,9 @@ def bookdetail(request, id = None):
     context['categories']  = models.Category.objects.all()
     context['comments']  = models.Comment.objects.all().filter(book = id)
     context['bookralated'] = models.Book.objects.all().exclude(pk = id).filter(category__in = book.category.all())[0:6]
+    blogs_footer = models.Post.objects.all().order_by('-created_at')[0:2]
+    context['blogs_footer'] = blogs_footer
+    context['categories_footer'] = models.Category.objects.all().order_by('-date_added')[0:4]
     return render(request,'homepage/book-single.html', context)
 
 def save_comment(request, id = None):
@@ -446,5 +468,7 @@ def searchbook(request, cate = None):
     context['categories'] = models.Category.objects.all()
     context['languages'] = models.Language.objects.all()
     context['sourcetypes'] = models.SourceType.objects.all()
+    blogs_footer = models.Post.objects.all().order_by('-created_at')[0:2]
+    context['blogs_footer'] = blogs_footer
+    context['categories_footer'] = models.Category.objects.all().order_by('-date_added')[0:4]
     return render(request,'homepage/book.html', context)
-

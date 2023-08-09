@@ -9432,24 +9432,20 @@ textarea.form-control {
   background: #3F69AA;
 }
 
-.sidebar-widget.brands ul,
 .sidebar-widget.category ul {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.sidebar-widget.brands ul li,
 .sidebar-widget.category ul li {
   margin-bottom: 12px; 
 }
 
-.sidebar-widget.brands ul li:last-child,
 .sidebar-widget.category ul li:last-child {
   margin-bottom: 0; 
 }
 
-.sidebar-widget.brands ul li a,
 .sidebar-widget.category ul li a {
   color: #3F69AA;
   font-size: 16px;
@@ -9459,7 +9455,6 @@ textarea.form-control {
   line-height: 23px;
 }
 
-.sidebar-widget.brands ul li a::before,
 .sidebar-widget.category ul li a::before {
   content: '\f061';
   font-family: 'FontAwesome';
@@ -9606,9 +9601,9 @@ textarea.form-control {
 }
 
 .loan-history .item {
+  padding-top:15px;
   border-bottom: 1px solid #27292a;
   margin-bottom: 20px;
-  padding-bottom: 20px;
 }
 
 .loan-history .last-item {

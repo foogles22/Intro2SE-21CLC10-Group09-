@@ -1,5 +1,6 @@
 {% load static %}
 {% load my_tags %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -40,40 +41,43 @@
 	<!-- navbar -->
 	{% include 'homepage/navbar.html' %}
 
-		<section class="home-slider owl-carousel" style = "height: 380px;">
-			<div class="slider-item" style=" height: 380px; background-image: url('{% static "images/booklist.jpg" %}')"></div>
-			<div class="slider-item" style=" height: 380px; background-image: url('{% static "images/bookdetail2.jpg" %}')"></div>
-			<div class="slider-item" style=" height: 380px; background-image: url('{% static "images/bookdetail3.jpg" %}')"></div>
-		</section>
-			
-	  
-		<section class="search" style = "background-color: rgb(189, 204, 244); height: 230px; box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15">
-		  <div class="container">
+	<section class="home-slider owl-carousel" style="height: 380px;">
+		<div class="slider-item" style=" height: 380px; background-image: url('{% static "images/booklist.jpg" %}')">
+		</div>
+		<div class="slider-item" style=" height: 380px; background-image: url('{% static "images/bookdetail2.jpg" %}')"></div>
+		<div class="slider-item" style=" height: 380px; background-image: url('{% static "images/bookdetail3.jpg" %}')"></div>
+	</section>
+
+
+	<section class="search"
+		style="background-color: rgb(189, 204, 244); height: 230px; box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15">
+		<div class="container">
 			<div class="s130">
-			  <form action="{% url 'searchbook' 0 %}" method="POST">
-				{% csrf_token %}
-				<div class="heading-section text-md-center ftco-animate">
-				  <h2 class="mb-6" style=" padding-top: 10px; color: rgb(24, 33, 58)">SEARCH FOR THOUSAND BOOKS</h2>
-				</div>
-				<div class="inner-form">
-				  <div class="input-field first-wrap">
-					<div class="svg-wrapper">
-					  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-						<path
-						  d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
-						</path>
-					  </svg>
+				<form action="{% url 'searchbook' 0 %}" method="POST">
+					{% csrf_token %}
+					<div class="heading-section text-md-center ftco-animate">
+						<h2 class="mb-6" style=" padding-top: 10px; color: rgb(24, 33, 58)">SEARCH FOR THOUSAND BOOKS
+						</h2>
 					</div>
-					<input id="search" name="searchbox" type="text" placeholder="What are you looking for?" />
-				  </div>
-				  <div class="input-field second-wrap">
-					<button class="btn-search" type="submit">SEARCH</button>
-				  </div>
-				</div>
-				<span class="info" style="color: white">ex. Book, Author, Category</span>
-			  </form>
+					<div class="inner-form">
+						<div class="input-field first-wrap">
+							<div class="svg-wrapper">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+									<path
+										d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
+									</path>
+								</svg>
+							</div>
+							<input id="search" name="searchbox" type="text" placeholder="What are you looking for?" />
+						</div>
+						<div class="input-field second-wrap">
+							<button class="btn-search" type="submit">SEARCH</button>
+						</div>
+					</div>
+					<span class="info" style="color: white">ex. Book, Author, Category</span>
+				</form>
 			</div>
-		</section>
+	</section>
 
 	<section class="ftco-section">
 		<div class="container">
@@ -128,17 +132,22 @@
 					<p class="mb-6"
 						style="text-align: center; color: white; font-weight: bold; background-color: var(--blue2);">
 						Book Description</p>
-					<p class="mb-4" style="text-align: justify; background-color: white ; color:black">{{book.description}}</p>
+					<p class="mb-4" style="text-align: justify; background-color: white ; color:black">
+						{{book.description}}</p>
 
 					<div class="sidebar-widget category" style="align-items: center; padding-top: 30px;">
 						<h2 class="title">
 							Availability
 						</h2>
-						{%if book.status == "1" %} <a href="#"><button class="buttonview"
-								style="background-color:  rgb(25, 67, 146); color:white">Available</button>
-							{% else %} <a href="#"><button class="buttonview"
-									style="background-color:  rgb(146, 25, 25); color:rgb(255, 255, 255)">Unavailable</button>
-								{% endif %}
+						<div style="text-align: center;">
+							{%if book.status == "1" %}
+							<a href="#"><button class="buttonview"
+									style="background-color:  rgb(25, 67, 146); color:white;">Available</button>
+								{% else %}
+								<a href="#"><button class="buttonview"
+										style="background-color:  rgb(146, 25, 25); color:rgb(255, 255, 255)">Unavailable</button>
+									{% endif %}
+						</div>
 					</div>
 				</div>
 				<div class="col-lg-4 product-details pl-md-5 ftco-animate">
@@ -147,7 +156,7 @@
 						<ul>
 							{% if categories %}
 							{% for category in categories %}
-							<li><a href="{% url 'searchbook' category.id %}">{{category.name}}</a><span>(0)</span></li>
+							<li><a href="{% url 'searchbook' category.id %}">{{category.name}}</a><span>({{category.id|bookcount}})</span></li>
 							{%endfor%}
 							{% endif %}
 						</ul>
@@ -177,7 +186,7 @@
 						<div class="day">{{comment.created_at}}</div>
 					</div>
 				</div>
-				<div class="comment-post">{{comment.content}}</div>
+				<div class="comment-post" style = "margin-left: 20px;">{{comment.content}}</div>
 			</div>
 		</div>
 		{% endfor %}
@@ -200,197 +209,181 @@
 				{%endif%}
 			</form>
 		</div>
+	</div>
 
-		<section class="ftco-section">
-			<div class="container">
-				<div class="row justify-content-center mb-5 pb-3">
-					<div class="col-md-7 heading-section ftco-animate text-center">
-						<h2 class="mb-4">Related Books</h2>
+	<section class="ftco-section">
+		<div class="container">
+			<div class="row justify-content-center mb-5 pb-3">
+				<div class="col-md-7 heading-section ftco-animate text-center">
+					<h2 class="mb-4">Related Books</h2>
+					<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
+						there
+						live the blind texts.</p>
+				</div>
+			</div>
+			<div class="row">
+				{% if bookralated %}
+				{% for book in bookralated %}
+				<div class="col-md-2">
+					<div class="menu-entry">
+						<a href="{% url 'bookdetail' book.id %}" class="img"
+							style="background-image: url('{{book.image.url}}'); height: 250px; border-radius: 20px;"></a>
+						<div class="text text-center pt-4">
+							<p class="overflow-ellipsis" style="color: black; font-weight: bold; width: 160px;
+						white-space: nowrap;
+						overflow: hidden;">{{book.title}}</p>
+							<p style="font-weight: bold;text-overflow: ellipsis;"><span> {{book.author}}</span></p>
+							<p style="font-size: 13px;"> {{book.publication_year}}</p>
+							<p><a href="{% url 'bookdetail' book.id %}" class="btn btn-info btn-outline-info;"
+									style="border-radius: 15px;">View book detail</a></p>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+				{% endif %}
+			</div>
+		</div>
+	</section>
+
+	<footer class="ftco-footer ftco-section img">
+		<div class="overlay"></div>
+		<div class="container">
+			<div class="row mb-5">
+				<div class="col-lg-3 col-md-6 mb-5 mb-md-5">
+					<div class="ftco-footer-widget mb-4">
+						<h2 class="ftco-heading-2">About Us</h2>
 						<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-							there
-							live the blind texts.</p>
+							there live the blind texts.</p>
+						<ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
+							<li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
+							<li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
+							<li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+						</ul>
 					</div>
 				</div>
-				<div class="row">
-					{% if bookralated %}
-					{% for book in bookralated %}
-					<div class="col-md-2">
-						<div class="menu-entry">
-							<a href="{% url 'bookdetail' book.id %}" class="img"
-								style="background-image: url('{{book.image.url}}'); height: 250px; border-radius: 20px;"></a>
-							<div class="text text-center pt-4">
-								<p class="overflow-ellipsis" style="color: black; font-weight: bold; width: 160px;
-							white-space: nowrap;
-							overflow: hidden;">{{book.title}}</p>
-								<p style="font-weight: bold;text-overflow: ellipsis;"><span> {{book.author}}</span></p>
-								<p style="font-size: 13px;"> {{book.publication_year}}</p>
-								<p><a href="{% url 'bookdetail' book.id %}" class="btn btn-info btn-outline-info;"
-										style="border-radius: 15px;">View book detail</a></p>
-							</div>
-						</div>
-					</div>
-					{% endfor %}
-					{% endif %}
-				</div>
-			</div>
-		</section>
-
-		<footer class="ftco-footer ftco-section img">
-			<div class="overlay"></div>
-			<div class="container">
-				<div class="row mb-5">
-					<div class="col-lg-3 col-md-6 mb-5 mb-md-5">
-						<div class="ftco-footer-widget mb-4">
-							<h2 class="ftco-heading-2">About Us</h2>
-							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-								there live the blind texts.</p>
-							<ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
-								<li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
-								<li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
-								<li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="col-lg-4 col-md-6 mb-5 mb-md-5">
-						<div class="ftco-footer-widget mb-4">
-							<h2 class="ftco-heading-2">Recent Blog</h2>
-							<div class="block-21 mb-4 d-flex">
-								<a class="blog-img mr-4" style="background-image: url(images/image_1.jpg);"></a>
-								<div class="text">
-									<h3 class="heading"><a href="#">Even the all-powerful Pointing has no control
-											about</a>
-									</h3>
-									<div class="meta">
-										<div><a href="#"><span class="icon-calendar"></span> Sept 15, 2018</a></div>
-										<div><a href="#"><span class="icon-person"></span> Admin</a></div>
-										<div><a href="#"><span class="icon-chat"></span> 19</a></div>
-									</div>
-								</div>
-							</div>
-							<div class="block-21 mb-4 d-flex">
-								<a class="blog-img mr-4" style="background-image: url(images/image_2.jpg);"></a>
-								<div class="text">
-									<h3 class="heading"><a href="#">Even the all-powerful Pointing has no control
-											about</a>
-									</h3>
-									<div class="meta">
-										<div><a href="#"><span class="icon-calendar"></span> Sept 15, 2018</a></div>
-										<div><a href="#"><span class="icon-person"></span> Admin</a></div>
-										<div><a href="#"><span class="icon-chat"></span> 19</a></div>
-									</div>
+				<div class="col-lg-4 col-md-6 mb-5 mb-md-5">
+					<div class="ftco-footer-widget mb-4">
+						<h2 class="ftco-heading-2">Recent News</h2>
+						{% for blog in blogs_footer%}
+						<div class="block-21 mb-4 d-flex">
+							<a href = "{%url 'blog' blog.id%}" class="blog-img mr-4" style="background-image: url('{{blog.image_blog.url}}');"></a>
+							<div class="text">
+								<h3 class="heading"><a href="{%url 'blog' blog.id%}">{{blog.title}}</a>
+								</h3>
+								<div class="meta">
+									<div><a href="#"><span class="icon-calendar"></span> {{blog.created_at}}</a></div>
+									<div><a href="#"><span class="icon-person"></span> {{blog.writer}}</a></div>
+									<div><a href="#"><span class="icon-chat"></span> 19</a></div>
 								</div>
 							</div>
 						</div>
+						{% endfor %}
 					</div>
-					<div class="col-lg-2 col-md-6 mb-5 mb-md-5">
-						<div class="ftco-footer-widget mb-4 ml-md-4">
-							<h2 class="ftco-heading-2">Services</h2>
-							<ul class="list-unstyled">
-								<li><a href="#" class="py-2 d-block">Cooked</a></li>
-								<li><a href="#" class="py-2 d-block">Deliver</a></li>
-								<li><a href="#" class="py-2 d-block">Quality Foods</a></li>
-								<li><a href="#" class="py-2 d-block">Mixed</a></li>
+				</div>
+				<div class="col-lg-2 col-md-6 mb-5 mb-md-5">
+					<div class="ftco-footer-widget mb-4 ml-md-4">
+						<h2 class="ftco-heading-2">Catggory</h2>
+						<ul class="list-unstyled">
+							{% for category in categories_footer%}
+							<li><a href="{% url 'searchbook' category.id %}" class="py-2 d-block">{{category.name}}</a></li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-5 mb-md-5">
+					<div class="ftco-footer-widget mb-4">
+						<h2 class="ftco-heading-2">Have a Questions?</h2>
+						<div class="block-23 mb-3">
+							<ul>
+								<li><span class="icon icon-map-marker"></span><span class="text">2227 Nguyen Van Cu street, District 5, Ho Chi Minh city</span></li>
+								<li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929
+											210</span></a></li>
+								<li><a href="#"><span class="icon icon-envelope"></span><span
+											class="text">wellib@gmail.com</span></a></li>
 							</ul>
 						</div>
 					</div>
-					<div class="col-lg-3 col-md-6 mb-5 mb-md-5">
-						<div class="ftco-footer-widget mb-4">
-							<h2 class="ftco-heading-2">Have a Questions?</h2>
-							<div class="block-23 mb-3">
-								<ul>
-									<li><span class="icon icon-map-marker"></span><span class="text">203 Fake St.
-											Mountain
-											View, San Francisco, California, USA</span></li>
-									<li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929
-												210</span></a></li>
-									<li><a href="#"><span class="icon icon-envelope"></span><span
-												class="text">info@yourdomain.com</span></a></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12 text-center">
-
-						<p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-							Copyright &copy;
-							<script>document.write(new Date().getFullYear());</script> All rights reserved | This
-							template
-							is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com"
-								target="_blank">Colorlib</a>
-							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-						</p>
-					</div>
 				</div>
 			</div>
-		</footer>
+			<div class="row">
+				<div class="col-md-12 text-center">
+
+					<p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+						Copyright &copy;
+						<script>document.write(new Date().getFullYear());</script> All rights reserved | This template
+						is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com"
+							target="_blank">Colorlib</a>
+						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+					</p>
+				</div>
+			</div>
+		</div>
+	</footer>
 
 
 
-		<!-- loader -->
-		<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
-				<circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
-				<circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
-					stroke="#F96D00" />
-			</svg></div>
+	<!-- loader -->
+	<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
+			<circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
+			<circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+				stroke="#F96D00" />
+		</svg></div>
 
-		<script src="{% static 'js/jquery.min.js' %}"></script>
-		<script src="{% static 'js/jquery-migrate-3.0.1.min.js' %}"></script>
-		<script src="{% static 'js/popper.min.js' %}"></script>
-		<script src="{% static 'js/bootstrap.min.js' %}"></script>
-		<script src="{% static 'js/jquery.easing.1.3.js' %}"></script>
-		<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
-		<script src="{% static 'js/jquery.stellar.min.js' %}"></script>
-		<script src="{% static 'js/owl.carousel.min.js' %}"></script>
-		<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
-		<script src="{% static 'js/aos.js' %}"></script>
-		<script src="{% static 'js/jquery.animateNumber.min.js' %}"></script>
-		<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
-		<script src="{% static 'js/jquery.timepicker.min.js' %}"></script>
-		<script src="{% static 'js/scrollax.min.js' %}"></script>
-		<script
-			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-		<script src="{% static 'js/google-map.js' %}"></script>
-		<script src="{% static 'js/main.js' %}"></script>
+	<script src="{% static 'js/jquery.min.js' %}"></script>
+	<script src="{% static 'js/jquery-migrate-3.0.1.min.js' %}"></script>
+	<script src="{% static 'js/popper.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'js/jquery.easing.1.3.js' %}"></script>
+	<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+	<script src="{% static 'js/jquery.stellar.min.js' %}"></script>
+	<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+	<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+	<script src="{% static 'js/aos.js' %}"></script>
+	<script src="{% static 'js/jquery.animateNumber.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+	<script src="{% static 'js/jquery.timepicker.min.js' %}"></script>
+	<script src="{% static 'js/scrollax.min.js' %}"></script>
+	<script
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+	<script src="{% static 'js/google-map.js' %}"></script>
+	<script src="{% static 'js/main.js' %}"></script>
 
-		<script>
-			$(document).ready(function () {
+	<script>
+		$(document).ready(function () {
 
-				var quantitiy = 0;
-				$('.quantity-right-plus').click(function (e) {
+			var quantitiy = 0;
+			$('.quantity-right-plus').click(function (e) {
 
-					// Stop acting like a button
-					e.preventDefault();
-					// Get the field name
-					var quantity = parseInt($('#quantity').val());
+				// Stop acting like a button
+				e.preventDefault();
+				// Get the field name
+				var quantity = parseInt($('#quantity').val());
 
-					// If is not undefined
+				// If is not undefined
 
-					$('#quantity').val(quantity + 1);
+				$('#quantity').val(quantity + 1);
 
 
-					// Increment
-
-				});
-
-				$('.quantity-left-minus').click(function (e) {
-					// Stop acting like a button
-					e.preventDefault();
-					// Get the field name
-					var quantity = parseInt($('#quantity').val());
-
-					// If is not undefined
-
-					// Increment
-					if (quantity > 0) {
-						$('#quantity').val(quantity - 1);
-					}
-				});
+				// Increment
 
 			});
-		</script>
 
+			$('.quantity-left-minus').click(function (e) {
+				// Stop acting like a button
+				e.preventDefault();
+				// Get the field name
+				var quantity = parseInt($('#quantity').val());
+
+				// If is not undefined
+
+				// Increment
+				if (quantity > 0) {
+					$('#quantity').val(quantity - 1);
+				}
+			});
+
+		});
+	</script>
 
 </body>
 

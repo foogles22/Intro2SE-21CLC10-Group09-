@@ -19,6 +19,8 @@ urlpatterns = [
     path('edit_avatar/<int:id>', views.edit_avatar, name = 'edit_avatar'), 
     path('bookdetail/<int:id>', views.bookdetail, name = 'bookdetail'), 
     path('save_comment/<int:id>', views.save_comment, name='save_comment'),
+    path('blog/<int:id>', views.blog, name='blog'),
+
 
 
 
