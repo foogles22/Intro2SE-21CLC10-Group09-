@@ -1,5 +1,66 @@
-{% extends 'ad/base.html'%}
+{% extends 'ad/base.html' %}
 
-{% block Page_content%}
-    <div class = "text-center">Đây là Users Page</div>
-{% endblock Page_content%}
+{% block Page_content %}
+<section class="py-4">
+  <div class="container">
+    <h3 class="fw-bolder text-center">List of Users</h3>
+    <center>
+      <hr class="bg-primary opacity-100" style="height:3px" width="5%" />
+    </center>
+    <div class="card rounded-0 shadow">
+      <div class="card-body">
+        <div class="container-fluid">
+          <div class="text-start mb-3">
+            <a href="{% url 'manage_user' %}" class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" type="button"><i class="fa fa-plus"></i> Add New</a>
+          </div>
+          <table class="table">
+            <colcategory>
+              <col width="5%" />
+              <col width="15%" />
+              <col width="50%" />
+              <col width="20%" />
+              <col width="10%" />
+            </colcategory>
+            <thead>
+              <tr>
+                <th class="text-center" scope="col">#</th>
+                <th class="text-center" scope="col">Username</th>
+                <th class="text-center" scope="col">First Name</th>
+                <th class="text-center" scope="col">Last Name</th>
+                <th class="text-center" scope="col">Role</th>
+                <th class="text-center" class="text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if users %}
+                {% for user in users %}
+                  <tr>
+                    <th class="text-center" scope="row">{{ forloop.counter }}</th>
+                    <td class="text-center">{{ user.username }}</td>
+                    <td class="text-center">{{ user.profile.first_name }}</td>
+                    <td class="text-center">{{ user.profile.last_name }}</td>
+                    <td class="text-center">{{ user.profile.role }}</td>
+                    <td class="text-center">
+                      <div class="dropdown">
+                        <button class="btn btn-light btn-sm rounded-0 border dropdown-toggle" type="button" id="{{ cat.pk }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
+                        <ul class="dropdown-menu" aria-labelledby="{{ cat.pk }}">
+                          <li>
+                            <a class="dropdown-item view-data" href=""><i class="fa fa-eye text-dark"></i> View</a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item delete-data" href="{% url 'delete_user' user.id%}"><i class="fa fa-trash text-danger"></i> Delete</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

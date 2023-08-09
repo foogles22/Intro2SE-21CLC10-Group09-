@@ -1,0 +1,90 @@
+{% extends 'ad/base.html' %}
+{% load my_tags %}
+
+{% block Page_content %}
+<section class="py-4">
+  <div class="container">
+    <h3 class="fw-bolder text-center">Loaning transaction</h3>
+    <center>
+      <hr class="bg-primary opacity-100" style="height:3px" width="5%" />
+    </center>
+    <div class="card rounded-0 shadow">
+      <div class="card-body">
+        <div class="container-fluid">
+          <div class="text-start mb-3">
+            <a href="{% url 'manage_loan'%}" class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" type="button"><i class="fa fa-plus"></i> Add New</a>
+          </div>
+          <!-- input search + reset button-->
+          <div class="input-group input-group-sm mb-3">
+            <input type="text" onkeyup="searchFunction()" class="form-control" id="search" placeholder="Search for...">
+            <a href="" class="btn btn-dark"><i class="fas fa-sync-alt"></i></a>  
+          </div>
+          <table class="table table-bordered table-sm-mt-4" id="myTable" style="text-align: center;">
+            <colcategory>
+              <col width="5%"  />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="20%" />
+              <col width="20%" />
+              <col width="15%" />
+              <col width="10%" />
+            </colcategory>
+            <thead class="table-info">
+              <tr id="chk-th">
+                <th class="text-center" scope="col">#</th>
+                <th class="text-center" scope="col">Book Title</th>
+                <th class="text-center" scope="col">Reader ID</th>
+                <th class="text-center" scope="col">Date Loan</th>
+                <th class="text-center" scope="col">Date Expire</th>
+                <th class="text-center" scope="col">Has returned</th>
+                <th class="text-center" class="text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if loan %}
+                {% for l in loan %}
+                  <tr>
+                    <td class="text-center" scope="row">{{ forloop.counter }}</td>
+                    <td class="text-center">{{ l.book }}</td>
+                    <td class="text-center">{{ l.user.profile.identity }}</td>
+                    <td class="text-center">{{ l.date_loan}}</td>
+                    <td class="text-center">{{ l.date_expired}}</td>
+                    <td class="text-center">
+                      {% if l.returned == "0"%}
+                      <i class="fa-solid fa-x text-danger">
+                      <span style="display: none;">0</span>
+                      {% else %}
+                      <i class="fa-solid fa-check text-success">
+                      <span style="display: none;">1</span>
+                      {% endif %}
+                    </td>
+                    <td class="text-center">
+                      <div class="dropdown">
+                        <button class="btn btn-light btn-sm rounded-0 border dropdown-toggle" type="button" id="{{ l.pk }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
+                        <ul class="dropdown-menu" aria-labelledby="{{ l.pk }}">
+                          <li>
+                            <a class="dropdown-item view-data" href="{% url 'return_book' l.pk%}"><i class="fa fa-eye text-dark"></i> Return</a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item edit-data" href="{% url 'renew_book' l.pk%}"><i class="fa fa-edit text-primary"></i> Renew</a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item delete-data" href="{% url 'delete_loan' l.pk%}"><i class="fa fa-trash text-danger"></i> Delete</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+              {% endif %}
+            </tbody>
+          </table>
+        <div class="d-flex justify-content-center">
+        <span class="text-danger" id="no-data" style="font-size: 20px;"></span>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
