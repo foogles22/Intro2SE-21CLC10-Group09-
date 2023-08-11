@@ -1,0 +1,302 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Wellib system - Book for life</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Great+Vibes" rel="stylesheet">
+
+	<link rel="stylesheet" href="{% static 'css/open-iconic-bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/animate.css' %}">
+
+	<link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+
+	<link rel="stylesheet" href="{% static 'css/aos.css' %}">
+
+	<link rel="stylesheet" href="{% static 'css/ionicons.min.css' %}">
+
+	<link rel="stylesheet" href="{% static 'css/bootstrap-datepicker.css' %}">
+	<link rel="stylesheet" href="{% static 'css/jquery.timepicker.css' %}">
+
+
+	<link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
+	<link rel="stylesheet" href="{% static 'css/icomoon.css' %}">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+	{% include 'homepage/navbar.html' %}
+
+	<section class="home-slider owl-carousel" style="height: 380px;">
+		<div class="slider-item" style="height: 380px; background-image: url('{% static "images/booklist.jpg" %}')">
+		</div>
+		<div class="slider-item" style="height: 380px; background-image: url('{% static "images/boundbook.jpg" %}')">
+		</div>
+		<div class="slider-item" style="height: 380px; background-image: url('{% static "images/booktop.jpg" %}')">
+		</div>
+	</section>
+
+	<section class="ftco-about" style="padding-top: 50px">
+		<div classs="container">
+			<div class="heading-section text-center ftco-animate" style="padding-bottom: 70px">
+				<h2 style="text-align: center; font-size: 50px;">| ABOUT OUR WELLIB</h2>
+				<span class="subheading" style = "color: black;">Innovation for a better life</span>
+			</div>
+			<div class="row" style="align-items: center;">
+				<div class="col-4">
+					<button class="gotoSectionButton" data-target="whoWeAre" style="font-size:30px; align-items: center; color:black;  width: 100%; height: 80px; background-color: rgb(255, 255, 255); border-right-color: white; align-items: center; box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;" >Who we are</button>
+				</div>
+				<div class="col-4">
+					<button class="gotoSectionButton" data-target="ourValues" style="font-size:30px; align-items: center; color:black;  width: 100%; height: 80px; background-color: rgb(255, 255, 255); border-right-color: white; align-items: center; box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;" >Our values</button>
+				</div>
+				<div class="col-4">
+					<button class="gotoSectionButton" data-target="ourOrganization" style="font-size:30px; align-items: center; color:black;  width: 100%; height: 80px; background-color: rgb(255, 255, 255); border-right-color: white; align-items: center; box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;" >Our organization</button>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section id = "targetSection" class="ftco-section" style="padding-top: 50px">
+		<div class="container" style="text-align: center;">
+			<section class = "section" id ="whoWeAre">
+			<div class="heading-section text-md-center ftco-animate">
+				<h2 class="mb-6">WHO WE ARE</h2>
+				<span style="font-size:18px; font-weight:bold; color:black">Since 2023, a digital library for all. Read
+					well, live better.</span>
+				<p style="font-style: italic; text-align: justify;">
+					Welcome to Wellib! </p>
+				<p class="mb-4" style="text-align: justify; color: black; ">We are a hub of knowledge, creativity, and
+					community, dedicated to providing an enriching experience
+					for all of our visitors. With a vast collection of books, magazines, and digital resources, we
+					strive to cater to the diverse interests and passions of our patrons. Whether you are a voracious
+					reader, a student seeking information, or simply looking for a tranquil space to escape and explore,
+					our library is the perfect place for you. Our dedicated team of librarians and staff are here to
+					assist you in your quest for knowledge, guiding you through our extensive collection, and helping
+					you navigate the ever-evolving world of information and technology. Join us in this wonderful
+					journey of discovery, inspiration, and lifelong learning at our library – where stories come alive,
+					imaginations soar, and connections are made. Explore, engage, and experience the magic of reading
+					and knowledge at your fingertips. Welcome to a world of endless possibilities at our library!</p>
+			</div>
+			</section>
+			<section class = "section" id ="ourValues">
+			<div class="heading-section text-md-center ftco-animate">
+				<h2 class="mb-6" style="padding-bottom: 20px; padding-top: 50px;">Our Values</h2>
+
+				<div style="padding-bottom: 30px;">
+					<h2 class="mb-6" style="font-size: 25px;">OUR PURPOSE</h2>
+					<p style=" color:black">SA digital library serving and connecting with all readers.</p>
+				</div>
+
+				<div style="padding-bottom: 30px;">
+					<h2 class="mb-6" style="font-size: 25px;">Our Vision</h2>
+					<p style=" color:black">“Of the people, by the people, for the people”</p>
+				</div>
+
+				<div style="padding-bottom: 30px;">
+					<h2 class="mb-6" style="font-size: 25px;">Our Mission</h2>
+					<p class="mb-4" style="color: black;">The mission of Wellib is to provide easy and open access to a
+						wide range of digital resources, promoting inclusivity by removing barriers to access. We aim to
+						organize, preserve, and disseminate knowledge worldwide, democratizing information for the
+						advancement of society. At our core, our mission is to promote learning, connecting, sharing,
+						and innovation for a better life.
+					</p>
+				</div>
+
+				<div style="padding-bottom: 30px;">
+					<h2 class="mb-6" style="font-size: 25px;">Our Values</h2>
+					<div class = "padding-bottom:30px">
+						<span style="font-weight: bold; font-style: italic; color:black">Wealth of knowledge for the community.</span>
+						<p class="mb-4" style="color: black;">Having access to a variety of educational resources and expert guidance, the community is blessed with a wealth of knowledge that empowers individuals to grow and thrive.</p>
+					</div>
+
+					<div class = "padding-bottom:30px">
+						<span style="font-weight: bold; font-style: italic; color:black">Encouraging social innovation. 
+						</span>
+						<p class="mb-4" style="color: black;">Empowering individuals with the tools, resources, and support they need, encouraging social innovation creates an environment where new ideas flourish and positive change can be realized.
+						</p>
+					</div>
+
+					<div class = "padding-bottom:30px">
+						<span style="font-weight: bold; font-style: italic; color:black">Listening and sympathy. 
+						</span>
+						<p class="mb-4" style="color: black;">Listening attentively and showing genuine sympathy, providing not just knowledge but also emotional support to those seeking solace or guidance.
+						</p>
+					</div>
+
+					<div class = "padding-bottom:30px">
+						<span style="font-weight: bold; font-style: italic; color:black">Liberal Library.
+						</span>
+						<p class="mb-4" style="color: black;">Promoting diverse perspectives and embracing a wide range of ideas, fostering an environment where critical thinking and open dialogue thrive.
+						</p>
+					</div>
+
+					<div class = "padding-bottom:30px">
+						<span style="font-weight: bold; font-style: italic; color:black">Interconnected Library.
+						</span>
+						<p class="mb-4" style="color: black;">Empowering patrons to explore a vast digital landscape and foster collaboration, transforming our interconnected library into a hub of innovation and connectivity.
+						</p>
+					</div>
+
+					<div class = "padding-bottom:30px">
+						<span style="font-weight: bold; font-style: italic; color:black">Betterment all the time.
+						</span>
+						<p class="mb-4" style="color: black;">Striving to enhance its offerings, services, and facilities, ensuring that patrons have access to the best resources and experiences to support their lifelong learning journey.
+						</p>
+					</div>
+
+				</div>
+				<div style="padding-bottom: 30px;">
+					<h2 class="mb-6" style="font-size: 25px;">OUR SOCIAL COMMITMENT TO COMMON KNOWLEDGE</h2>
+					<p class="mb-4" style="color: black; text-align: justify;">Our social commitment is to promote access to knowledge and foster a sense of community. We strive to make knowledge accessible to all, regardless of barriers or limitations. Together, we can shape a more enlightened and connected society. 
+					</p>
+				</div>
+			</div>
+			</section>
+			<section class = "section" id ="ourOrganization">
+
+			<div class="heading-section text-md-center ftco-animate">
+				<h2 class="mb-6" style = "padding-top: 50px;">OUR ORGANIZATION</h2>
+				<div class="slider-item" style= "background-size: cover;background-position: center center;height: 380px; background-image: url('{% static "images/thehand-logo.png" %}');"></div>
+				<p class="mb-4" style="padding-top: 30px; text-align: justify; color: black;">In its early days, The Hand laid the foundation and provided the driving force behind the establishment of the Wellib, setting it on a path of growth and accomplishment. 
+					While in the Interim period, the operation of our Wellib will be overseen by an executive board consisting of members from The Hand.
+					In the future, the organizational plans include the formation of a board of directors composed of members who will be elected from the sponsoring organizations.
+					The Wellib is committed to staying ahead of the curve and embracing opportunities to better serve its community, fostering a culture of lifelong learning, innovation, and connection in the years to come.
+				</p>
+			</div>
+			</section>
+		</div>
+	</section>
+
+
+	
+	<footer class="ftco-footer ftco-section img">
+		<div class="overlay"></div>
+		<div class="container">
+			<div class="row mb-5">
+				<div class="col-lg-3 col-md-6 mb-5 mb-md-5">
+					<div class="ftco-footer-widget mb-4">
+						<h2 class="ftco-heading-2">About Us</h2>
+						<p>We are a hub of knowledge, creativity, and
+							community, dedicated to providing an enriching experience
+							for all of our visitors.</p>
+						<ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
+							<li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
+							<li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
+							<li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 mb-5 mb-md-5">
+					<div class="ftco-footer-widget mb-4">
+						<h2 class="ftco-heading-2">Recent News</h2>
+						{% for blog in blogs_footer%}
+						<div class="block-21 mb-4 d-flex">
+							<a href="{%url 'blog' blog.id%}" class="blog-img mr-4"
+								style="background-image: url('{{blog.image_blog.url}}');"></a>
+							<div class="text">
+								<h3 class="heading"><a href="{%url 'blog' blog.id%}">{{blog.title}}</a>
+								</h3>
+								<div class="meta">
+									<div><a href="#"><span class="icon-calendar"></span> {{blog.created_at}}</a></div>
+									<div><a href="#"><span class="icon-person"></span> {{blog.writer}}</a></div>
+									<div><a href="#"><span class="icon-chat"></span> 19</a></div>
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+				<div class="col-lg-2 col-md-6 mb-5 mb-md-5">
+					<div class="ftco-footer-widget mb-4 ml-md-4">
+						<h2 class="ftco-heading-2">Category</h2>
+						<ul class="list-unstyled">
+							{% for category in categories_footer%}
+							<li><a href="{% url 'searchbook' category.id %}" class="py-2 d-block">{{category.name}}</a>
+							</li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-5 mb-md-5">
+					<div class="ftco-footer-widget mb-4">
+						<h2 class="ftco-heading-2">Have a Questions?</h2>
+						<div class="block-23 mb-3">
+							<ul>
+								<li><span class="icon icon-map-marker"></span><span class="text">2227 Nguyen Van Cu
+										street, District 5, Ho Chi Minh city</span></li>
+								<li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929
+											210</span></a></li>
+								<li><a href="#"><span class="icon icon-envelope"></span><span
+											class="text">wellib@gmail.com</span></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- <div class="row">
+				<div class="col-md-12 text-center">
+
+					<p>
+						Copyright &copy;
+						<script>document.write(new Date().getFullYear());</script> All rights reserved | This template
+						is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com"
+							target="_blank">Colorlib</a>
+					</p>
+				</div>
+			</div> -->
+		</div>
+	</footer>
+
+
+
+	<!-- loader -->
+	<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
+			<circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
+			<circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+				stroke="#F96D00" />
+		</svg></div>
+
+
+	<script src="{% static 'js/jquery.min.js' %}"></script>
+	<script src="{% static 'js/jquery-migrate-3.0.1.min.js' %}"></script>
+	<script src="{% static 'js/popper.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'js/jquery.easing.1.3.js' %}"></script>
+	<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+	<script src="{% static 'js/jquery.stellar.min.js' %}"></script>
+	<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+	<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+	<script src="{% static 'js/aos.js' %}"></script>
+	<script src="{% static 'js/jquery.animateNumber.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+	<script src="{% static 'js/jquery.timepicker.min.js' %}"></script>
+	<script src="{% static 'js/scrollax.min.js' %}"></script>
+	<script
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+	<script src="{% static 'js/google-map.js' %}"></script>
+	<script src="{% static 'js/main.js' %}"></script>
+
+	<script>
+		const gotoSectionButtons = document.querySelectorAll('.gotoSectionButton');
+	
+		gotoSectionButtons.forEach(button => {
+			button.addEventListener('click', () => {
+				const target = button.getAttribute('data-target');
+				const targetSection = document.getElementById(target);
+				if (targetSection) {
+					targetSection.scrollIntoView({ behavior: 'smooth' });
+				}
+			});
+		});
+	</script>
+
+</body>
+
+</html>

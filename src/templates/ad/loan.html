@@ -1,90 +1,176 @@
 {% extends 'ad/base.html' %}
 {% load my_tags %}
-
 {% block Page_content %}
+<style>
+   a {
+   text-decoration:none;
+   color: black;
+   font-weight: 500;
+   }
+</style>
 <section class="py-4">
-  <div class="container">
-    <h3 class="fw-bolder text-center">Loaning transaction</h3>
-    <center>
-      <hr class="bg-primary opacity-100" style="height:3px" width="5%" />
-    </center>
-    <div class="card rounded-0 shadow">
-      <div class="card-body">
-        <div class="container-fluid">
-          <div class="text-start mb-3">
-            <a href="{% url 'manage_loan'%}" class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" type="button"><i class="fa fa-plus"></i> Add New</a>
-          </div>
-          <!-- input search + reset button-->
-          <div class="input-group input-group-sm mb-3">
-            <input type="text" onkeyup="searchFunction()" class="form-control" id="search" placeholder="Search for...">
-            <a href="" class="btn btn-dark"><i class="fas fa-sync-alt"></i></a>  
-          </div>
-          <table class="table table-bordered table-sm-mt-4" id="myTable" style="text-align: center;">
-            <colcategory>
-              <col width="5%"  />
-              <col width="15%" />
-              <col width="15%" />
-              <col width="20%" />
-              <col width="20%" />
-              <col width="15%" />
-              <col width="10%" />
-            </colcategory>
-            <thead class="table-info">
-              <tr id="chk-th">
-                <th class="text-center" scope="col">#</th>
-                <th class="text-center" scope="col">Book Title</th>
-                <th class="text-center" scope="col">Reader ID</th>
-                <th class="text-center" scope="col">Date Loan</th>
-                <th class="text-center" scope="col">Date Expire</th>
-                <th class="text-center" scope="col">Has returned</th>
-                <th class="text-center" class="text-center">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% if loan %}
-                {% for l in loan %}
-                  <tr>
-                    <td class="text-center" scope="row">{{ forloop.counter }}</td>
-                    <td class="text-center">{{ l.book }}</td>
-                    <td class="text-center">{{ l.user.profile.identity }}</td>
-                    <td class="text-center">{{ l.date_loan}}</td>
-                    <td class="text-center">{{ l.date_expired}}</td>
-                    <td class="text-center">
-                      {% if l.returned == "0"%}
-                      <i class="fa-solid fa-x text-danger">
-                      <span style="display: none;">0</span>
-                      {% else %}
-                      <i class="fa-solid fa-check text-success">
-                      <span style="display: none;">1</span>
-                      {% endif %}
-                    </td>
-                    <td class="text-center">
-                      <div class="dropdown">
-                        <button class="btn btn-light btn-sm rounded-0 border dropdown-toggle" type="button" id="{{ l.pk }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
-                        <ul class="dropdown-menu" aria-labelledby="{{ l.pk }}">
-                          <li>
-                            <a class="dropdown-item view-data" href="{% url 'return_book' l.pk%}"><i class="fa fa-eye text-dark"></i> Return</a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item edit-data" href="{% url 'renew_book' l.pk%}"><i class="fa fa-edit text-primary"></i> Renew</a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item delete-data" href="{% url 'delete_loan' l.pk%}"><i class="fa fa-trash text-danger"></i> Delete</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </td>
-                  </tr>
-                {% endfor %}
-              {% endif %}
-            </tbody>
-          </table>
-        <div class="d-flex justify-content-center">
-        <span class="text-danger" id="no-data" style="font-size: 20px;"></span>
-        </div>
-        </div>
+   <div class="container">
+      <h3 class="fw-bolder text-center">Loaning transaction</h3>
+      <center>
+         <hr class="bg-primary opacity-100" style="height:3px" width="5%" />
+      </center>
+      <div class="card rounded-0 shadow">
+         <div class="card-body">
+            <div class="container-fluid">
+               <div class="text-end mb-3">
+                  <button class="btn btn-success rounded-1 bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#modal"><i class="fa fa-plus"></i> Add New</button>
+               </div>
+               <!-- input search + reset button-->
+               <div class="input-group input-group-sm mb-3">
+                  <input type="text" onkeyup="searchFunction()" class="form-control" id="search" placeholder="Search for...">
+                  <a href="" class="btn btn-dark"><i class="fas fa-sync-alt"></i></a>  
+               </div>
+               <table class="table table-bordered table-sm-mt-4" style="text-align: center;">
+                  <colcategory>
+                     <col width="5%"  />
+                     <col width="15%" />
+                     <col width="15%" />
+                     <col width="20%" />
+                     <col width="20%" />
+                     <col width="15%" />
+                     <col width="10%" />
+                  </colcategory>
+                  <thead class="table-info">
+                     <tr id="chk-th">
+                        <th class="text-center" scope="col">#</th>
+                        <th class="text-center" scope="col"><a href="{% url 'loan' 'book'%}">Book Title <i class="fa-solid fa-sort"></i></a></th>
+                        <th class="text-center" scope="col"><a href="{% url 'loan' 'user'%}">Reader ID <i class="fa-solid fa-sort"></i></a></th>
+                        <th class="text-center" scope="col"><a href="{% url 'loan' 'date_loan'%}">Date Loan <i class="fa-solid fa-sort"></i></a></th>
+                        <th class="text-center" scope="col"><a href="{% url 'loan' 'date_expired'%}">Date Expire <i class="fa-solid fa-sort"></i></a></th>
+                        <th class="text-center" scope="col">Has returned</th>
+                        <th class="text-center" class="text-center">Action</th>
+                     </tr>
+                  </thead>
+                  <tbody id="myTable" >
+                     {% if loan %}
+                     {% for l in loan %}
+                     {% if l.returned == '0' %}
+                     <tr>
+                        <td class="text-center" scope="row">{{ forloop.counter }}</td>
+                        <td class="text-center">{{ l.book }}</td>
+                        <td class="text-center">{{ l.user.profile.identity }}</td>
+                        <td class="text-center">{{ l.date_loan}}</td>
+                        <td class="text-center">{{ l.date_expired}}</td>
+                        <td class="text-center">
+                           {% if l.returned == "0"%}
+                           <i class="fa-solid fa-x text-danger">
+                           {% else %}
+                           <i class="fa-solid fa-check text-success">
+                           {% endif %}
+                        </td>
+                        <td class="text-center">
+                           <div class="dropdown">
+                              <button class="btn btn-light btn-sm rounded-0 border dropdown-toggle" type="button" id="{{ l.pk }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
+                              <ul class="dropdown-menu" aria-labelledby="{{ l.pk }}">
+                                 <li>
+                                    <a class="dropdown-item" href="{% url 'return_book' l.pk%}"><i class="fa-solid fa-house text-primary"></i> Return</a>
+                                 </li>
+                                 <li>
+                                    <a class="dropdown-item" href="{% url 'renew_book' l.pk%}"><i class="fa-solid fa-book text-warning"></i> Renew</a>
+                                 </li>
+                                 <li>
+                                    <a class="dropdown-item" href="{% url 'delete_loan' l.pk%}"><i class="fa fa-trash text-danger"></i> Delete</a>
+                                 </li>
+                              </ul>
+                           </div>
+                        </td>
+                     </tr>
+                     {% endif %}
+                     {% endfor %}
+                     {% endif %}
+                  </tbody>
+               </table>
+               <nav aria-label="Page">
+                  <ul class="pagination  justify-content-end">
+                     {% if loan.has_previous %}
+                     <li class="page-item"><a class="page-link" href="?page={{loan.previous_page_number}}"><i class="fa-solid fa-backward"></i></a></li>
+                     {% else %}
+                     <li class="page-item disabled"><a class="page-link"><i class="fa-solid fa-backward"></i></a></li>
+                     {% endif %}
+                     {% if loan.number|moreB%}
+                     <li class="page-item"><a class="page-link" style="pointer-events: none;"><i class="fa-solid fa-ellipsis"></i></a></li>
+                     {% endif %}
+                     {% for i in loan.number|range_list:loan.paginator.num_pages %}
+                     {% if i == loan.number %}
+                     <li class="page-item"><a class="page-link" href="?page={{i}}" style="background-color: #d3d3d3;">{{i}}</a></li>
+                     {% else %}
+                     <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+                     {% endif %}
+                     {% endfor %}
+                     {% if loan.number|moreF:loan.paginator.num_pages%}
+                     <li class="page-item"><a class="page-link" style="pointer-events: none;"><i class="fa-solid fa-ellipsis"></i></a></li>
+                     {% endif %}
+                     {% if loan.has_next %}
+                     <li class="page-item"><a class="page-link" href="?page={{loan.next_page_number}}"><i class="fa-solid fa-forward"></i></a></li>
+                     {% else %}
+                     <li class="page-item disabled"><a class="page-link"><i class="fa-solid fa-forward"></i></a></li>
+                     {% endif %}
+                  </ul>
+               </nav>
+            </div>
+         </div>
       </div>
-    </div>
-  </div>
+   </div>
+   </div>
+   </div>
+   <!-- Modal -->
+   <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+         <div class="modal-content">
+            <div class="modal-header">
+               <i class="fa fa-plus text-success"> Add Loan Transaction</i>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <form action="{% url 'save_loan' %}" method = "POST" autocomplete="off" class = "card p-3 mt-1 border-dark was-validated">
+                  {% csrf_token %}
+                  <div class="input-group mb-3 mt-3">
+                     <span class="input-group-text border-dark" style="width: 96px;">User ID</span>
+                     <input type="text" id="identity" name="identity" class="form-control" placeholder="User Identity" value="{{loan.user.profile.identity}}" required>
+                     <ul class ="list-group rounded-0" style="list-style: none;" id="hint-list-identity"></ul>
+                  </div>
+                  <div class="input-group mb-3 mt-3">
+                     <span class="input-group-text border-dark" style="width: 96px;">Book Title</span>
+                     <input type="text" id="book" name="book" class="form-control" placeholder="Book Title" value="{{loan.book}}" required>
+                     <ul class ="list-group rounded-0" style="list-style: none;" id="hint-list-book"></ul>
+                  </div>
+                  <div class="text-end mt-3">
+                     <input class="btn btn-danger" type="submit" value="Add">
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
 </section>
+<script>   
+   let blurTimeout;
+   
+   $(document).ready(function() {
+       $("#identity").on("input", function() {
+           showHints('identity', 'hint-list-identity', "/identity_search/");
+       });
+       $("#identity").on("blur", function() {
+           clearTimeout(blurTimeout);
+           blurTimeout = setTimeout(function() {
+             $("#hint-list-identity").empty();
+           }, 200);
+         });
+   
+       $("#book").on("input", function() {
+           showHints('book', 'hint-list-book', "/book_search/");
+       });
+       $("#book").on("blur", function() {
+           clearTimeout(blurTimeout);
+           blurTimeout = setTimeout(function() {
+             $("#hint-list-book").empty();
+           }, 200);
+         });
+   });
+</script>
 {% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'ad/base.html' %}
+
+{% block Page_content %}
+
+<div class="container mt-3" style = "width: 95%; font-size: 14px;">
+    {% if type == 'Save' %}
+        <div class="card border-dark">
+            <div class="card-body text-center ">
+                <i class="fa fa-edit text-success"></i> Edit</a>
+            </div>
+        </div>
+    {% else %}
+        <div class="card border-dark">
+            <div class="card-body text-center ">
+                <i class="fa fa-plus text-success"></i> Add</a>
+            </div>
+        </div>
+    {% endif %}
+    <form action="{% url 'save_language' %}" method = "POST" enctype="multipart/form-data" autocomplete="off" class = "card p-3 mt-1 border-dark was-validated">
+        {% csrf_token %}
+        {% comment %} Dùng này để giấu ID khi Edit {% endcomment %}
+        <input type="hidden" name="id" value="{{language.id}}">
+        <div class="input-group mb-3 mt-3">
+            <span class="input-group-text border-dark" style="width: 68px;" >Code</span>
+            <input type="text" id="code" name="code" class="form-control" placeholder="Code" value="{{language.code}}"required>
+         </div>
+         <div class="input-group mb-3 mt-3">
+            <span class="input-group-text border-dark" style="width: 68px;" >Name</span>
+            <input type="text" id="fullname" name="fullname" class="form-control" value="{{language.fullname}}" placeholder="Name" required>
+         </div>
+        <div class="d-flex justify-content-between mt-3">
+            <a href="{% url 'language' 'id'%}" class="btn btn-warning">Back</a>
+            <input class="btn btn-danger" type="submit" value="{{type}}">
+        </div>
+    </form>
+</div>
+{% endblock Page_content %}
+        

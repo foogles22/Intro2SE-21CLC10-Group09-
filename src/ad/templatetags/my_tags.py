@@ -1,5 +1,5 @@
 from django import template
-
+from ad import models
 register = template.Library()
 
 @register.filter
@@ -20,4 +20,27 @@ def moreB(current):
 @register.filter
 def moreF(current, length):
     return current+1 < length
-    
+
+@register.filter
+def borrowing(user):
+    return models.LoanTransaction.objects.all().filter(user = user, returned = '0').count()
+
+@register.filter
+def returned(user):
+    return models.LoanTransaction.objects.all().filter(user = user, returned = '1').count()
+
+@register.filter
+def overdued(user):
+    return models.LoanTransaction.objects.all().filter(user = user, overdue = '1').count()
+
+@register.filter
+def loan(user):
+    return models.LoanTransaction.objects.all().filter(user = user, returned = '0')
+
+@register.filter
+def nocomma(i, length):
+    return i < len(length)
+
+@register.filter
+def bookcount(category):
+    return models.Book.objects.all().filter(category = category).count()
