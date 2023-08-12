@@ -26,14 +26,10 @@ urlpatterns = [
 
     # ----------------------------------LIBRARIAN--------------------------------------------
     # --------Borrowing Transactions-------
-    path('loan/', views.loan, name = 'loan'),
+    path('libhome/', views.libhome, name = 'libhome'),
     path('loan/<str:order>', views.loan, name = 'loan'),
-    path('manage_loan/', views.manage_loan, name = 'manage_loan'),
-    path('manage_loan/<int:id>', views.manage_loan, name = 'manage_loan_pk'),
     path('save_loan/', views.save_loan, name = 'save_loan'),
     path('delete_loan/<int:id>', views.delete_loan, name = 'delete_loan'),
-    path('identity_search/', views.identity_search, name ='identity_search'),
-    path('book_search/', views.book_search, name ='book_search'),
     path('return_book/<int:id>', views.return_book, name ='return_book'),
     path('renew_book/<int:id>', views.renew_book, name ='renew_book'),
     # ---------Reader Information----------
@@ -49,7 +45,7 @@ urlpatterns = [
 
 # ----------------------------------ADMIN------------------------------------------------
     # --------CATEGORY--------
-    path('home/', views.home, name = 'home'),
+    path('adhome/', views.adhome, name = 'adhome'),
     path('category/<str:order>', views.category, name = 'category'),
     path('manage_category/', views.manage_category, name = 'manage_category'),
     path('manage_category/<int:id>', views.manage_category, name = 'manage_category_pk'),
@@ -80,12 +76,10 @@ urlpatterns = [
     # --------------User------------------
     path('user/<str:order>', views.user, name = 'user'),
     path('manage_user/', views.manage_user, name = 'manage_user'),
-    # path('manage_user/<int:id>', views.manage_user, name = 'manage_user_pk'),
     path('save_user/', views.save_user, name = 'save_user'),
     path('delete_user/<int:id>', views.delete_user, name = 'delete_user'),
     path('view_user/<int:id>', views.view_user, name= 'view_user'),
-    path('edit_profile/<int:id>', views.edit_profile, name='edit_profile'),
-    path('manage_reader_request/', views.manage_reader_request, name="manage_reader_request"),
+    path('manage_reader_request/<str:order>', views.manage_reader_request, name="manage_reader_request"),
     path('decline_reader_request/<int:id>', views.decline_reader_request, name="decline_reader_request"),
     path('accept_reader_request/', views.accept_request_reader, name="accept_reader_request"),
 ]

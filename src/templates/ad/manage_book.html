@@ -1,26 +1,20 @@
 {% extends 'ad/base.html' %}
 
 {% block Page_content %}
-
-<div class="container mt-3" style = "width: 95%; font-size: 14px;">
-    {% if type == 'Save' %}
-        <div class="card border-dark">
-            <div class="card-body text-center ">
-                <i class="fa fa-edit text-success"></i> Edit</a>
-            </div>
-        </div>
-    {% else %}
-        <div class="card border-dark">
-            <div class="card-body text-center ">
-                <i class="fa fa-plus text-success"></i> Add</a>
-            </div>
-        </div>
-    {% endif %}
-    <form action="{% url 'save_book' %}" method = "POST" enctype="multipart/form-data" autocomplete="off" class = "card p-3 mt-1 border-dark was-validated">
+<h1 class="h3 mb-2 text-gray-800">Books management</h1>
+<div class="card shadow mb-4">
+	<div class="card-header py-3">
+        {% if type == 'Save' %}
+		<h6 class="m-0 font-weight-bold text-primary">Edit Book</h6>
+        {% else %}
+		<h6 class="m-0 font-weight-bold text-primary">Add Book</h6>
+        {% endif %}
+	</div>
+    <form action="{% url 'save_book' %}" method = "POST" enctype="multipart/form-data" autocomplete="off" class = "p-4 was-validated">
         {% csrf_token %}
         {% comment %} Dùng này để giấu ID khi Edit {% endcomment %}
         <input type="hidden" name="id" value="{{book.id}}">
-        <div class="input-group mb-3 mt-3">
+        <div class="input-group mb-3">
             <span class="input-group-text border-dark" style="width: 138px;" >Title</span>
             <input type="text" id="title" name="title" class="form-control" placeholder="Title" value="{{book.title}}" required>
         </div>
@@ -82,10 +76,24 @@
         </div>
     
         <div class="d-flex justify-content-between mt-3">
-            <a href="{% url 'book' 'id'%}" class="btn btn-warning">Back</a>
-            <input class="btn btn-danger" type="submit" value="{{type}}">
+            <a href="{% url 'book' 'id'%}" class="btn btn-warning btn-icon-split" type="button">
+                <span class="icon text-white-50">
+                <i class="fa-solid fa-rotate-left"></i>
+                </span>
+            <span class="text">Back</span>
+            </a>
+
+            <div id="activateButton" class="btn btn-success btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fa-solid fa-plus"></i>
+                </span>
+                <input type="submit" id="submitButton" style="display: none;">
+                <span class="text">{{type}}</span>
+            </div>
         </div>
     </form>
+</div>
+</div>
 </div>
 {% endblock Page_content %}
         

@@ -119,7 +119,7 @@ class BookRequest(models.Model):
     description = models.TextField(max_length=250, blank=False, null=False)
     sourcetype = models.ForeignKey(SourceType, null=True, on_delete=models.SET_NULL)
     language = models.ForeignKey(Language, null=True, on_delete=models.SET_NULL)
-    image = models.ImageField(upload_to="images/")  
+    image = models.ImageField(upload_to="images/")   
     status = models.CharField(
         max_length=2, choices=(("1", "Wait"), ("2", "Accept"), ("3", "Decline")), default="1"
     )

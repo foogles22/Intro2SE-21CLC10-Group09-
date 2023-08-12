@@ -1,7 +1,6 @@
 {% extends 'ad/base.html' %}
 {% load my_tags %}
 {% block Page_content %}
-
 <style>
     a {
       text-decoration:none;
@@ -9,83 +8,75 @@
       font-weight: 500;
     }
 </style>
-<section class="py-4">
-<div class="container">
-    <h3 class="fw-bolder text-center">Request Book List</h3>
-    <center>
-    <hr class="bg-primary opacity-100" style="height:3px" width="5%" />
-    </center>
-    <div class="card rounded-0 shadow">
-    <div class="card-body">
-        <div class="container-fluid">
-            <div class="text-end mb-3">
-                <button class="btn btn-success rounded-1 bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#modal"><i class="fa fa-plus"></i> Add New</button>
-            </div>
-            <!-- input search + reset button-->
-            <div class="input-group input-group-sm mb-3">
-                <input type="text" onkeyup="searchFunction()" class="form-control" id="search" placeholder="Search for...">
-                <a href="" class="btn btn-dark"><i class="fas fa-sync-alt"></i></a>  
-            </div>
-            <table class="table table-bordered table-sm-mt-4" style="text-align: center;">
-                <colcategory>
-                <col width="5%"  />
-                <col width="25%" />
-                <col width="20%" />
-                <col width="25%" />
-                <col width="15%" />
-                <col width="10%" />
-                </colcategory>
-                <thead class="table-info">
-                <tr id="chk-th">
-                    <th class="text-center" scope="col">#</th>
-                    <th class="text-center" scope="col"><a href="{% url 'request_book' 'title'%}">Title <i class="fa-solid fa-sort"></i></a></th>
-                    <th class="text-center" scope="col"><a href="{% url 'request_book' 'author'%}">Author <i class="fa-solid fa-sort"></i></a></th>
-                    <th class="text-center" scope="col"><a href="{% url 'request_book' 'category'%}">Category <i class="fa-solid fa-sort"></i></a></th>
-                    <th class="text-center" scope="col"><a href="{% url 'request_book' 'status'%}">Status <i class="fa-solid fa-sort"></i></a></th>
-                    <th class="text-center" class="text-center">Action</th>
-                </tr>
-                </thead>
-                <tbody id="myTable">
-                {% if requests %}
-                    {% for r in requests %}
-                    <tr>
-                        <td class="text-center" scope="row">{{ forloop.counter }}</td>
-                        <td class="text-center">{{ r.title }}</td>
-                        <td class="text-center">{{ r.author }}</td>
-                        <td class="text-center">
-                        {% for category in r.category.all%}
-                            {{category}} 
-                        {% endfor %}
-                        </td>
-                        <td class="text-center">
-                        {% if r.status == "1"%}
-                            Wait
-                        {% endif %}
-                        {% if r.status == "2"%}
-                            Accept
-                        {% endif %}
-                        {% if r.status == "3"%}
-                            Decline
-                        {% endif %}
-                        </td>
-                        <td class="text-center">
-                        <div class="dropdown">
-                            <button class="btn btn-light rounded-0 border dropdown-toggle" type="button" id="{{ r.pk }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
-                            <ul class="dropdown-menu" aria-labelledby="{{ r.pk }}">
-                            <li>
-                                <a class="dropdown-item" href="{% url 'delete_request_book' r.pk %}"><i class="fa fa-trash text-danger"></i> Delete</a>
-                            </li>
-                            </ul>
-                        </div>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                {% endif %}
-                </tbody>
-            </table>
-        <div class="d-flex justify-content-center">
-        <span class="text-danger" id="no-data" style="font-size: 20px;"></span>
+<h1 class="h3 mb-2 text-gray-800">Request Book</h1>
+<div class="card shadow mb-4">
+	<div class="card-header py-2 d-flex justify-content-between">
+		<div class="m-0 font-weight-bold text-primary d-flex align-items-center">List of Request Book</div>
+        <button class="btn btn-sm btn-success rounded-1" data-bs-toggle="modal" data-bs-target="#modal"><i class="fa fa-plus"></i> Add New</button>
+	</div>
+	<div class="card-body">
+		<!-- input search + reset button-->
+        <div class="input-group input-group-sm mb-3">
+            <input type="text" onkeyup="searchFunction()" class="form-control" id="search" placeholder="Search for...">
+            <a href="" class="btn btn-dark"><i class="fas fa-sync-alt"></i></a>  
         </div>
+        <table class="table table-bordered table-sm-mt-4" style="text-align: center;">
+            <colcategory>
+            <col width="5%"  />
+            <col width="25%" />
+            <col width="20%" />
+            <col width="25%" />
+            <col width="15%" />
+            <col width="10%" />
+            </colcategory>
+            <thead class="table-primary">
+            <tr id="chk-th">
+                <th class="text-center" scope="col">#</th>
+                <th class="text-center" scope="col"><a href="{% url 'request_book' 'title'%}">Title <i class="fa-solid fa-sort"></i></a></th>
+                <th class="text-center" scope="col"><a href="{% url 'request_book' 'author'%}">Author <i class="fa-solid fa-sort"></i></a></th>
+                <th class="text-center" scope="col"><a href="{% url 'request_book' 'category'%}">Category <i class="fa-solid fa-sort"></i></a></th>
+                <th class="text-center" scope="col"><a href="{% url 'request_book' 'status'%}">Status <i class="fa-solid fa-sort"></i></a></th>
+                <th class="text-center" class="text-center">Action</th>
+            </tr>
+            </thead>
+            <tbody id="myTable">
+            {% if requests %}
+                {% for r in requests %}
+                <tr>
+                    <td class="text-center" scope="row">{{ forloop.counter }}</td>
+                    <td class="text-center">{{ r.title }}</td>
+                    <td class="text-center">{{ r.author }}</td>
+                    <td class="text-center">
+                    {% for category in r.category.all%}
+                        {{category}} 
+                    {% endfor %}
+                    </td>
+                    <td class="text-center">
+                    {% if r.status == "1"%}
+                        Wait
+                    {% endif %}
+                    {% if r.status == "2"%}
+                        Accept
+                    {% endif %}
+                    {% if r.status == "3"%}
+                        Decline
+                    {% endif %}
+                    </td>
+                    <td class="text-center">
+                    <div class="dropdown">
+                        <button class="btn btn-light rounded-0 border dropdown-toggle" type="button" id="{{ r.pk }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
+                        <ul class="dropdown-menu" aria-labelledby="{{ r.pk }}">
+                        <li>
+                            <a class="dropdown-item" href="{% url 'delete_request_book' r.pk %}"><i class="fa fa-trash text-danger"></i> Delete</a>
+                        </li>
+                        </ul>
+                    </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
         <nav aria-label="Page">
             <ul class="pagination  justify-content-end">
                 {% if requests.has_previous %}
@@ -118,11 +109,7 @@
                 {% endif %}
             </ul>
         </nav>
-        </div>
-        </div>
-        </div>
-    </div>
-    </div>
+	</div>
 </div>
 
 <!-- Modal -->
@@ -190,8 +177,6 @@
     </div>
     </div>
 </div>
-  
-</section>
-{% endblock Page_content %}
+{% endblock %}
 
-        
+

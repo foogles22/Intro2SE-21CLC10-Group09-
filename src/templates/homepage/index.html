@@ -453,7 +453,21 @@
 	</footer>
 
 
-
+	{% for message in messages%}
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script src="{% static "js/jquery.toast.js"%}"></script>
+      <script>
+         var upperCaseTag = '{{message.tags}}'.toUpperCase();
+         $.toast({
+           heading: upperCaseTag,
+           text: '{{message}}',
+           showHideTransition: 'slide',
+           icon: '{{message.tags}}',
+           position: 'top-right',
+         });
+      </script>
+      {% endfor %}
+	  
 	<!-- loader -->
 	<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
 			<circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />

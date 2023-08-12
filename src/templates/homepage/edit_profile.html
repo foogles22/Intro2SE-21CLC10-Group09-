@@ -54,7 +54,20 @@
 <body>
     {% include 'homepage/navbar.html' %}
 
-
+    {% for message in messages%}
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="{% static "js/jquery.toast.js"%}"></script>
+        <script>
+            var upperCaseTag = '{{message.tags}}'.toUpperCase();
+            $.toast({
+            heading: upperCaseTag,
+            text: '{{message}}',
+            showHideTransition: 'slide',
+            icon: '{{message.tags}}',
+            position: 'top-right',
+            });
+        </script>
+    {% endfor %}
     <section class="home-slider owl-carousel">
         <div class="slider-item" style="background-image: url(images/bg_3.jpg);" data-stellar-background-ratio="0.5">
             <div class="overlay"></div>

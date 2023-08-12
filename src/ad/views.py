@@ -45,7 +45,12 @@ def login_user(request):
                 return redirect('edit_profile', request.user.id)
             else:
                 messages.success(request, 'You have logged in!')
-                return redirect('home')        
+                if request.user.profile.role == "ADMIN":
+                    return redirect('adhome')
+                if request.user.profile.role == "LIBRARIAN":
+                    return redirect('libhome')
+                if request.user.profile.role == "READER":
+                    return redirect('homepage')             
         else:
             messages.error(request, 'Login failed!')
             return render(request, "authenticate/login.html", context)        
@@ -71,12 +76,23 @@ def register_user(request, *args, **kwargs):
                 messages.error(request, error)
     return render(request, "authenticate/register.html", context)
 
+def change_password(request):
+    if request.method == "POST":
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request,'Change password successfully')
+        else:
+            for field in form.errors.values():
+                for error in field:
+                    messages.error(request, error)
+    return redirect('edit_profile', request.user.id)
+
 @login_required
 def edit_profile(request, id):
     context = context_data()
     context["page_title"] = "Edit Profile"
     if request.method == "POST":
-        print(request.POST)
         profile = models.Profile.objects.get(pk = id)
         profile.first_time = False
         profile.save()
@@ -117,11 +133,11 @@ def delete_user(request, id):
 # ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN
 # --------HOME--------
 @login_required
-@allowed_users(allowed_roles=['ADMIN','LIBRARIAN'])
-def home(request):
+@allowed_users(allowed_roles=['ADMIN'])
+def adhome(request):
     context = context_data()
     context["page_title"] = "Admin Home"
-    return render(request, "ad/home.html", context)
+    return render(request, "ad/adhome.html", context)
 
 # --------CATEGORY--------
 @login_required
@@ -161,7 +177,11 @@ def save_category(request):
             category = forms.SaveCategory(request.POST,request.FILES)
         if category.is_valid():
             category.save()
-            messages.success(request, 'New category added')
+            if post['id']:
+                messages.success(request, 'Category edited successfully')
+                return redirect('category', 'id')
+            else:
+                messages.success(request, 'New category added')
         else:
             print(category.errors.as_text)
             for field in category.errors.values():
@@ -215,7 +235,11 @@ def save_source_type(request):
             source_type = forms.SaveSourceType(request.POST)    
         if source_type.is_valid():
             source_type.save()
-            messages.success(request, 'New source type added')
+            if post['id']:
+                messages.success(request, 'Source type edited successfully')
+                return redirect('source_type', 'id')
+            else:
+                messages.success(request, 'Source type added successfully')
         else:
             print(source_type.errors.as_text)
             for field in source_type.errors.values():
@@ -267,7 +291,11 @@ def save_language(request):
             language = forms.SaveLanguage(request.POST)
         if language.is_valid():
             language.save()
-            messages.success(request, 'New language added')
+            if post['id']:
+                messages.success(request, 'Language edited')
+                return redirect('language', 'id')
+            else:
+                messages.success(request, 'New language added')
         else:
             print(language.errors.as_text)
             for field in language.errors.values():
@@ -323,7 +351,11 @@ def save_book(request):
             book = forms.SaveBook(request.POST, request.FILES)
         if book.is_valid():
             book.save()
-            messages.success(request, 'Save book successfully')
+            if post['id']:
+                messages.success(request, 'Book edited successfully')
+                return redirect('book', 'id')
+            else:
+                messages.success(request, 'Save book successfully')
         else:
             for field in book.errors.values():
                 for error in field:
@@ -339,32 +371,33 @@ def delete_book(request, id):
         os.remove(book.image.path)
     book.delete()
     messages.success(request, 'Delete successfully')
-    return HttpResponseRedirect('/book/')
+    return redirect('book', 'id')
 
 # Librarian-Librarian-Librarian-Librarian-Librarian-Librarian-Librarian-Librarian-Librarian-Librarian
 
 # ---------LOAN Transaction-----------
 @login_required
 @allowed_users(allowed_roles=['LIBRARIAN'])
+def libhome(request):
+    context = context_data()
+    context["page_title"] = "Librarian Home"
+    return render(request, "ad/libhome.html", context)
+
+
+@login_required
+@allowed_users(allowed_roles=['LIBRARIAN'])
 def loan(request, order = 'id'):
     context = context_data()
     context["page_title"] = "Loan Transaction"
-    loans = models.LoanTransaction.objects.get_queryset().order_by(order)
-
+    loans = models.LoanTransaction.objects.get_queryset().order_by(order).filter(returned = "0")
     # setup pagination
     p = Paginator(loans, 5)
     page = request.GET.get('page')
     loan_p = p.get_page(page)
     context["loan"] = loan_p
+    context["readers"] = models.Profile.objects.all().filter(role = "READER")
+    context["books"] = models.Book.objects.all()
     return render(request, "ad/loan.html", context)
-
-@login_required
-@allowed_users(allowed_roles=['LIBRARIAN'])
-def manage_loan(request, id=None):
-    context = context_data()
-    context["page_title"] = "Manage Loan Transaction"
-    context["loan"] = {}
-    return render(request, "ad/manage_loan.html", context)
 
 @login_required
 @allowed_users(allowed_roles=['LIBRARIAN'])
@@ -378,16 +411,16 @@ def save_loan(request):
             else:
                 loan.save()
                 messages.success(request,'Adding New Transaction succeed')
-            return redirect("loan")
+            return redirect("loan", 'id')
         else:
             for field in loan.errors.values():
                 for error in field:
                     messages.error(request, error)
                 
-            return redirect("loan")
+            return redirect("loan", 'id')
     else:
         messages.error(request, 'No data has been sent')
-        return redirect("loan")
+        return redirect("loan", 'id')
 
 @login_required
 @allowed_users(allowed_roles=['LIBRARIAN'])
@@ -400,7 +433,7 @@ def delete_loan(request, id):
         book.status = '1'
     book.save(update_fields=['quantity', 'status'])
     messages.success(request, 'Deleting transaction succeed!')
-    return redirect("loan")
+    return redirect("loan", 'id')
 
 
 @login_required
@@ -422,7 +455,7 @@ def return_book(request, id):
     if book.quantity == 1:
         book.status = '1'
     book.save(update_fields=['quantity', 'status'])
-    return redirect("loan")
+    return redirect("loan", 'id')
 
 @login_required
 @allowed_users(allowed_roles=['LIBRARIAN'])
@@ -431,7 +464,7 @@ def renew_book(request, id):
     loan.date_expired += timedelta(7)
     loan.save(update_fields=['date_expired'])
     messages.success(request, 'Reader renew book succeed!')
-    return redirect("loan")
+    return redirect("loan", 'id')
 
 # -------------------ReaderInfo------------
 def order_by_quantity():
@@ -506,10 +539,10 @@ def accept_request_reader(request):
         else:
             for error in user.errors.values():
                 messages.warning(request, error)
-        return redirect("manage_reader_request")
+        return redirect("manage_reader_request", 'id')
     else:
         messages.error(request, 'No data has been sent')
-        return redirect("manage_reader_request")
+        return redirect("manage_reader_request", 'id')
 
 
 @login_required
@@ -603,19 +636,21 @@ def save_user(request):
         else:
             for error in user.errors.values():
                 messages.warning(request, error)
-        return redirect("user")
+        return redirect("user", 'id')
     else:
         messages.error(request, 'No data has been sent')
-        return redirect("user")
+        return redirect("user", 'id')
 
 @login_required
 @allowed_users(allowed_roles=['ADMIN'])
-def manage_reader_request(request):
+def manage_reader_request(request, order = 'id'):
     context = context_data()
     context["page_title"] = "Manage Reader Request"
-    context["requests"] = models.ReaderRequest.objects.all()
-    if request.method == "POST":
-        pass
+    requests = models.ReaderRequest.objects.all().order_by(order)
+    p = Paginator(requests, 3)
+    page = request.GET.get('page')
+    requests = p.get_page(page)
+    context["requests"] = requests
     return render(request, "ad/manage_reader_request.html", context)
 
 @login_required
@@ -625,7 +660,7 @@ def decline_reader_request(request, id=None):
     reader_request.status = '3'
     reader_request.save(update_fields=['status'])
     messages.success(request, 'Decline successfully!')
-    return redirect('manage_reader_request')
+    return redirect('manage_reader_request', 'id')
 
 @login_required
 def view_user(request, id):
@@ -633,23 +668,6 @@ def view_user(request, id):
     context["page_title"] = "View Categories"
     context["user"] = User.objects.get(pk=id)
     return render(request, "ad/view_user.html", context)
-
-# SEARCHING
-def identity_search(request):
-    if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        search_query = request.GET.get('query', '')
-        items = models.Profile.objects.filter(identity__contains=search_query)[:10]
-        item_list = [item.identity for item in items if 'RD' in item.identity]
-        return JsonResponse(item_list, safe=False)
-    return render(request, 'manage_loan.html')
-
-def book_search(request):
-    if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        search_query = request.GET.get('query', '')
-        items = models.Book.objects.filter(pk__contains=search_query)[:10]
-        item_list = [item.pk for item in items]
-        return JsonResponse(item_list, safe=False)
-    return render(request, 'manage_loan.html')
 
 def homepage(request):
     context = {}

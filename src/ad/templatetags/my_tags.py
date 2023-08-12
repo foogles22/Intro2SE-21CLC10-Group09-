@@ -35,7 +35,10 @@ def overdued(user):
 
 @register.filter
 def loan(user):
-    return models.LoanTransaction.objects.all().filter(user = user, returned = '0')
+    try:
+        return models.LoanTransaction.objects.all().filter(user = user, returned = '0')[0:2]
+    except:
+        return None
 
 @register.filter
 def nocomma(i, length):
