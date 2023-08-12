@@ -8,10 +8,12 @@
       font-weight: 500;
     }
 </style>
-<h1 class="h3 mb-2 text-gray-800">Request Reader Accounts</h1>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+	<h1 class="h3 mb-0 text-gray-800 "><i class="fa-solid fa-book-open-reader"></i> Reader Accounts Requests</h1>
+</div>
 <div class="card shadow mb-4">
 	<div class="card-header py-2 d-flex justify-content-between">
-		<div class="m-0 font-weight-bold text-primary d-flex align-items-center">List of Request Reader Accounts</div>
+		<div class="m-0 font-weight-bold text-primary d-flex align-items-center">List of Reader Accounts Requests</div>
 		<div>
             <a href="{% url 'reader_info' 'id'%}" class="btn btn-sm btn-warning btn-icon-split" type="button">
                 <span class="icon text-white-50">
@@ -21,7 +23,7 @@
             </a>
             <button class="btn btn-sm btn-success btn-icon-split ml-3" data-bs-toggle="modal" data-bs-target="#modal" type="button">
                 <span class="icon text-white-50">
-                <i class="fas fa-plus"></i>
+                <i class="fas fa-question"></i>
             </span>
             <span class="text">Request</span>
             </button>

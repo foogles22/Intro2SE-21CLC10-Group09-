@@ -72,6 +72,10 @@ urlpatterns = [
     path('manage_book/<int:id>', views.manage_book, name = 'manage_book_pk'),
     path('save_book/', views.save_book, name = 'save_book'),
     path('delete_book/<int:id>', views.delete_book, name = 'delete_book'),
+    path('manage_book_request/<str:order>', views.manage_book_request, name="manage_book_request"),
+    path('decline_book_request/<int:id>', views.decline_book_request, name="decline_book_request"),
+    path('accept_book_request/', views.accept_book_request, name="accept_book_request"),
+
 
     # --------------User------------------
     path('user/<str:order>', views.user, name = 'user'),

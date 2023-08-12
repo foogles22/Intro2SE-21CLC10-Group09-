@@ -173,11 +173,6 @@ class SaveBook(forms.ModelForm):
             return True
 
     def clean(self):
-        cleaned_data = self.cleaned_data
-
-        # print(self.data)
-        # print(cleaned_data)
-        
         title = self.data.get('title')
         self.cleanTitle(title)
         

@@ -8,18 +8,32 @@
 	font-weight: 500;
 	}
 </style>
-<h1 class="h3 mb-2 text-gray-800">User management</h1>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+	<h1 class="h3 mb-0 text-gray-800 "><i class="fa-solid fa-users"></i> Users Management</h1>
+	<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+			class="fas fa-download fa-sm text-white-50"></i> Import Data</a>
+</div>
 <div class="card shadow mb-4">
 	<div class="card-header py-2 d-flex justify-content-between">
 		<div class="m-0 font-weight-bold text-primary d-flex align-items-center">List of Users</div>
       <div>
-         <button class="btn btn-sm btn-success rounded-1" data-bs-toggle="modal" data-bs-target="#modal"><i class="fa fa-plus"></i> Add New</button>
-         <a href="{% url 'manage_reader_request' 'id'%}" class="btn btn-sm btn-success rounded-1" type="button"><i class="fa-solid fa-question"></i></i> Manage Request</a>
+         <button class="btn btn-sm btn-success btn-icon-split" type="button" data-bs-toggle="modal" data-bs-target="#modal">
+            <span class="icon text-white-50">
+            <i class="fa-solid fa-user-plus"></i>
+         </span>
+         <span class="text">Add</span>
+         </button>
+         <a href="{% url 'manage_reader_request' 'id'%}" class="btn btn-sm btn-success btn-icon-split" type="button">
+            <span class="icon text-white-50">
+            <i class="fa-solid fa-question"></i>
+         </span>
+         <span class="text">Request</span>
+         </a>
       </div>
 	</div>
 	<div class="card-body">
 		<!-- input search + reset button-->
-      <div class="input-group input-group-sm mb-3">
+      <div class="input-group input-group mb-3">
          <input type="text" onkeyup="searchFunction()" class="form-control" id="search" placeholder="Search for...">
          <a href="" class="btn btn-dark"><i class="fas fa-sync-alt"></i></a>  
       </div>
@@ -147,7 +161,7 @@
                <div class="text-end mt-3">
                   <div id="activateButton" class="btn btn-success btn-icon-split">
                      <span class="icon text-white-50">
-                         <i class="fa-solid fa-plus"></i>
+                        <i class="fa-solid fa-user-plus"></i>
                      </span>
                      <input type="submit" id="submitButton" style="display: none;">
                      <span class="text">Add</span>

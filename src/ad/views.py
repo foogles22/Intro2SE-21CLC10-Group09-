@@ -373,6 +373,64 @@ def delete_book(request, id):
     messages.success(request, 'Delete successfully')
     return redirect('book', 'id')
 
+
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def manage_book_request(request, order = 'id'):
+    context = context_data()
+    context["page_title"] = "Manage Book Requests"
+    requests = models.BookRequest.objects.all().order_by(order)
+    p = Paginator(requests, 3)
+    page = request.GET.get('page')
+    requests = p.get_page(page)
+    context["requests"] = requests
+    return render(request, "ad/manage_book_request.html", context)
+
+def modify_book_request_post(post):
+    pass
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def accept_book_request(request):
+    book_request = models.BookRequest.objects.get(pk = request.POST['id'])
+    book_data = {
+        'id': request.POST['id_book'],
+        'title' : book_request.title,
+        'publication_year' : book_request.publication_year,
+        'author' : book_request.author,
+        'category' : book_request.category.all(),
+        'description' : book_request.description,
+        'sourcetype' : book_request.sourcetype,
+        'language' : book_request.language,
+        'quantity' : request.POST['quantity'],
+    }
+    book_file={
+        'image' : book_request.image,
+    }
+    
+    book = forms.SaveBook(data=book_data, files=book_file)
+    if book.is_valid():
+        book.save()
+        book_request.status = '2'
+        book_request.save(update_fields=['status'])
+        messages.success(request, 'Accepted book request')
+    else:
+        for field in book.errors.values():
+                for error in field:
+                    messages.error(request, error)
+    return redirect('manage_book_request', 'id')
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def decline_book_request(request, id=None):
+    book_request = models.BookRequest.objects.get(pk=id)
+    book_request.status = '3'
+    book_request.save(update_fields=['status'])
+    messages.success(request, 'Decline successfully!')
+    return redirect('manage_book_request', 'id')
+
+
 # Librarian-Librarian-Librarian-Librarian-Librarian-Librarian-Librarian-Librarian-Librarian-Librarian
 
 # ---------LOAN Transaction-----------
@@ -518,32 +576,6 @@ def modify_post(post):
         'role' : 'READER',
     }
 
-@login_required
-@allowed_users(allowed_roles=['ADMIN'])
-def accept_request_reader(request):
-    if request.method == "POST":
-        post = modify_post(request.POST)
-        user = forms.SaveUser(post)
-        if user.is_valid():
-            user = user.save()
-            request_reader = models.ReaderRequest.objects.get(pk = request.POST['id'])
-            request_reader.status = '2'
-            request_reader.save(update_fields=['status'])
-            messages.success(request, 'Account created successfully!')
-            profile = models.Profile.objects.get(pk = user.id)
-            profile = forms.SaveProfile(post, instance= profile)
-            if profile.is_valid():
-                profile.save()
-            else:
-                messages.warning(request, 'Profile fields has something wrong, must be edited later')
-        else:
-            for error in user.errors.values():
-                messages.warning(request, error)
-        return redirect("manage_reader_request", 'id')
-    else:
-        messages.error(request, 'No data has been sent')
-        return redirect("manage_reader_request", 'id')
-
 
 @login_required
 @allowed_users(allowed_roles=['LIBRARIAN'])
@@ -652,6 +684,33 @@ def manage_reader_request(request, order = 'id'):
     requests = p.get_page(page)
     context["requests"] = requests
     return render(request, "ad/manage_reader_request.html", context)
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def accept_request_reader(request):
+    if request.method == "POST":
+        post = modify_post(request.POST)
+        user = forms.SaveUser(post)
+        if user.is_valid():
+            user = user.save()
+            request_reader = models.ReaderRequest.objects.get(pk = request.POST['id'])
+            request_reader.status = '2'
+            request_reader.save(update_fields=['status'])
+            messages.success(request, 'Account created successfully!')
+            profile = models.Profile.objects.get(pk = user.id)
+            profile = forms.SaveProfile(post, instance= profile)
+            if profile.is_valid():
+                profile.save()
+            else:
+                messages.warning(request, 'Profile fields has something wrong, must be edited later')
+        else:
+            for error in user.errors.values():
+                messages.warning(request, error)
+        return redirect("manage_reader_request", 'id')
+    else:
+        messages.error(request, 'No data has been sent')
+        return redirect("manage_reader_request", 'id')
+
 
 @login_required
 @allowed_users(allowed_roles=['ADMIN'])

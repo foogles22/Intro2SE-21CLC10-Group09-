@@ -14,12 +14,12 @@
  }
 </style>
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-	<h1 class="h3 mb-0 text-gray-800 "><i class="fa-solid fa-book-open-reader"></i> Reader Requests Management</h1>
+	<h1 class="h3 mb-0 text-gray-800 "><i class="fa-solid fa-book-open-reader"></i> Book Requests Management</h1>
 </div>
 <div class="card shadow mb-4">
 	<div class="card-header py-2 d-flex justify-content-between">
-		<div class="m-0 font-weight-bold text-primary d-flex align-items-center">List of Reader Requests</div>
-    <a href="{% url 'user' 'id'%}" class="btn btn-sm btn-warning btn-icon-split" type="button">
+		<div class="m-0 font-weight-bold text-primary d-flex align-items-center">List of Book Requests</div>
+    <a href="{% url 'book' 'id'%}" class="btn btn-sm btn-warning btn-icon-split" type="button">
       <span class="icon text-white-50">
       <i class="fa-solid fa-rotate-left"></i>
     </span>
@@ -35,17 +35,17 @@
       <table class="table table-bordered table-sm-mt-4" style="text-align: center;">
         <colrequests>
           <col width="5%" />
-          <col width="25%" />
-          <col width="30%" />
-          <col width="30%" />
+          <col width="35%" />
+          <col width="35%" />
+          <col width="15%" />
           <col width="10%" />
         </colrequests>
         <thead class="table-primary">
           <tr>
             <th class="text-center" scope="col">#</th>
-            <th class="text-center" scope="col"><a href="{% url 'manage_reader_request' 'first_name'%}">First Name <i class="fa-solid fa-sort"></i></a></th>
-            <th class="text-center" scope="col"><a href="{% url 'manage_reader_request' 'last_name'%}">Last Name <i class="fa-solid fa-sort"></i></a></th>
-            <th class="text-center" scope="col"><a href="{% url 'manage_reader_request' 'email'%}">Email <i class="fa-solid fa-sort"></i></a></th>
+            <th class="text-center" scope="col"><a href="{% url 'manage_book_request' 'title'%}">Title <i class="fa-solid fa-sort"></i></a></th>
+            <th class="text-center" scope="col"><a href="{% url 'manage_book_request' 'author'%}">Author <i class="fa-solid fa-sort"></i></a></th>
+            <th class="text-center" scope="col"><a href="{% url 'manage_book_request' 'publication_year'%}">Publication Year <i class="fa-solid fa-sort"></i></a></th>
             <th class="text-center" class="text-center">Action</th>
           </tr>
         </thead>
@@ -55,9 +55,9 @@
             {% if request.status == '1' %}
               <tr>
                 <td class="text-center">{{ forloop.counter }}</td>
-                <td class="text-center">{{ request.first_name }}</td>
-                <td class="text-center">{{ request.last_name }}</td>
-                <td class="text-center">{{ request.email }}</td>
+                <td class="text-center">{{ request.title }}</td>
+                <td class="text-center">{{ request.author }}</td>
+                <td class="text-center">{{ request.publication_year }}</td>
                 <td class="text-center">
                   <div class="dropdown">
                     <button class="btn btn-light btn-sm rounded-0 border dropdown-toggle" type="button" id="{{ request.pk }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
@@ -66,7 +66,7 @@
                         <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal{{ forloop.counter }}"><i class="fa-regular fa-square-check text-success"></i> Accept</button>
                       </li>
                       <li>
-                        <a class="dropdown-item" href="{% url 'decline_reader_request' request.id%}"><i class="fa-solid fa-square-xmark text-danger"></i> Decline</a>
+                        <a class="dropdown-item" href="{% url 'decline_book_request' request.id%}"><i class="fa-solid fa-square-xmark text-danger"></i> Decline</a>
                       </li>
                     </ul>
                   </div>
@@ -116,33 +116,27 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-          <i class="fa fa-plus text-info"> Accept Reader Account Request</i>
+          <i class="fa fa-plus text-info">Accept Book Request</i>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form action="{% url 'accept_reader_request' %}" method = "POST" autocomplete="off" class = "card p-3 mt-1 border-dark was-validated">
-          {% csrf_token %}
-          <input type="text" name="id" value="{{request.id}}" hidden>
-          <div class="input-group mb-3 mt-3">
-            <span class="input-group-text border-dark" >Username</span>
-            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required>
-          </div>
-          <div class="input-group mb-3 mt-3">
-            <span class="input-group-text border-dark">Password1</span>
-            <input type="password" id="password1" name="password1" class="form-control" placeholder="Password1" required>
-          </div>
-            <div class="input-group mb-3 mt-3">
-              <span class="input-group-text border-dark">Password2</span>
-              <input type="password" id="password2" name="password2" class="form-control" placeholder="Password2" required>
+        <form action="{% url 'accept_book_request' %}" method = "POST" autocomplete="off" class = "was-validated">
+            {% csrf_token %}
+            <input type="text" name="id" value="{{request.id}}" hidden>
+            <input type="text" name="id_book" hidden>
+            <div class="input-group mb-4 mt-3">
+                <span class="input-group-text border-dark" >Quantity</span>
+                <input type="text" id="quantity" name="quantity" class="form-control" placeholder="Quantity" required>
             </div>
-            <div class="text-end mt-3">
-              <div id="activateButton" class="btn btn-success btn-icon-split">
-                <span class="icon text-white-50">
-                  <i class="fa-solid fa-user-plus"></i>
-                </span>
-                <input type="submit" id="submitButton" style="display: none;">
-                <span class="text">Save</span>
-              </div>
+          
+            <div class="text-end mt-4">
+                <div id="activateButton" class="btn btn-success btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fa-solid fa-plus"></i>
+                    </span>
+                    <input type="submit" id="submitButton" style="display: none;">
+                    <span class="text">Save</span>
+                </div>
             </div>
           </form>
         </div>

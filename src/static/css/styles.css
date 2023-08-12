@@ -37,3 +37,9 @@
     cursor: pointer;
     background-color: #d3d3d3;
 }
+
+.scrollable {
+    min-height: 240px;
+    max-height: 240px;
+    overflow-y: scroll !important;
+}
