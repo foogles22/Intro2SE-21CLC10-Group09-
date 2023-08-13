@@ -808,7 +808,7 @@ def homepage(request):
     context['books'] = books
     allcategory = models.Category.objects.all()
     context['allcategory'] = allcategory
-    newbooks = models.Book.objects.all().order_by('-date_added')[0]
+    newbooks = models.Book.objects.all().order_by('-date_added').first()
     context['newbooks'] = newbooks
     blogs = models.Post.objects.all().order_by('-created_at')[0:3]
     context['blogs'] = blogs
