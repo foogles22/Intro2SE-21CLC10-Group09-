@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Coffee - Free Bootstrap 4 Template by Colorlib</title>
+    <title>Wellib system - Book for life</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -39,21 +39,12 @@
     {% include 'homepage/navbar.html' %}
 
     <!-- END nav -->
-    <section class="home-slider owl-carousel">
-        <div class="slider-item" style="background-image: url('{% static "images/booktop.jpg" %}')" data-stellar-background-ratio="0.5">
-          <div class="overlay"></div>
-          <div class="container">
-            <div class="row slider-text justify-content-center align-items-center">
-    
-              <div class="col-md-7 col-sm-12 text-center ftco-animate">
-                <h1 class="mb-3 mt-5 bread">Profile</h1>
-                <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'homepage' %}">Home</a></span> <span>Profile</span></p>
-              </div>
-    
-            </div>
-          </div>
-        </div>
+    <section class="home-slider owl-carousel" style = "height: 380px;">
+        <div class="slider-item" style= "height: 380px; background-image: url('{% static "images/booklist.jpg" %}')"></div>
+        <div class="slider-item" style= "height: 380px; background-image: url('{% static "images/boundbook.jpg" %}')"></div>
+        <div class="slider-item" style= "height: 380px; background-image: url('{% static "images/booktop.jpg" %}')"></div>
       </section>
+    
 
     <section class="ftco-section">
         <div class="container">
@@ -155,8 +146,9 @@
 				<div class="col-lg-3 col-md-6 mb-5 mb-md-5">
 					<div class="ftco-footer-widget mb-4">
 						<h2 class="ftco-heading-2">About Us</h2>
-						<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-							there live the blind texts.</p>
+						<p>We are a hub of knowledge, creativity, and
+                            community, dedicated to providing an enriching experience
+                            for all of our visitors.</p>
 						<ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
 							<li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
 							<li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
@@ -185,7 +177,7 @@
 				</div>
 				<div class="col-lg-2 col-md-6 mb-5 mb-md-5">
 					<div class="ftco-footer-widget mb-4 ml-md-4">
-						<h2 class="ftco-heading-2">Catggory</h2>
+						<h2 class="ftco-heading-2">Category</h2>
 						<ul class="list-unstyled">
 							{% for category in categories_footer%}
 							<li><a href="{% url 'searchbook' category.id %}" class="py-2 d-block">{{category.name}}</a></li>
@@ -206,18 +198,6 @@
 							</ul>
 						</div>
 					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-12 text-center">
-
-					<p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-						Copyright &copy;
-						<script>document.write(new Date().getFullYear());</script> All rights reserved | This template
-						is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com"
-							target="_blank">Colorlib</a>
-						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-					</p>
 				</div>
 			</div>
 		</div>

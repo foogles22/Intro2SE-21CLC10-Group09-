@@ -77,6 +77,9 @@ class EditAvatar(forms.ModelForm):
         fields = ('profile_img',)
 
 class SaveCategory(forms.ModelForm):
+    name = forms.CharField(max_length=250)
+    description = forms.Textarea()
+    image = forms.ImageField()
     class Meta:
         model = models.Category
         fields = ('name', 'description', 'image')
@@ -95,6 +98,10 @@ class SaveCategory(forms.ModelForm):
             return cleaned_data
     
 class SaveSourceType(forms.ModelForm):
+    code = forms.CharField(max_length=50)
+    name = forms.CharField(max_length=250)
+    description = forms.Textarea()
+
     class Meta:
         model = models.SourceType
         fields = ('code', 'name', 'description', )
@@ -130,8 +137,23 @@ class SavePost(forms.ModelForm):
         except:
             return cleaned_data
 
+    def clean(self):
+        id = self.data['id'] if (self.data['id']).isnumeric() else 0
+        code = self.data.get('code')
+        cleaned_data = self.cleaned_data
+        try:
+            if int(id) > 0:
+                models.SourceType.objects.exclude(id=id).get(code=code)
+            else:
+                models.SourceType.objects.get(code=code)
+            self.add_error('code',forms.ValidationError('This source type code already exists.'))
+        except:
+            return cleaned_data
 
 class SaveLanguage(forms.ModelForm):
+    code = forms.CharField(max_length=50)
+    fullname = forms.CharField(max_length=250)
+
     class Meta:
         model = models.Language
         fields = ('code', 'fullname', )
