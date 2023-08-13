@@ -9,6 +9,8 @@ admin.site.register(SourceType)
 admin.site.register(Language)
 admin.site.register(Book)
 admin.site.register(LoanTransaction)
+admin.site.register(ReaderRequest)
+admin.site.register(BookRequest)
 admin.site.register(Comment)
 admin.site.register(Post)
 

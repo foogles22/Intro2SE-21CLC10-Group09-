@@ -1,0 +1,49 @@
+{% extends 'ad/base.html' %}
+
+{% block Page_content %}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+	<h1 class="h3 mb-0 text-gray-800 "><i class="fa-solid fa-language"></i> Languages management</h1>
+</div>
+<div class="card shadow mb-4">
+	<div class="card-header py-3">
+        {% if type == 'Save' %}
+		<h6 class="m-0 font-weight-bold text-primary">Edit Category</h6>
+        {% else %}
+		<h6 class="m-0 font-weight-bold text-primary">Add Category</h6>
+        {% endif %}
+	</div>
+    <form action="{% url 'save_language' %}" method = "POST" enctype="multipart/form-data" autocomplete="off" class = "p-4 was-validated">
+        {% csrf_token %}
+        {% comment %} Dùng này để giấu ID khi Edit {% endcomment %}
+        <input type="hidden" name="id" value="{{language.id}}">
+        <div class="input-group mb-3">
+            <span class="input-group-text border-dark" style="width: 68px;" >Code</span>
+            <input type="text" id="code" name="code" class="form-control" placeholder="Code" value="{{language.code}}"required>
+         </div>
+         <div class="input-group mb-3 mt-3">
+            <span class="input-group-text border-dark" style="width: 68px;" >Name</span>
+            <input type="text" id="fullname" name="fullname" class="form-control" value="{{language.fullname}}" placeholder="Name" required>
+         </div>
+        <div class="d-flex justify-content-between mt-3">
+            <a href="{% url 'language' 'id'%}" class="btn btn-warning btn-icon-split" type="button">
+                <span class="icon text-white-50">
+                <i class="fa-solid fa-rotate-left"></i>
+                </span>
+            <span class="text">Back</span>
+            </a>
+
+            <div id="activateButton" class="btn btn-success btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fa-solid fa-plus"></i>
+                </span>
+                <input type="submit" id="submitButton" style="display: none;">
+                <span class="text">{{type}}</span>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+</div>
+{% endblock Page_content %}
+        

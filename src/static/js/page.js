@@ -1,4 +1,4 @@
-productsPerPage = 6; // Number of products to display per page
+productsPerPage = 10; // Number of products to display per page
 let currentPage = 1;
 
 function displayProducts() {

@@ -17,33 +17,37 @@
                     </li>
                     {% if request.user.profile.role == "ADMIN"  %}
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{% url 'category'%}">Categories</a>
+                        <a class="nav-link" aria-current="page" href="{% url 'book' 'id'%}">Books</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{% url 'source_type'%}">Source Types</a>
+                        <a class="nav-link" aria-current="page" href="{% url 'category' 'id'%}">Categories</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{% url 'language'%}">Languages</a>
+                        <a class="nav-link" aria-current="page" href="{% url 'source_type' 'id'%}">Source Types</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{% url 'book'%}">Books</a>
+                        <a class="nav-link" aria-current="page" href="{% url 'language' 'id'%}">Languages</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{% url 'user'%}">Users</a>
+                        <a class="nav-link" aria-current="page" href="{% url 'user' 'id'%}">Users</a>
                     </li>
+                    <!-- Librarian-->
                     {% else %}
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="{% url 'loan'%}">Loan Transaction</a>
                     </li>
-                    {% comment %} <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{% url 'reader_info'%}">Reader Info</a>
-                    </li> {% endcomment %}
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'reader_info' 'id'%}">Reader Info</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'request_book' 'id'%}">Request Book</a>
+                    </li>
                     {% endif %}
                 </ul>
 
                 <ul class="navbar-nav d-flex flex-row">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'edit_profile' request.user.id%}"><b>{{user.username}}</b></a>
+                        <a class="nav-link" href="{% url 'edit_profile' request.user.id%}"><b>{{request.user.username}}</b></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="{% url 'logout' %}">Logout</a>

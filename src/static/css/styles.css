@@ -1,0 +1,45 @@
+.page-item.active .page-link {
+    columns: #fff;
+    background-color: #6c757d;
+    border: 1px solid #6c757d;
+}
+
+.pagination > li > a {
+    background-color: #fff;
+    color: #6c757d;
+}
+
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > li > a:focus,
+.pagination > span > a:hover {
+    color: #111;
+    background-color: #d3d3d3;
+    border: 1px solid #6c757d;
+    box-shadow: none;
+}
+
+.dataTables_paginate {
+    margin-top: 10px !important; 
+}
+
+.list-group{
+    position: absolute;
+    top: 37px;
+    z-index: 2;
+}
+
+.input-group .form-control{
+    z-index: 1 !important;
+}
+
+.list-group-item:hover{
+    cursor: pointer;
+    background-color: #d3d3d3;
+}
+
+.scrollable {
+    min-height: 240px;
+    max-height: 240px;
+    overflow-y: scroll !important;
+}

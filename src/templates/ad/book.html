@@ -1,5 +1,170 @@
-{% extends 'ad/base.html'%}
+{% extends 'ad/base.html' %}
+{% load my_tags %}
+{% block Page_content %}
+<style>
+	a {
+	text-decoration:none;
+	color: black;
+	font-weight: 500;
+	}
+	a:hover {
+		text-decoration:none;
+		color: black;
+		font-weight: 500;
+	 }
+</style>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+	<h1 class="h3 mb-0 text-gray-800 "><i class="fa-solid fa-book-bookmark"></i> Books Management</h1>
+	<div class="d-flex">
+		<a href="{% url 'export_book'%}" class="btn btn-sm btn-primary btn-icon-split mr-2" type="button">
+			<span class="icon text-white-50 d-flex align-items-center">
+			<i class="fa-solid fa-file-export"></i>
+			</span>
+			<span class="text d-flex align-items-center">Export Book</span>
+		</a>
 
-{% block Page_content%}
-    <div class = "text-center">Đây là Books Page</div>
-{% endblock Page_content%}
+		<form action="{% url 'import_book'%}" method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+			<input type="submit" id="submitButton" hidden>
+			<div class="input-group">
+				<button id="activateButton" class="btn btn-sm btn-primary btn-icon-split hover-none" type="button">
+					<span class="icon text-white-50 d-flex align-items-center">
+					<i class="fa-solid fa-file-import"></i>
+					</span>
+					<span class="text d-flex align-items-center">Import Book</span>
+				</button>
+				<input type="file" name="csv_file" class="form-control" style="width: 300px;" required>
+			</div>
+		</form>
+	</div>
+</div>
+<div class="card shadow mb-4">
+	<div class="card-header py-2 d-flex justify-content-between">
+		<div class="m-0 font-weight-bold text-primary d-flex align-items-center">List of Books</div>
+		<div>
+			<a href="{% url 'manage_book'%}" class="btn btn-sm btn-success btn-icon-split" type="button">
+				<span class="icon text-white-50">
+				<i class="fas fa-plus"></i>
+			</span>
+			<span class="text">Add</span>
+			</a>
+			<a href="{% url 'manage_book_request' 'id'%}" class="btn btn-sm btn-success btn-icon-split" type="button">
+				<span class="icon text-white-50">
+				<i class="fa-solid fa-question"></i>
+			 </span>
+			 <span class="text">Request</span>
+			</a>
+		</div>
+	</div>
+	<div class="card-body">
+		<!-- input search + reset button-->
+		<div class="input-group input-group mb-3">
+			<input type="text" class="form-control" id="search" placeholder="Search for...">
+			<a href="" class="btn btn-dark"><i class="fas fa-sync-alt"></i></a>  
+		</div>
+		<table class="table table-bordered table-sm-mt-4" style="text-align: center;">
+			<colbook>
+				<col width="5%" />
+				<col width="20%" />
+				<col width="15%" />
+				<col width="15%" />
+				<col width="15%" />
+				<col width="20%" />
+				<col width="10%" />
+			</colbook>
+			<thead class="table-primary">
+				<tr id="chk-th">
+					<th class="text-center" scope="col">#</th>
+					<th class="text-center" scope="col"><a href="{% url 'book' 'title'%}">Book Title <i class="fa-solid fa-sort"></i></a></th>
+					<th class="text-center" scope="col"><a href="">Category <i class="fa-solid fa-sort"></i></a></th>
+					<th class="text-center" scope="col"><a href="{% url 'book' 'sourcetype'%}">Source Type <i class="fa-solid fa-sort"></i></a></th>
+					<th class="text-center" scope="col"><a href="{% url 'book' 'language'%}">Language <i class="fa-solid fa-sort"></i></a></th>
+					<th class="text-center" scope="col"><a href="{% url 'book' 'status'%}">Status <i class="fa-solid fa-sort"></i></a></th>
+					<th class="text-center" class="text-center">Action</th>
+				</tr>
+			</thead>
+			<tbody id="myTable">
+				{% if book %}
+				{% for b in book %}
+				<tr>
+					<td class="text-center">{{ forloop.counter }}</td>
+					<td class="text-center">{{ b.title }}</td>
+					<td class="text-center">
+						{% for cat in b.category.all %} 
+						{% if forloop.counter|nocomma:b.category.all %}
+						{{ cat }}, 
+						{% endif %}
+						{{ cat }}
+						{% endfor %}
+					</td>
+					<td class="text-center">{{ b.sourcetype.code }}</td>
+					<td class="text-center">{{ b.language.code }}</td>
+					<td class="text-center">{{ b.status }}</td>
+					<td class="text-center">
+						<div class="dropdown">
+							<button class="btn btn-light border dropdown-toggle" type="button" id="{{ b.id }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
+							<ul class="dropdown-menu" aria-labelledby="{{ b.id }}">
+								<li>
+									<button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal{{ forloop.counter }}"><i class="fa fa-eye text-dark"></i> View</button>
+
+								</li>
+								<li>
+									<a class="dropdown-item" href="{% url 'manage_book_pk' b.id%}"><i class="fa fa-edit text-primary"></i> Edit</a>
+								</li>
+								<li>
+									<a class="dropdown-item" href="{% url 'delete_book' b.id%}"><i class="fa fa-trash text-danger"></i> Delete</a>
+								</li>
+							</ul>
+						</div>
+					</td>
+				</tr>
+				<!-- Modal View-->
+				<div class="modal fade" id="modal{{ forloop.counter }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-xl modal-dialog-centered text-white">
+						<div class="modal-content border-bottom-info">
+							<div class="modal-header bg-info">
+								<h5 class="modal-title" id="exampleModalLabel">Book Detail</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								{% include 'ad/view_book.html' %}
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+				{% endif %}
+			</tbody>
+		</table>
+		<nav aria-label="Page">
+			<ul class="pagination  justify-content-end">
+				{% if book.has_previous %}
+				<li class="page-item"><a class="page-link" href="?page={{book.previous_page_number}}"><i class="fa-solid fa-backward"></i></a></li>
+				{% else %}
+				<li class="page-item disabled"><a class="page-link"><i class="fa-solid fa-backward"></i></a></li>
+				{% endif %}
+				{% if book.number|moreB%}
+				<li class="page-item"><a class="page-link" style="pointer-events: none;"><i class="fa-solid fa-ellipsis"></i></a></li>
+				{% endif %}
+				{% for i in book.number|range_list:book.paginator.num_pages %}
+				{% if i == book.number %}
+				<li class="page-item"><a class="page-link" href="?page={{i}}" style="background-color: #d3d3d3;">{{i}}</a></li>
+				{% else %}
+				<li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+				{% endif %}
+				{% endfor %}
+				{% if book.number|moreF:book.paginator.num_pages%}
+				<li class="page-item"><a class="page-link" style="pointer-events: none;"><i class="fa-solid fa-ellipsis"></i></a></li>
+				{% endif %}
+				{% if book.has_next %}
+				<li class="page-item"><a class="page-link" href="?page={{book.next_page_number}}"><i class="fa-solid fa-forward"></i></a></li>
+				{% else %}
+				<li class="page-item disabled"><a class="page-link"><i class="fa-solid fa-forward"></i></a></li>
+				{% endif %}
+			</ul>
+		</nav>
+	</div>
+</div>
+</div>
+</div>
+{% endblock %}

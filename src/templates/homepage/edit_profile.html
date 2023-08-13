@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Coffee - Free Bootstrap 4 Template by Colorlib</title>
+    <title>Wellib system - Book for life</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -55,22 +55,12 @@
     {% include 'homepage/navbar.html' %}
 
 
-    <section class="home-slider owl-carousel">
-        <div class="slider-item" style="background-image: url(images/bg_3.jpg);" data-stellar-background-ratio="0.5">
-            <div class="overlay"></div>
-            <div class="container">
-                <div class="row slider-text justify-content-center align-items-center">
-
-                    <div class="col-md-7 col-sm-12 text-center ftco-animate">
-                        <h1 class="mb-3 mt-5 bread">Edit My Profile</h1>
-                        <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>My
-                                Profile</span></p>
-                    </div>
-
-                </div>
-            </div>
-        </div>
+    <section class="home-slider owl-carousel" style = "height: 380px;">
+        <div class="slider-item" style= "height: 380px; background-image: url('{% static "images/booklist.jpg" %}')"></div>
+        <div class="slider-item" style= "height: 380px; background-image: url('{% static "images/boundbook.jpg" %}')"></div>
+        <div class="slider-item" style= "height: 380px; background-image: url('{% static "images/booktop.jpg" %}')"></div>
     </section>
+    
 
 
     <section class="ftco-section">
@@ -115,8 +105,9 @@
                                                     <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{request.user.profile.first_name}}&ensp;{{request.user.profile.last_name}}</h4>
                                                     <p class="mb-0">{{profile.email}}</p>
                                                     <!-- form -->
-                                                    <form action="{% url 'edit_profile' request.user.id %}" enctype="multipart/form-data">
-                                                        <input id="profile_img" type="file" name="profile_img" style="display: none;">
+                                                    <form action="{% url 'edit_avatar' request.user.id %}" method= "POST" enctype="multipart/form-data">
+                                                        {% csrf_token %}
+                                                        <input id="profile_img" type="file" name="profile_img" hidden>
                                                         <div class="mt-2">
                                                             <button id="avabtn" class="btn btn-primary" type="button">
                                                                 <i class="fa fa-fw fa-camera"></i>
@@ -208,21 +199,21 @@
                                                                         <label>Email</label>
                                                                     </div>
                                                                     <input type="text" name="email" placeholder="Email@"
-                                                                    value="{{profile.email}}">
+                                                                    value="{{profile.email}}" required>
                                                                 </div>
                                                                 <div class="col">
                                                                     <div class="form-group">
                                                                         <label>Phone</label>
                                                                     </div>
                                                                     <input type="text" name="phone"
-                                                                        placeholder="0000000000" value="{{profile.phone}}">
+                                                                        placeholder="0000000000" value="{{profile.phone}}" required>
                                                                 </div>
                                                                 <div class="col">
                                                                     <div class="form-group">
                                                                         <label>Date Of Birth</label>
                                                                     </div>
                                                                     <input type="date" name="date_of_birth"
-                                                                        value="{{profile.date_of_birth|date:'Y-m-d' }}">
+                                                                        value="{{profile.date_of_birth|date:'Y-m-d' }}" required>
                                                                 </div>
                                                             </div>
                                                             <div class="row">
@@ -230,7 +221,7 @@
                                                                     <div class="form-group">
                                                                         <label>About</label>
                                                                     </div>
-                                                                    <textarea rows="5" placeholder="My Bio" name = "bio" value = {{profile.bio}}></textarea>
+                                                                    <textarea rows="5" placeholder="My Bio" name = "bio">{{profile.bio}}</textarea>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -238,12 +229,13 @@
                                                     </div>
                                                     <div class="row" style = "padding-bottom: 30px;">
                                                         <div class="col d-flex justify-content-end">
-                                                            <button class="btn btn-primary" type="submit">Save
-                                                                Changes</button>
+                                                            <button class="btn btn-primary" type="submit">Save Changes</button>
                                                         </div>
                                                     </div>
                                                 </form>
-                                                <form>
+
+                                                <form action="{% url 'change_password' %}" method = "POST">
+                                                    {% csrf_token %}
                                                     <div class="nav nav-tabs" style="margin-bottom: 30px"></div>
                                                     <div class="row">
                                                         <div class="col-12 col-sm-6 mb-3">
@@ -253,7 +245,7 @@
                                                                     <div class="form-group">
                                                                         <label>Current Password</label>
                                                                     </div>
-                                                                    <input type="password" placeholder="••••••">
+                                                                    <input name= "old_password" type="password" placeholder="••••••">
                                                                 </div>
                                                             </div>
                                                             <div class="row">
@@ -261,7 +253,7 @@
                                                                     <div class="form-group">
                                                                         <label>New Password</label>
                                                                     </div>
-                                                                    <input type="password" placeholder="••••••">
+                                                                    <input name="new_password1" type="password" placeholder="••••••">
                                                                 </div>
                                                             </div>
                                                             <div class="row">
@@ -269,7 +261,7 @@
                                                                     <div class="form-group">
                                                                         <label>Confirm Password</label>
                                                                     </div>
-                                                                    <input type="password" placeholder="••••••">
+                                                                    <input name="new_password2" type="password" placeholder="••••••">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -360,8 +352,9 @@
 				<div class="col-lg-3 col-md-6 mb-5 mb-md-5">
 					<div class="ftco-footer-widget mb-4">
 						<h2 class="ftco-heading-2">About Us</h2>
-						<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-							there live the blind texts.</p>
+						<p>We are a hub of knowledge, creativity, and
+                            community, dedicated to providing an enriching experience
+                            for all of our visitors.</p>
 						<ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
 							<li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
 							<li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
@@ -390,7 +383,7 @@
 				</div>
 				<div class="col-lg-2 col-md-6 mb-5 mb-md-5">
 					<div class="ftco-footer-widget mb-4 ml-md-4">
-						<h2 class="ftco-heading-2">Catggory</h2>
+						<h2 class="ftco-heading-2">Category</h2>
 						<ul class="list-unstyled">
 							{% for category in categories_footer%}
 							<li><a href="{% url 'searchbook' category.id %}" class="py-2 d-block">{{category.name}}</a></li>
