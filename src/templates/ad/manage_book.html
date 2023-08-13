@@ -42,7 +42,7 @@
         </div>
         <div class="input-group mb-3 mt-3">
             <span class="input-group-text border-dark" style="width: 138px;">Description</span>
-            <input type="text" id="description" name="description" class="form-control" placeholder="Description" value="{{book.description}}" required>
+            <textarea id="description" name="description" class="form-control" rows="5" required>{{book.description}}</textarea>
         </div>
         <div class="input-group mb-3 mt-3">
             <span class="input-group-text border-dark" style="width: 138px;" >Source Type</span>
@@ -94,8 +94,6 @@
             </div>
         </div>
     </form>
-</div>
-</div>
 </div>
 {% endblock Page_content %}
         

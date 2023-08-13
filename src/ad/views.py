@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
+from django.core.files.storage import FileSystemStorage
 from . import models
 from . import forms
 from .decorators import user_is_authenticated, allowed_users
@@ -15,6 +16,7 @@ from django.utils import timezone
 import os
 from django.db.models import Q
 from django.contrib.auth.forms import PasswordChangeForm
+import csv
 
 # Create your views here.
 
@@ -25,6 +27,15 @@ def context_data():
         "system_name": "Wellib",
     }
     return context
+
+def first_access(request):
+    if request.user.is_authenticated:
+        if request.user.profile.role == "ADMIN":
+            return redirect('adhome')
+        if request.user.profile.role == "LIBRARIAN":
+            return redirect('libhome')
+    else:
+        return redirect('homepage')
 
 
 # AUTHENTICATE-AUTHENTICATE-AUTHENTICATE-AUTHENTICATE-AUTHENTICATE-AUTHENTICATE-AUTHENTICATE-AUTHENTICATE
@@ -127,6 +138,8 @@ def edit_avatar(request, id):
 def delete_user(request, id):
     user = User.objects.get(pk = id)
     messages.success(request, 'Deleting acount succeed')
+    if len(user.profile.profile_img) > 0:
+        os.remove(user.profile.profile_img)
     user.delete()
     return redirect("user", 'id')
 
@@ -145,7 +158,7 @@ def category(request, order = 'id'):
     context = context_data()
     context['page_title'] = 'Categories'
     category = models.Category.objects.all().order_by(order)
-    p = Paginator(category, 3)
+    p = Paginator(category, 6)
     page = request.GET.get('page')
     category = p.get_page(page)
     context["category"] = category
@@ -183,7 +196,6 @@ def save_category(request):
             else:
                 messages.success(request, 'New category added')
         else:
-            print(category.errors.as_text)
             for field in category.errors.values():
                 for error in field:
                     messages.error(request, error)
@@ -207,7 +219,7 @@ def source_type(request, order = 'id'):
     context = context_data()
     context['page_title'] = 'Source Types'
     source_type = models.SourceType.objects.all().order_by(order)
-    p = Paginator(source_type, 3)
+    p = Paginator(source_type, 6)
     page = request.GET.get('page')
     source_type = p.get_page(page)
     context["source_type"] = source_type
@@ -241,7 +253,6 @@ def save_source_type(request):
             else:
                 messages.success(request, 'Source type added successfully')
         else:
-            print(source_type.errors.as_text)
             for field in source_type.errors.values():
                 for error in field:
                     messages.error(request, error)
@@ -263,7 +274,7 @@ def language(request, order = 'id'):
     context = context_data()
     context['page_title'] = 'Languages'
     language = models.Language.objects.all().order_by(order)
-    p = Paginator(language, 3)
+    p = Paginator(language, 6)
     page = request.GET.get('page')
     language = p.get_page(page)
     context["language"] = language
@@ -297,7 +308,6 @@ def save_language(request):
             else:
                 messages.success(request, 'New language added')
         else:
-            print(language.errors.as_text)
             for field in language.errors.values():
                 for error in field:
                     messages.error(request, error)
@@ -319,7 +329,7 @@ def book(request, order = 'id'):
     context = context_data()
     context['page_title'] = 'Books'
     book = models.Book.objects.all().order_by(order)
-    p = Paginator(book, 3)
+    p = Paginator(book, 6)
     page = request.GET.get('page')
     book = p.get_page(page)
     context["book"] = book
@@ -381,7 +391,7 @@ def manage_book_request(request, order = 'id'):
     context = context_data()
     context["page_title"] = "Manage Book Requests"
     requests = models.BookRequest.objects.all().order_by(order)
-    p = Paginator(requests, 3)
+    p = Paginator(requests, 6)
     page = request.GET.get('page')
     requests = p.get_page(page)
     context["requests"] = requests
@@ -449,7 +459,7 @@ def loan(request, order = 'id'):
     context["page_title"] = "Loan Transaction"
     loans = models.LoanTransaction.objects.get_queryset().order_by(order).filter(returned = "0")
     # setup pagination
-    p = Paginator(loans, 5)
+    p = Paginator(loans, 6)
     page = request.GET.get('page')
     loan_p = p.get_page(page)
     context["loan"] = loan_p
@@ -540,7 +550,7 @@ def reader_info(request, order = 'id'):
     else:
         users = order_by_quantity()
     # setup pagination
-    p = Paginator(users, 5)
+    p = Paginator(users, 6)
     page = request.GET.get('page')
     user_p = p.get_page(page)
     context["users"] = user_p
@@ -558,7 +568,7 @@ def request_reader(request, order = 'id'):
         return redirect('request_reader', 'id')
     else:
         requests = models.ReaderRequest.objects.all().order_by(order)
-        p = Paginator(requests, 5)
+        p = Paginator(requests, 6)
         page = request.GET.get('page')
         requests = p.get_page(page)
         context["requests"] = requests
@@ -594,7 +604,7 @@ def request_book(request, order = 'id'):
     categories = models.Category.objects.all()
     source_types = models.SourceType.objects.all()
     languages = models.Language.objects.all()
-    p = Paginator(requests, 5)
+    p = Paginator(requests, 6)
     page = request.GET.get('page')
     requests = p.get_page(page)
     context["requests"] = requests
@@ -621,11 +631,72 @@ def save_request_book(request):
 @login_required
 @allowed_users(allowed_roles=['LIBRARIAN'])
 def delete_request_book(request, id = None):
-    models.BookRequest.objects.get(pk = id).delete()
+    book_request = models.BookRequest.objects.get(pk = id)
+    if len(book_request.image) > 0:
+        os.remove(book_request.image)
+    book_request.delete()
     messages.success(request, 'Deleting book request successfully!')
     return redirect('request_reader' , 'id')
 
+@login_required
+@allowed_users(allowed_roles=['LIBRARIAN'])
+def post(request, order = None):
+    context = context_data()
+    context["page_title"] = "Post"
+    posts = models.Post.objects.all()
+    p = Paginator(posts, 6)
+    page = request.GET.get('page')
+    posts = p.get_page(page)
+    context["posts"] = posts
+    return render(request, "ad/post.html", context)
 
+@login_required
+@allowed_users(allowed_roles=['LIBRARIAN'])
+def manage_post(request, id=None):
+    context = context_data()
+    context["page_title"] = "Manage Posts"
+    if id:
+        context["post"] = models.Post.objects.get(pk=id)
+        context["type"] = "Save"
+    else:
+        context["post"] = {}
+        context["type"] = "Add"
+    return render(request, "ad/manage_post.html", context)
+
+
+@login_required
+@allowed_users(allowed_roles=['LIBRARIAN'])
+def save_post(request):
+    if request.method == "POST":
+        Post = request.POST
+        if Post['id']:
+            post = models.Post.objects.get(pk = Post['id'])
+            post = forms.SavePost(request.POST,request.FILES, instance=post)
+        else:
+            post = forms.SavePost(request.POST,request.FILES)
+        if post.is_valid():
+            post.save()
+            if Post['id']:
+                messages.success(request, 'Post edited successfully')
+                return redirect('post', 'id')
+            else:
+                messages.success(request, 'New post added')
+        else:
+            for field in post.errors:
+                messages.error(request, field)
+    else:
+        messages.error(request, 'No data has been sent')
+    return HttpResponseRedirect('/manage_post/')
+    
+
+@login_required
+def delete_post(request, id):
+    post = models.Post.objects.get(pk = id)
+    if len(post.image_blog) > 0:
+        os.remove(post.image_blog.path)
+    post.delete()
+    messages.success(request,'Delete post successfully')
+    return HttpResponseRedirect('/post/id')
 
 # ---------------------Users----------------
 @login_required
@@ -634,7 +705,7 @@ def user(request, order = 'id'):
     context = context_data()
     context["page_title"] = "Users"
     users = User.objects.all().order_by(order)
-    p = Paginator(users, 3)
+    p = Paginator(users, 6)
     page = request.GET.get('page')
     users = p.get_page(page)
     context["users"] = users
@@ -679,7 +750,7 @@ def manage_reader_request(request, order = 'id'):
     context = context_data()
     context["page_title"] = "Manage Reader Request"
     requests = models.ReaderRequest.objects.all().order_by(order)
-    p = Paginator(requests, 3)
+    p = Paginator(requests, 6)
     page = request.GET.get('page')
     requests = p.get_page(page)
     context["requests"] = requests
@@ -722,6 +793,7 @@ def decline_reader_request(request, id=None):
     return redirect('manage_reader_request', 'id')
 
 @login_required
+@allowed_users(allowed_roles=['ADMIN'])
 def view_user(request, id):
     context = context_data()
     context["page_title"] = "View Categories"
@@ -777,6 +849,8 @@ def blog(request, id = None):
     context['categories_footer'] = models.Category.objects.all().order_by('-date_added')[0:4]
     return render(request,'homepage/blog-single.html', context)
 
+@login_required
+@allowed_users(allowed_roles=['ADMIN','LIBRARIAN', 'READER'])
 def profile(request, id = None):
     context = {}
     context['profile'] = models.Profile.objects.get(pk = id)
@@ -786,6 +860,8 @@ def profile(request, id = None):
     context['categories_footer'] = models.Category.objects.all().order_by('-date_added')[0:4]
     return render(request,'homepage/profile.html',context)
 
+@login_required
+@allowed_users(allowed_roles=['ADMIN','LIBRARIAN', 'READER'])
 def editprofile(request, id = None):
     context = {}
     context['profile'] = models.Profile.objects.get(pk = id)
@@ -806,6 +882,8 @@ def bookdetail(request, id = None):
     context['categories_footer'] = models.Category.objects.all().order_by('-date_added')[0:4]
     return render(request,'homepage/book-single.html', context)
 
+@login_required
+@allowed_users(allowed_roles=['ADMIN','LIBRARIAN', 'READER'])
 def save_comment(request, id = None):
     comment = forms.SaveComment(request.POST)
     if comment.is_valid():
@@ -846,3 +924,226 @@ def searchbook(request, cate = None):
     context['blogs_footer'] = blogs_footer
     context['categories_footer'] = models.Category.objects.all().order_by('-date_added')[0:4]
     return render(request,'homepage/book.html', context)
+
+
+# Import - Export
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def export_book(request):
+    book = models.Book.objects.all()
+    file = open('book.csv','w',encoding='utf-8',newline='')
+    writer = csv.writer(file, delimiter=',')
+    writer.writerow(['Title', 'Publication year', 'Author', 'Category', 'Description', 'Source Type', 'Language', 'Image', 'Quantity'])
+    for b in book:
+        writer.writerow([
+            b.title,
+            b.publication_year,
+            b.author,
+            b.category.all(),
+            b.description,
+            b.sourcetype,
+            b.language,
+            b.image,
+            b.quantity,
+        ])
+    file.close()
+    messages.success(request,'Export book successfully')
+    return redirect('book', 'id')
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def import_book(request):
+    if request.method == "POST":
+        file = request.FILES["csv_file"]
+        storage = FileSystemStorage()
+        filename = storage.save(file.name, file)
+        valid = True
+        with open(storage.path(filename), "r", encoding='utf-8') as csvfile:
+            reader = csv.reader(csvfile, delimiter=";")
+            for row in reader:
+                book = models.Book()
+                book.title = row[0]
+                book.author = row[1]
+                book.publication_year = int(row[2])
+                book.quantity = 0
+                book.save()
+                category_names = row[4].split(',')
+                for names in category_names:
+                    category_instance = models.Category.objects.filter(name = names).first()
+                    category_id = category_instance.pk
+                    print(category_id)
+                    book.category.add(category_id)
+                    print(book.category.all())
+                book.sourcetype = models.SourceType.objects.get(name = row[5])
+                book.language = models.Language.objects.get(fullname = row[6])
+                book.description = row[7]
+                book.image = row[8]
+                book.quantity = int(row[9])
+                try:
+                    if models.Book.objects.filter(title=book.title).count() > 1:
+                        messages.warning(request, message=f"{book.title} already exists.")
+                        valid = False
+                        try:
+                            book.delete()
+                        except:
+                            pass
+                except:
+                    pass
+                if book.publication_year > timezone.now().year:
+                    messages.warning(request, message='Publication year exceeds current year.')
+                    valid = False
+                    try:
+                        book.delete()
+                    except:
+                        pass
+                if book.quantity < 0:
+                    messages.warning(request, message='The book quantity is smaller than 0.')
+                    valid = False
+                    try:
+                        book.delete()
+                    except:
+                        pass
+                if valid == True:
+                    book.save()
+        os.remove(storage.path(filename))
+    else:
+        messages.error(request, 'No data has been sent')
+    return redirect('book', 'id')
+
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def export_category(request):
+    category = models.Category.objects.all()
+    file = open('category.csv','w',encoding='utf-8',newline='')
+    writer = csv.writer(file, delimiter=',')
+    writer.writerow(['Name', 'Description','Image'])
+    for cat in category:
+        writer.writerow([
+            cat.name,
+            cat.description,
+            cat.image
+        ])
+    file.close()
+    messages.success(request,'Export category successfully')
+    return redirect('category', 'id')
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def import_category(request):
+    if request.method == "POST":
+        file = request.FILES["csv_file"]
+        storage = FileSystemStorage()
+        filename = storage.save(file.name, file)
+        print(filename)
+        with open(storage.path(filename), "r", encoding='utf-8') as csvfile:
+            reader = csv.reader(csvfile, delimiter=";")
+            for row in reader:
+                category = models.Category()
+                category.name = str(row[0])
+                category.description = str(row[1])
+                category.image = row[2]
+                try:
+                    models.Category.objects.get(name=category.name)
+                    messages.warning(request, message=f'{category.name} already exists.')
+                except:
+                    category.save()
+                    messages.success(request,message=f'{category.name} succesfully')
+        os.remove(storage.path(filename))
+    else:
+        messages.error(request, 'No data has been sent')
+    return redirect('category', 'id')
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def export_language(request):
+    language = models.Language.objects.all()
+    file = open('language.csv','w',encoding='utf-8',newline='')
+    writer = csv.writer(file, delimiter=',')
+    writer.writerow(['Code', 'Fullname'])
+    for lang in language:
+        writer.writerow([
+            lang.code,
+            lang.fullname
+        ])
+    file.close()
+    messages.success(request,'Export language successfully')
+    return redirect('language', 'id')
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def import_language(request):
+    if request.method == "POST":
+        file = request.FILES["csv_file"]
+        storage = FileSystemStorage()
+        filename = storage.save(file.name, file)
+
+        with open(storage.path(filename), "r", encoding='utf-8') as csvfile:
+            reader = csv.reader(csvfile, delimiter=";")
+            # next(reader)
+            for row in reader:
+                language = forms.SaveLanguage(
+                    data = {
+                        'id':'1',
+                        'fullname': row[0],
+                        'code': row[1],
+                    }
+                )
+                if language.is_valid():
+                    language.save()
+                    messages.success(request,message='Import succesfully')
+                else:
+                    for error in language.errors.values():
+                        messages.warning(request, error)
+    else:
+        messages.error(request, 'No data has been sent')
+    return redirect('language', 'id')
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def export_source_type(request):
+    source_type = models.SourceType.objects.all()
+    file = open('source_type.csv','w',encoding='utf-8',newline='')
+    writer = csv.writer(file, delimiter=',')
+    writer.writerow(['Code', 'Name', 'Description'])
+    for st in source_type:
+        writer.writerow([
+            st.code,
+            st.name,
+            st.description
+        ])
+    file.close()
+    messages.success(request,'Export source type successfully')
+    return redirect('source_type', 'id')
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def import_source_type(request):
+    if request.method == "POST":
+        file = request.FILES["csv_file"]
+        storage = FileSystemStorage()
+        filename = storage.save(file.name, file)
+
+        with open(storage.path(filename), "r", encoding='utf-8') as csvfile:
+            reader = csv.reader(csvfile, delimiter=";")
+            # next(reader)
+            for row in reader:
+                source_type = forms.SaveSourceType(
+                    data = {
+                        'id':'1',
+                        'code': row[1],
+                        'name': row[0],
+                        'description': row[2],
+                    }
+                )
+                if source_type.is_valid():
+                    source_type.save()
+                    messages.success(request,message='Import succesfully')
+                else:
+                    for error in source_type.errors.values():
+                        messages.warning(request, error)
+        os.remove(storage.path(filename))
+    else:
+        messages.error(request, 'No data has been sent')
+    return redirect('source_type', 'id')

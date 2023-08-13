@@ -77,9 +77,6 @@ class EditAvatar(forms.ModelForm):
         fields = ('profile_img',)
 
 class SaveCategory(forms.ModelForm):
-    name = forms.CharField(max_length=250)
-    description = forms.Textarea()
-    image = forms.ImageField()
     class Meta:
         model = models.Category
         fields = ('name', 'description', 'image')
@@ -98,10 +95,6 @@ class SaveCategory(forms.ModelForm):
             return cleaned_data
     
 class SaveSourceType(forms.ModelForm):
-    code = forms.CharField(max_length=50)
-    name = forms.CharField(max_length=250)
-    description = forms.Textarea()
-
     class Meta:
         model = models.SourceType
         fields = ('code', 'name', 'description', )
@@ -119,10 +112,26 @@ class SaveSourceType(forms.ModelForm):
         except:
             return cleaned_data
 
-class SaveLanguage(forms.ModelForm):
-    code = forms.CharField(max_length=50)
-    fullname = forms.CharField(max_length=250)
+class SavePost(forms.ModelForm):
+    class Meta:
+        model = models.Post
+        fields = ('title', 'writer', 'content','main_content', 'image_blog' )
 
+    def clean(self):
+        id = self.data['id'] if (self.data['id']).isnumeric() else 0
+        title = self.data.get('title')
+        cleaned_data = self.cleaned_data
+        try:
+            if int(id) > 0:
+                models.Post.objects.exclude(id=id).get(title=title)
+            else:
+                models.Post.objects.get(title=title)
+            self.add_error('code',forms.ValidationError('This post title already exists.'))
+        except:
+            return cleaned_data
+
+
+class SaveLanguage(forms.ModelForm):
     class Meta:
         model = models.Language
         fields = ('code', 'fullname', )

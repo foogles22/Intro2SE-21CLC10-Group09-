@@ -1,0 +1,56 @@
+{% extends 'ad/base.html' %}
+
+{% block Page_content %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+	<h1 class="h3 mb-0 text-gray-800 "><i class="fa-regular fa-newspaper"></i> Posts Management</h1>
+</div>
+<div class="card shadow mb-4">
+	<div class="card-header py-3">
+        {% if type == 'Save' %}
+		<h6 class="m-0 font-weight-bold text-primary">Edit Post</h6>
+        {% else %}
+		<h6 class="m-0 font-weight-bold text-primary">Add Post</h6>
+        {% endif %}
+	</div>
+    <form action="{% url 'save_post' %}" method = "POST" enctype="multipart/form-data" autocomplete="off" class = "p-4 was-validated">
+        {% csrf_token %}
+        {% comment %} Dùng này để giấu ID khi Edit {% endcomment %}
+        <input type="hidden" name="id" value="{{post.id}}">
+        <input type="hidden" name="writer" value="{{request.user.id}}">
+        <div class="input-group mb-3">
+            <span class="input-group-text border-dark" style="width: 138px;" >Title</span>
+            <input type="text" id="title" name="title" class="form-control" placeholder="Title" value="{{post.title}}" required>
+        </div>
+        <div class="input-group mb-3 mt-3">
+            <span class="input-group-text border-dark" style="width: 138px;">Content</span>
+            <textarea id="content" name="content" class="form-control" rows="5" required>{{post.content}}</textarea>
+        </div>
+        <div class="input-group mb-3 mt-3">
+            <span class="input-group-text border-dark" style="width: 138px;">Main Content</span>
+            <textarea id="main_content" name="main_content" class="form-control" rows="10" required>{{post.main_content}}</textarea>
+        </div>
+        <div class="input-group mb-3 mt-3">
+            <span class="input-group-text border-dark" style="width: 138px;">Cover Photo</span>
+            <input type="file" id="image_blog" name="image_blog" class="form-control" value="{{post.image_blog}}" required>
+        </div>
+    
+        <div class="d-flex justify-content-between mt-3">
+            <a href="{% url 'post' 'id'%}" class="btn btn-warning btn-icon-split" type="button">
+                <span class="icon text-white-50">
+                <i class="fa-solid fa-rotate-left"></i>
+                </span>
+            <span class="text">Back</span>
+            </a>
+
+            <div id="activateButton" class="btn btn-success btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fa-solid fa-plus"></i>
+                </span>
+                <input type="submit" id="submitButton" style="display: none;">
+                <span class="text">{{type}}</span>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock Page_content %}
+        

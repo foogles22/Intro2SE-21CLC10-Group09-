@@ -11,16 +11,16 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 # -User-User--User--User--User--User--User--User--User--User--User--User--User--User--User--User--User--User-
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=50, blank=False, null= False)
-    last_name = models.CharField(max_length=50, blank=False, null= False)
-    email = models.EmailField(max_length=50, blank=False, null= False)
+    first_name = models.CharField(max_length=255, blank=False, null= False)
+    last_name = models.CharField(max_length=255, blank=False, null= False)
+    email = models.EmailField(max_length=255, blank=False, null= False)
     identity = models.CharField(max_length=9, blank=False, null= False)
     phone = models.CharField(max_length=15, blank=True)
     date_of_birth = models.DateField(default= timezone.now, blank=True)
     sex = models.CharField(max_length=2, choices=(('1','MALE'), ('2', 'FEMALE')), blank=True)
-    profile_img = models.ImageField(upload_to=('avatars/'),default=('avatars/default.jpg'))
+    profile_img = models.ImageField(upload_to=('images/avatars/'),default=('images/avatars/default.jpg'))
     first_time = models.BooleanField(null=False, default=True)
-    bio = models.CharField(null=True, max_length=50, default="Edit profile for more.")
+    bio = models.CharField(null=True, max_length=255, default="Edit profile for more.")
     date_joined = models.DateField(null=True, default=timezone.now)    
     class ROLE(models.TextChoices):
         ADMIN = "ADMIN", "Admin"
@@ -50,9 +50,9 @@ def create_profile(sender, instance, created, **kwargs):
         user_profile.save()
 
 class ReaderRequest(models.Model):
-    first_name = models.CharField(max_length=50, blank=False, null= False)
-    last_name = models.CharField(max_length=50, blank=False, null= False)
-    email = models.EmailField(max_length=50, blank=False, null= False)
+    first_name = models.CharField(max_length=255, blank=False, null= False)
+    last_name = models.CharField(max_length=255, blank=False, null= False)
+    email = models.EmailField(max_length=255, blank=False, null= False)
     date_added = models.DateTimeField(null=False, default=timezone.now)
     status = models.CharField(
         max_length=2, choices=(("1", "Wait"), ("2", "Accept"), ("3", "Decline")), default="1"
@@ -63,10 +63,10 @@ class ReaderRequest(models.Model):
 
 # -ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN
 class Category(models.Model):
-    name = models.CharField(blank=False, null=False, max_length=250)
-    description = models.TextField(blank=True, null=True, max_length=250)
+    name = models.CharField(blank=False, null=False, max_length=500)
+    description = models.TextField(blank=False, null=False, max_length=500)
     date_added = models.DateTimeField(null=False, default=timezone.now)
-    image = models.ImageField(null=False, blank=False, upload_to="images/")
+    image = models.ImageField(null=False, blank=False, upload_to="images/category/")
 
     def __str__(self):
         return str(f"{self.name}")
@@ -74,8 +74,8 @@ class Category(models.Model):
 
 class SourceType(models.Model):
     code = models.CharField(blank=False, null=False, max_length=50)
-    name = models.CharField(null= False, blank=False, max_length=250)
-    description = models.TextField(blank=True, null=True, max_length=250)
+    name = models.CharField(null= False, blank=False, max_length=500)
+    description = models.TextField(blank=False, null=False, max_length=500)
     date_added = models.DateTimeField(null=False, default=timezone.now)
 
     def __str__(self):
@@ -83,8 +83,8 @@ class SourceType(models.Model):
 
 
 class Language(models.Model):
-    code = models.CharField(max_length=50, blank=False, null=False)
-    fullname = models.CharField(max_length=250,blank=False, null=False)
+    code = models.CharField(max_length=255, blank=False, null=False)
+    fullname = models.CharField(max_length=500,blank=False, null=False)
     date_added = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
@@ -92,14 +92,14 @@ class Language(models.Model):
 
 
 class Book(models.Model):
-    title = models.CharField(blank=False, null=False, max_length=250)
+    title = models.CharField(blank=False, null=False, max_length=500)
     publication_year = models.IntegerField(null= False, blank=False, validators=[MaxValueValidator(timezone.now().year)])
-    author = models.CharField(null= False, blank=False, max_length=250)
+    author = models.CharField(null= False, blank=False, max_length=500)
     category = models.ManyToManyField(Category)
-    description = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=False, null=False, max_length=500)
     sourcetype = models.ForeignKey(SourceType, on_delete=models.SET_NULL, null=True)
     language = models.ForeignKey(Language, on_delete=models.SET_NULL, null=True)
-    image = models.ImageField(null=False, blank=False, upload_to="images/")
+    image = models.ImageField(null=False, blank=False, upload_to="images/books/")
     quantity = models.IntegerField(null=False, blank=False, validators=[MinValueValidator(0)])
     status = models.CharField(
         max_length=2, choices=(("1", "Active"), ("2", "Inactive")), default="1"
@@ -113,14 +113,14 @@ class Book(models.Model):
     
 
 class BookRequest(models.Model):
-    title = models.CharField(max_length=250, blank=False, null=False)
+    title = models.CharField(max_length=500, blank=False, null=False)
     publication_year = models.IntegerField(blank=False, null=False)
-    author = models.CharField(max_length=250, blank=False, null=False)
+    author = models.CharField(max_length=500, blank=False, null=False)
     category = models.ManyToManyField(Category)
-    description = models.TextField(max_length=250, blank=False, null=False)
+    description = models.TextField(max_length=500, blank=False, null=False)
     sourcetype = models.ForeignKey(SourceType, null=True, on_delete=models.SET_NULL)
     language = models.ForeignKey(Language, null=True, on_delete=models.SET_NULL)
-    image = models.ImageField(upload_to="images/")
+    image = models.ImageField(null=False, blank=False, upload_to="images/books_request/")
     date_added = models.DateTimeField(null=False, default=timezone.now)   
     status = models.CharField(
         max_length=2, choices=(("1", "Wait"), ("2", "Accept"), ("3", "Decline")), default="1"
@@ -157,12 +157,12 @@ class Comment(models.Model):
     
     
 class Post(models.Model):
-    title = models.CharField(max_length=250, null=False, blank=False)
+    title = models.CharField(max_length=500, null=False, blank=False)
     writer = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
-    content = models.TextField(blank=False, null=False, max_length=200)
-    main_content = models.TextField(blank=False, null=False)
+    content = models.TextField(blank=False, null=False, max_length=500)
+    main_content = models.TextField(blank=False, null=False, max_length=5000)
+    image_blog = models.ImageField(blank=False, null=False, upload_to="images/post/")
     created_at = models.DateTimeField(default=timezone.now)
-    image_blog = models.ImageField(null = True)
 
     def __str__(self):
         return str(f"{self.title}")

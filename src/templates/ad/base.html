@@ -44,7 +44,7 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion col-xl-2" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
@@ -61,32 +61,32 @@
             <li class="nav-item active">
               <a class="nav-link" href="{% url 'adhome' %}">
                   <i class="fas fa-fw fa-tachometer-alt"></i>
-                  <span>ADMIN Home</span></a>
+                  <span class="fs-5 text-center">ADMIN Home</span></a>
             </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
 
             <!-- Heading -->
-            <div class="sidebar-heading">
+            <div class="sidebar-heading" style="font-size: 14px;">
                 Manage Database
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                <a class="nav-link collapsed" style="width: 100% !important;" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Database</span>
+                    <i class="fa-solid fa-sitemap"></i>
+                    <span class="fs-5">Database</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Element:</h6>
-                        <a class="collapse-item" href="{% url 'book' 'id' %}">Books</a>
-                        <a class="collapse-item" href="{% url 'category' 'id' %}">Categories</a>
-                        <a class="collapse-item" href="{% url 'language' 'id' %}">Languages</a>
-                        <a class="collapse-item" href="{% url 'source_type' 'id' %}">SourceTypes</a>
-                        <a class="collapse-item" href="{% url 'user' 'id' %}">User</a>
+                        <h6 class="collapse-header" style="font-size: 14px !important;">Element:</h6>
+                        <a class="collapse-item" href="{% url 'book' 'id' %}" style="font-size: 14px !important;">Books</a>
+                        <a class="collapse-item" href="{% url 'category' 'id' %}" style="font-size: 14px !important;">Categories</a>
+                        <a class="collapse-item" href="{% url 'language' 'id' %}" style="font-size: 14px !important;">Languages</a>
+                        <a class="collapse-item" href="{% url 'source_type' 'id' %}" style="font-size: 14px !important;">SourceTypes</a>
+                        <a class="collapse-item" href="{% url 'user' 'id' %}" style="font-size: 14px !important;">User</a>
                     </div>
                 </div>
             </li>
@@ -107,17 +107,18 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                <a class="nav-link collapsed" style="width: 100% !important;" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Manage Library</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Element:</h6>
-                        <a class="collapse-item" href="{% url 'loan' 'id'%}">Loan Transaction</a>
-                        <a class="collapse-item" href="{% url 'reader_info' 'id'%}">Reader Info</a>
-                        <a class="collapse-item" href="{% url 'request_book' 'id'%}">Request Book</a>
+                        <h6 class="collapse-header" style="font-size: 14px !important;" >Element:</h6>
+                        <a class="collapse-item" href="{% url 'loan' 'id'%}" style="font-size: 14px !important;" >Loan Transaction</a>
+                        <a class="collapse-item" href="{% url 'reader_info' 'id'%}" style="font-size: 14px !important;" >Reader Info</a>
+                        <a class="collapse-item" href="{% url 'post' 'id'%}" style="font-size: 14px !important;" >Post</a>
+                        <a class="collapse-item" href="{% url 'request_book' 'id'%}" style="font-size: 14px !important;" >Request Book</a>
                     </div>
                 </div>
             </li>
@@ -299,7 +300,7 @@
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
-                <div class="container-fluid">
+                <div class="container-fluid" style="padding: 0 5% !important;">
                     {% block Page_content %}{% endblock Page_content %}
                 </div>
                 <!-- /.container-fluid -->
@@ -311,7 +312,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
+                        <span>Copyright &copy; Wellib 2023</span>
                     </div>
                 </div>
             </footer>
