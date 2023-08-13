@@ -733,7 +733,7 @@ def view_user(request, id):
 
 def homepage(request):
     context = {}
-    categories = models.Category.objects.all()[0:6]
+    categories = models.Category.objects.all().order_by('-date_added')[0:6]
     context['categories'] = categories
     books = models.Book.objects.all()[0:12]
     context['books'] = books
