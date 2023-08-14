@@ -10,16 +10,23 @@
     <div class="card rounded-0 shadow">
       <div class="card-body">
         <div class="container-fluid">
-          <div class="text-start mb-3">
-            <a href="{% url 'manage_language'%}" class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" type="button"><i class="fa fa-plus"></i> Add New</a>
+          <div class="d-flex justify-content-between">
+            <div class="text-start mb-3">
+              <a href="{% url 'manage_language'%}" class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" type="button"><i class="fa fa-plus"></i> Add New</a>
+            </div>
+            <div class="mb-3">
+              <a href="{% url 'export_language' %}" class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" type="button"><i class='fas fa-file-export'></i> Export Language </a>
+            </div>
+            <div class="mb-3">
+              <a href="{% url 'import_language' %}" class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" type="button"><i class='fas fa-file-import'></i> Import Language </a>
+            </div>
           </div>
           <table class="table">
             <collanguage>
               <col width="5%" />
-              <col width="15%" />
+              <col width="30%" />
               <col width="50%" />
-              <col width="20%" />
-              <col width="10%" />
+              <col width="15%" />
             </collanguage>
             <thead>
               <tr>

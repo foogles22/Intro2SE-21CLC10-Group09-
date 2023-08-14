@@ -10,8 +10,19 @@
     <div class="card rounded-0 shadow">
       <div class="card-body">
         <div class="container-fluid">
-          <div class="text-start mb-3">
-            <a href="{% url 'manage_book'%}" class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" type="button"><i class="fa fa-plus"></i> Add New</a>
+          <div class="d-flex justify-content-between">
+            <div class="text-start mb-3">
+              <a href="{% url 'manage_book'%}" class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" type="button"><i class="fa fa-plus"></i> Add New</a>
+            </div>
+            <div class="mb-3">
+              <a href="{% url 'manage_book_request' %}" class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" type="button"><i class='fas fa-edit'></i> Manage Book Request</a>
+            </div>
+            <div class="mb-3">
+              <a href="{% url 'export_book' %}" class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" type="button"><i class='fas fa-file-export'></i> Export Book </a>
+            </div>
+            <div class="mb-3">
+              <a href="{% url 'import_book' %}" class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" type="button"><i class='fas fa-file-import'></i> Import Book </a>
+            </div>
           </div>
           <table class="table">
             <colbook>

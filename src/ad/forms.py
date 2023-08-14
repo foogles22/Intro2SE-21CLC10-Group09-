@@ -1,6 +1,76 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from . import models
+from django.db.models import Q
+from datetime import date
 from django.utils import timezone
+
+
+class CustomUserCreationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ('username', 'password1', 'password2')
+
+class SaveUser(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ('username', 'password1', 'password2')
+
+    def __init__(self, data = None, *args, **kwargs):
+        new_data = {'username': data['username'], 'password1': data['password1'], 'password2': data['password2']}
+        super().__init__(new_data, *args, **kwargs)
+
+class SaveProfile(forms.ModelForm):
+    class Meta:
+        model = models.Profile
+        fields = ('first_name','last_name','email','first_time','role','identity')
+
+    def init_identity(self, role):
+        if role == "ADMIN":
+            name = 'AD'
+        if role == "LIBRARIAN":
+            name = 'LB'
+        if role == "READER":
+            name = 'RD'
+        return name + str(models.Profile.objects.filter(role=role).count())
+    
+    def __init__(self,data = None, *args, **kwargs):
+        new_data = {
+            'first_name': data['first_name'],
+            'last_name': data['last_name'],
+            'email' : data['email'],
+            'first_time' : False,
+            'role' : data['role'],
+            'identity' : self.init_identity(data['role'])
+            }
+        super().__init__(new_data, *args, **kwargs)
+    
+    def clean_email(self):
+        email = self.clean_data['email']
+        try:
+            models.Profile.objects.get(email = email)
+            self.add_error(forms.ValidationError('email', 'Email is already taken!'))
+        except:
+            return email
+
+class SaveRequestReader(forms.ModelForm):
+    class Meta:
+        model = models.ReaderRequest
+        fields = ('first_name','last_name','email')
+
+class EditProfile(forms.ModelForm):
+    class Meta:
+        model = models.Profile
+        fields = ('first_name','last_name','email','phone','date_of_birth','sex','profile_img')
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        try:
+            models.Profile.objects.get(email = email)
+            self.add_error(forms.ValidationError('email', 'Email is already taken!'))
+        except:
+            return email
 
 class SaveCategory(forms.ModelForm):
     name = forms.CharField(max_length=250)
@@ -67,7 +137,6 @@ class SaveLanguage(forms.ModelForm):
             return cleaned_data
 
 class SaveBook(forms.ModelForm):
-
     class Meta:
         model = models.Book
         fields = ('title', 'publication_year', 'author', 'category', 'description', 'sourcetype', 'language', 'image', 'quantity',)
@@ -99,8 +168,6 @@ class SaveBook(forms.ModelForm):
             return True
 
     def clean(self):
-        cleaned_data = self.cleaned_data
-
         # print(self.data)
         # print(cleaned_data)
         
@@ -113,4 +180,71 @@ class SaveBook(forms.ModelForm):
         quantity = self.data.get('quantity')
         self.cleanQuantity(quantity)
 
-        return cleaned_data
+
+class SaveRequestBook(forms.ModelForm):
+    class Meta:
+        model = models.BookRequest
+        fields  = ('title', 'publication_year', 'author', 'category', 'description', 'sourcetype', 'language', 'image')
+
+
+class SaveTransaction(forms.ModelForm):
+    # user = forms.ModelChoiceField(queryset=User.objects.all())
+    # book = forms.ModelChoiceField(queryset=models.Book.objects.all())
+    class Meta:
+        model = models.LoanTransaction
+        fields = ('user','book')
+
+    def __init__(self,data = None, *args, **kwargs):
+        try:
+            profile = models.Profile.objects.get(identity = data['identity'])
+            user = User.objects.get(pk = profile.id)
+        except:
+            user = None
+        try:
+            book = models.Book.objects.get(title = data['book'])
+        except:
+            book = None
+        new_data = {'user': user, 'book': book}
+        super().__init__(new_data, *args, **kwargs)
+        
+    def clean(self):
+        user = self.data.get('user')
+        book = self.data.get('book')
+
+        if user not in User.objects.all():
+            self.add_error('user', forms.ValidationError('The user is not existed'))
+            self.errors['user'].pop(0)
+        else:
+            if 'RD' not in user.profile.identity:
+                self.add_error('user', forms.ValidationError('The user is not available'))
+
+        if book not in models.Book.objects.all():
+            self.add_error('book', forms.ValidationError('The book is not existed'))
+            self.errors['book'].pop(0)
+
+        try:
+            loan = models.LoanTransaction.objects.get(user= user, book = book)
+            if loan.date_loan != date.today():
+                if loan.returned == '0':
+                    self.add_error('book', forms.ValidationError('Reader has not returned this book yet!'))
+        except:
+            pass
+
+        try:
+            loan = models.LoanTransaction.objects.get(user= user, book = book, date_loan = date.today())
+            self.add_error('__all__', forms.ValidationError('The transaction is already existed!'))
+        except:
+            return {'user': user, 'book' : book}
+
+    def check_book_status(self):
+        book = self.data['book']
+        if book.status == '1':
+            book.quantity -= 1
+            if book.quantity == 0:
+                book.status = '2'
+                book.save(update_fields = ['status'])
+            book.save(update_fields = ['quantity'])
+            return 1
+        else:
+            return 0
+

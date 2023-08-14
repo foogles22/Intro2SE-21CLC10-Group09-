@@ -1,8 +1,23 @@
 from django.contrib import admin
-from . import models
-# Register your models here.
+from django.contrib.auth.models import User
+from .models import *
 
-admin.site.register(models.Category)
-admin.site.register(models.SourceType)
-admin.site.register(models.Language)
-admin.site.register(models.Book)
+admin.site.register(Category)
+admin.site.register(SourceType)
+admin.site.register(Language)
+admin.site.register(Book)
+admin.site.register(LoanTransaction)
+admin.site.register(ReaderRequest)
+admin.site.register(BookRequest)
+
+class ProfileInline(admin.StackedInline):
+    model = Profile
+
+class UserAdmin(admin.ModelAdmin):
+    model = User
+    fields = ['username']
+    inlines = [ProfileInline]
+
+admin.site.unregister(User)
+
+admin.site.register(User, UserAdmin)
