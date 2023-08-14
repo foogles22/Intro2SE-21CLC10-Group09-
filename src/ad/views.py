@@ -306,7 +306,7 @@ def import_source_type(request):
             try:
                 for row in reader:
                     row[3]
-                messages.warning(request, message ='Wrong .csv input')
+                messages.warning(request, message ='Import file exceeds the number of fields')
             except:
             # next(reader)
                 try:
@@ -415,7 +415,7 @@ def import_language(request):
             try:
                 for row in reader:
                     row[3]
-                messages.warning(request, message ='Wrong .csv input')
+                messages.warning(request, message ='Import file exceeds the number of fields')
             except:
             # next(reader)
                 try:
@@ -600,8 +600,8 @@ def import_book(request):
             reader = csv.reader(csvfile, delimiter=";")
             try:
                 for row in reader:
-                    row[3]
-                messages.warning(request, message ='Wrong .csv input')
+                    row[10]
+                messages.warning(request, message ='Import file exceeds the number of fields')
             except:
                 try:
                     for row in reader:
