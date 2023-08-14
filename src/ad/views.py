@@ -172,14 +172,14 @@ def view_category(request, id):
 @allowed_users(allowed_roles=['ADMIN'])
 def export_category(request):
     category = models.Category.objects.all()
-    file = open('category.csv','w',encoding='utf-8',newline='')
-    writer = csv.writer(file, delimiter=',')
+    file = open('export/category.csv','w',encoding='utf-8',newline='')
+    writer = csv.writer(file, delimiter=',',quotechar='"',quoting=csv.QUOTE_MINIMAL)
     writer.writerow(['Name', 'Description','Image'])
     for cat in category:
         writer.writerow([
-            cat.name,
-            cat.description,
-            cat.image
+            f'{cat.name}',
+            f'{cat.description}',
+            f'{cat.image}'
         ])
     file.close()
     return HttpResponseRedirect('/category/')
@@ -194,7 +194,6 @@ def import_category(request):
 
         # temp_path = Path(filepath).parent.parent
         # print(os.path.join(temp_path,"Data","categoryCover"))
-
         with open(filepath, "r", encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile, delimiter=";")
             try:
@@ -207,7 +206,7 @@ def import_category(request):
                         category = models.Category()
                         category.name = str(row[0])
                         category.description = str(row[1])
-                        category.image = row[2]
+                        category.image = "images/categoryCover/"+row[2]
                         # os.path.join(temp_path,"Data","categoryCover",row[2])
                         try:
                             models.Category.objects.get(name=category.name)
@@ -308,7 +307,6 @@ def import_source_type(request):
                     row[3]
                 messages.warning(request, message ='Import file exceeds the number of fields')
             except:
-            # next(reader)
                 try:
                     for row in reader:
                         source_type = forms.SaveSourceType(
@@ -417,7 +415,6 @@ def import_language(request):
                     row[3]
                 messages.warning(request, message ='Import file exceeds the number of fields')
             except:
-            # next(reader)
                 try:
                     for row in reader:
                         language = forms.SaveLanguage(
@@ -578,7 +575,7 @@ def export_book(request):
             b.title,
             b.publication_year,
             b.author,
-            b.category.all(),
+            ','.join(b.category.values_list('name', flat=True)),
             b.description,
             b.sourcetype,
             b.language,
@@ -600,7 +597,7 @@ def import_book(request):
             reader = csv.reader(csvfile, delimiter=";")
             try:
                 for row in reader:
-                    row[10]
+                    row[9]
                 messages.warning(request, message ='Import file exceeds the number of fields')
             except:
                 try:
@@ -611,7 +608,7 @@ def import_book(request):
                         book.publication_year = int(row[2])
                         book.quantity = 0
                         book.save()
-                        category_names = row[4].split(',')
+                        category_names = row[3].split(',')
 
                         try:
                             for names in category_names:
@@ -620,46 +617,43 @@ def import_book(request):
                                 book.category.add(category_id)
                         except:
                             messages.warning(request, message ='Category name does not exist in database')
+                            valid = False
 
                         try:
-                            book.sourcetype = models.SourceType.objects.get(name = row[5])
+                            book.sourcetype = models.SourceType.objects.get(name = row[4])
                         except:
                             messages.warning(request, message ='Source type name does not exist in database')
+                            valid = False
 
                         try:
-                            book.language = models.Language.objects.get(fullname = row[6])
+                            book.language = models.Language.objects.get(fullname = row[5])
                         except:
                             messages.warning(request, message ='Language name does not exist in database')
+                            valid = False
 
-                        book.description = row[7]
-                        book.image = row[8]
-                        book.quantity = int(row[9])
+                        book.description = row[6]
+                        book.image = "images/bookCover/"+row[7]
+                        book.quantity = int(row[8])
+
                         try:
                             if models.Book.objects.filter(title=book.title).count() > 1:
                                 messages.warning(request, message='This book title already exists.')
                                 valid = False
-                                try:
-                                    book.delete()
-                                except:
-                                    pass
                         except:
                             pass
+
                         if book.publication_year > timezone.now().year:
                             messages.warning(request, message='Publication year exceeds current year.')
                             valid = False
-                            try:
-                                book.delete()
-                            except:
-                                pass
                         if book.quantity < 0:
                             messages.warning(request, message='The book quantity is smaller than 0.')
                             valid = False
-                            try:
-                                book.delete()
-                            except:
-                                pass
+
                         if valid == True:
                             book.save()
+                            messages.success(request,message='Import book successfully')
+                        else:
+                            book.delete()
                 except:
                     messages.warning(request, message ='Wrong .csv input')
         os.remove(storage.path(filename))
