@@ -961,11 +961,9 @@ def import_book(request):
         valid = True
         with open(storage.path(filename), "r", encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile, delimiter=";")
-            try:
-                for row in reader:
-                    row[10]
-                messages.warning(request, message ='Import file exceeds the number of fields')
-            except:
+            data = list(reader)
+            if len(data[0]) == 9:
+                csvfile.seek(0)
                 try:
                     for row in reader:
                         book = models.Book()
@@ -974,7 +972,7 @@ def import_book(request):
                         book.publication_year = int(row[2])
                         book.quantity = 0
                         book.save()
-                        category_names = row[4].split(',')
+                        category_names = row[3].split(',')
 
                         try:
                             for names in category_names:
@@ -983,52 +981,51 @@ def import_book(request):
                                 book.category.add(category_id)
                         except:
                             messages.warning(request, message ='Category name does not exist in database')
+                            valid = False
 
                         try:
-                            book.sourcetype = models.SourceType.objects.get(name = row[5])
+                            book.sourcetype = models.SourceType.objects.get(name = row[4])
                         except:
                             messages.warning(request, message ='Source type name does not exist in database')
+                            valid = False
 
                         try:
-                            book.language = models.Language.objects.get(fullname = row[6])
+                            book.language = models.Language.objects.get(fullname = row[5])
                         except:
                             messages.warning(request, message ='Language name does not exist in database')
+                            valid = False
 
-                        book.description = row[7]
-                        book.image = row[8]
-                        book.quantity = int(row[9])
+                        book.description = row[6]
+                        book.image = "images/bookCover/"+row[7]
+                        book.quantity = int(row[8])
+
                         try:
                             if models.Book.objects.filter(title=book.title).count() > 1:
                                 messages.warning(request, message='This book title already exists.')
                                 valid = False
-                                try:
-                                    book.delete()
-                                except:
-                                    pass
                         except:
                             pass
+
                         if book.publication_year > timezone.now().year:
                             messages.warning(request, message='Publication year exceeds current year.')
                             valid = False
-                            try:
-                                book.delete()
-                            except:
-                                pass
                         if book.quantity < 0:
                             messages.warning(request, message='The book quantity is smaller than 0.')
                             valid = False
-                            try:
-                                book.delete()
-                            except:
-                                pass
+
                         if valid == True:
                             book.save()
+                            messages.success(request,message='Import book successfully')
+                        else:
+                            book.delete()
                 except:
                     messages.warning(request, message ='Wrong .csv input')
+            else:
+                messages.warning(request, message ='The number of fields value in the imported file does not match the number of fields')
         os.remove(storage.path(filename))
     else:
-        messages.error(request, "No data has been sent")
-    return render(request, 'ad/import_book.html')
+        messages.error(request, 'No data has been sent')
+    return redirect('book', 'id')
 
 
 
@@ -1085,8 +1082,7 @@ def import_category(request):
         os.remove(filepath)
     else:
         messages.error(request, "No data has been sent")
-    return render(request, 'ad/import_category.html')
-
+    return redirect('category', 'id')
 
 @login_required
 @allowed_users(allowed_roles=['ADMIN'])
@@ -1139,7 +1135,7 @@ def import_language(request):
                     messages.warning(request, message ='Wrong .csv input')
     else:
         messages.error(request,"No data has been sent")
-    return render(request, 'ad/import_language.html')
+    return redirect('language', 'id')
 
 @login_required
 @allowed_users(allowed_roles=['ADMIN'])
@@ -1195,8 +1191,4 @@ def import_source_type(request):
         os.remove(storage.path(filename))
     else:
         messages.error(request,"No data has been sent")
-    return render(request, 'ad/import_source_type.html')
-
-
-def error_404_view(request, exception):
-    return render(request, 'ad/404.html')
+    return redirect('source_type', 'id')
