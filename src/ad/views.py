@@ -34,8 +34,7 @@ def first_access(request):
             return redirect('adhome')
         if request.user.profile.role == "LIBRARIAN":
             return redirect('libhome')
-    else:
-        return redirect('homepage')
+    return redirect('homepage')
 
 
 # AUTHENTICATE-AUTHENTICATE-AUTHENTICATE-AUTHENTICATE-AUTHENTICATE-AUTHENTICATE-AUTHENTICATE-AUTHENTICATE
@@ -948,8 +947,9 @@ def export_book(request):
             b.quantity,
         ])
     file.close()
-    messages.success(request,'Export book successfully')
-    return redirect('book', 'id')
+    messages.success(request, "Export successfully")
+    return redirect('book','id')
+
 
 @login_required
 @allowed_users(allowed_roles=['ADMIN'])
@@ -961,55 +961,75 @@ def import_book(request):
         valid = True
         with open(storage.path(filename), "r", encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile, delimiter=";")
-            for row in reader:
-                book = models.Book()
-                book.title = row[0]
-                book.author = row[1]
-                book.publication_year = int(row[2])
-                book.quantity = 0
-                book.save()
-                category_names = row[4].split(',')
-                for names in category_names:
-                    category_instance = models.Category.objects.filter(name = names).first()
-                    category_id = category_instance.pk
-                    print(category_id)
-                    book.category.add(category_id)
-                    print(book.category.all())
-                book.sourcetype = models.SourceType.objects.get(name = row[5])
-                book.language = models.Language.objects.get(fullname = row[6])
-                book.description = row[7]
-                book.image = row[8]
-                book.quantity = int(row[9])
+            try:
+                for row in reader:
+                    row[10]
+                messages.warning(request, message ='Import file exceeds the number of fields')
+            except:
                 try:
-                    if models.Book.objects.filter(title=book.title).count() > 1:
-                        messages.warning(request, message=f"{book.title} already exists.")
-                        valid = False
+                    for row in reader:
+                        book = models.Book()
+                        book.title = row[0]
+                        book.author = row[1]
+                        book.publication_year = int(row[2])
+                        book.quantity = 0
+                        book.save()
+                        category_names = row[4].split(',')
+
                         try:
-                            book.delete()
+                            for names in category_names:
+                                category_instance = models.Category.objects.filter(name = names).first()
+                                category_id = category_instance.pk
+                                book.category.add(category_id)
+                        except:
+                            messages.warning(request, message ='Category name does not exist in database')
+
+                        try:
+                            book.sourcetype = models.SourceType.objects.get(name = row[5])
+                        except:
+                            messages.warning(request, message ='Source type name does not exist in database')
+
+                        try:
+                            book.language = models.Language.objects.get(fullname = row[6])
+                        except:
+                            messages.warning(request, message ='Language name does not exist in database')
+
+                        book.description = row[7]
+                        book.image = row[8]
+                        book.quantity = int(row[9])
+                        try:
+                            if models.Book.objects.filter(title=book.title).count() > 1:
+                                messages.warning(request, message='This book title already exists.')
+                                valid = False
+                                try:
+                                    book.delete()
+                                except:
+                                    pass
                         except:
                             pass
+                        if book.publication_year > timezone.now().year:
+                            messages.warning(request, message='Publication year exceeds current year.')
+                            valid = False
+                            try:
+                                book.delete()
+                            except:
+                                pass
+                        if book.quantity < 0:
+                            messages.warning(request, message='The book quantity is smaller than 0.')
+                            valid = False
+                            try:
+                                book.delete()
+                            except:
+                                pass
+                        if valid == True:
+                            book.save()
                 except:
-                    pass
-                if book.publication_year > timezone.now().year:
-                    messages.warning(request, message='Publication year exceeds current year.')
-                    valid = False
-                    try:
-                        book.delete()
-                    except:
-                        pass
-                if book.quantity < 0:
-                    messages.warning(request, message='The book quantity is smaller than 0.')
-                    valid = False
-                    try:
-                        book.delete()
-                    except:
-                        pass
-                if valid == True:
-                    book.save()
+                    messages.warning(request, message ='Wrong .csv input')
         os.remove(storage.path(filename))
     else:
-        messages.error(request, 'No data has been sent')
-    return redirect('book', 'id')
+        messages.error(request, "No data has been sent")
+    return render(request, 'ad/import_book.html')
+
 
 
 @login_required
@@ -1035,25 +1055,38 @@ def import_category(request):
     if request.method == "POST":
         file = request.FILES["csv_file"]
         storage = FileSystemStorage()
-        filename = storage.save(file.name, file)
-        print(filename)
-        with open(storage.path(filename), "r", encoding='utf-8') as csvfile:
+        filepath = storage.path(storage.save(file.name, file))
+
+        # temp_path = Path(filepath).parent.parent
+        # print(os.path.join(temp_path,"Data","categoryCover"))
+
+        with open(filepath, "r", encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile, delimiter=";")
-            for row in reader:
-                category = models.Category()
-                category.name = str(row[0])
-                category.description = str(row[1])
-                category.image = row[2]
+            try:
+                for row in reader:
+                    row[3]
+                messages.warning(request, message ='Import file exceeds the number of fields')
+            except:
                 try:
-                    models.Category.objects.get(name=category.name)
-                    messages.warning(request, message=f'{category.name} already exists.')
+                    for row in reader:
+                        category = models.Category()
+                        category.name = str(row[0])
+                        category.description = str(row[1])
+                        category.image = row[2]
+                        # os.path.join(temp_path,"Data","categoryCover",row[2])
+                        try:
+                            models.Category.objects.get(name=category.name)
+                            messages.warning(request, message='This category name already exists.')
+                        except:
+                            category.save()
+                            messages.success(request,message='Import succesfully')
                 except:
-                    category.save()
-                    messages.success(request,message=f'{category.name} succesfully')
-        os.remove(storage.path(filename))
+                    messages.warning(request, message ='Wrong .csv input')
+        os.remove(filepath)
     else:
-        messages.error(request, 'No data has been sent')
-    return redirect('category', 'id')
+        messages.error(request, "No data has been sent")
+    return render(request, 'ad/import_category.html')
+
 
 @login_required
 @allowed_users(allowed_roles=['ADMIN'])
@@ -1081,24 +1114,32 @@ def import_language(request):
 
         with open(storage.path(filename), "r", encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile, delimiter=";")
+            try:
+                for row in reader:
+                    row[3]
+                messages.warning(request, message ='Import file exceeds the number of fields')
+            except:
             # next(reader)
-            for row in reader:
-                language = forms.SaveLanguage(
-                    data = {
-                        'id':'1',
-                        'fullname': row[0],
-                        'code': row[1],
-                    }
-                )
-                if language.is_valid():
-                    language.save()
-                    messages.success(request,message='Import succesfully')
-                else:
-                    for error in language.errors.values():
-                        messages.warning(request, error)
+                try:
+                    for row in reader:
+                        language = forms.SaveLanguage(
+                            data = {
+                                'id':'1',
+                                'fullname': row[0],
+                                'code': row[1],
+                            }
+                        )
+                        if language.is_valid():
+                            language.save()
+                            messages.success(request,message='Import succesfully')
+                        else:
+                            for error in language.errors.values():
+                                messages.warning(request, error)
+                except:
+                    messages.warning(request, message ='Wrong .csv input')
     else:
-        messages.error(request, 'No data has been sent')
-    return redirect('language', 'id')
+        messages.error(request,"No data has been sent")
+    return render(request, 'ad/import_language.html')
 
 @login_required
 @allowed_users(allowed_roles=['ADMIN'])
@@ -1127,23 +1168,35 @@ def import_source_type(request):
 
         with open(storage.path(filename), "r", encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile, delimiter=";")
+            try:
+                for row in reader:
+                    row[3]
+                messages.warning(request, message ='Import file exceeds the number of fields')
+            except:
             # next(reader)
-            for row in reader:
-                source_type = forms.SaveSourceType(
-                    data = {
-                        'id':'1',
-                        'code': row[1],
-                        'name': row[0],
-                        'description': row[2],
-                    }
-                )
-                if source_type.is_valid():
-                    source_type.save()
-                    messages.success(request,message='Import succesfully')
-                else:
-                    for error in source_type.errors.values():
-                        messages.warning(request, error)
+                try:
+                    for row in reader:
+                        source_type = forms.SaveSourceType(
+                            data = {
+                                'id':'1',
+                                'code': row[1],
+                                'name': row[0],
+                                'description': row[2],
+                            }
+                        )
+                        if source_type.is_valid():
+                            source_type.save()
+                            messages.success(request,message='Import succesfully')
+                        else:
+                            for error in source_type.errors.values():
+                                messages.warning(request, error)
+                except:
+                    messages.warning(request, message ='Wrong .csv input')
         os.remove(storage.path(filename))
     else:
-        messages.error(request, 'No data has been sent')
-    return redirect('source_type', 'id')
+        messages.error(request,"No data has been sent")
+    return render(request, 'ad/import_source_type.html')
+
+
+def error_404_view(request, exception):
+    return render(request, 'ad/404.html')

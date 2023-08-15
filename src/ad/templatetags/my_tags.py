@@ -112,7 +112,7 @@ def bookunavai(i):
     return models.Book.objects.all().filter(status = '2').count()
 
 @register.filter
-def bookborrowed(i):
+def bookbeingborrowed(i):
     return models.LoanTransaction.objects.all().filter(returned = '0').count()
 
 @register.filter
@@ -122,3 +122,7 @@ def bookrequest(i):
 @register.filter
 def readerrequest(i):
     return models.ReaderRequest.objects.all().filter(status = '1').count()
+
+@register.filter
+def bookborrowed(id):
+    return models.LoanTransaction.objects.all().filter(user = id).count()
