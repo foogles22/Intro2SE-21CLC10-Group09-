@@ -34,6 +34,12 @@
     color: rgb(78, 95, 155);
 
 }
+.comment-box .usname{
+    font-weight: bold;
+    color: rgb(78, 95, 155);
+    width: 100%;
+
+}
 .comment-session .usname span{
     font-weight: bold;
     color: rgb(78, 95, 155);
