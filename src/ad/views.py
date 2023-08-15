@@ -16,7 +16,6 @@ from django.shortcuts import render, redirect
 from django.http.response import HttpResponseRedirect
 from django.http import JsonResponse
 from django.utils import timezone
-import itertools
 from pathlib import Path
 import os
 # Create your views here.
@@ -174,13 +173,13 @@ def view_category(request, id):
 def export_category(request):
     category = models.Category.objects.all()
     file = open('export/category.csv','w',encoding='utf-8',newline='')
-    writer = csv.writer(file, delimiter=',',quotechar='"',quoting=csv.QUOTE_MINIMAL)
+    writer = csv.writer(file, delimiter=';',quoting=csv.QUOTE_ALL)
     writer.writerow(['Name', 'Description','Image'])
     for cat in category:
         writer.writerow([
-            f'{cat.name}',
-            f'{cat.description}',
-            f'{cat.image}'
+            cat.name,
+            cat.description,
+            cat.image,
         ])
     file.close()
     return HttpResponseRedirect('/category/')
@@ -277,8 +276,8 @@ def view_source_type(request, id):
 @allowed_users(allowed_roles=['ADMIN'])
 def export_source_type(request):
     source_type = models.SourceType.objects.all()
-    file = open('source_type.csv','w',encoding='utf-8',newline='')
-    writer = csv.writer(file, delimiter=',')
+    file = open('export/source_type.csv','w',encoding='utf-8',newline='')
+    writer = csv.writer(file, delimiter=',',quoting=csv.QUOTE_ALL)
     writer.writerow(['Code', 'Name', 'Description'])
     for st in source_type:
         writer.writerow([
@@ -386,8 +385,8 @@ def view_language(request, id):
 @allowed_users(allowed_roles=['ADMIN'])
 def export_language(request):
     language = models.Language.objects.all()
-    file = open('language.csv','w',encoding='utf-8',newline='')
-    writer = csv.writer(file, delimiter=',')
+    file = open('export/language.csv','w',encoding='utf-8',newline='')
+    writer = csv.writer(file, delimiter=',',quoting=csv.QUOTE_ALL)
     writer.writerow(['Code', 'Fullname'])
     for lang in language:
         writer.writerow([
@@ -564,8 +563,8 @@ def view_book(request, id):
 @allowed_users(allowed_roles=['ADMIN'])
 def export_book(request):
     book = models.Book.objects.all()
-    file = open('book.csv','w',encoding='utf-8',newline='')
-    writer = csv.writer(file, delimiter=',')
+    file = open('export/book.csv','w',encoding='utf-8',newline='')
+    writer = csv.writer(file, delimiter=',',quoting=csv.QUOTE_ALL)
     writer.writerow(['Title', 'Publication year', 'Author', 'Category', 'Description', 'Source Type', 'Language', 'Image', 'Quantity'])
     for b in book:
         writer.writerow([
