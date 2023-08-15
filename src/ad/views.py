@@ -142,7 +142,6 @@ def save_category(request):
             category = forms.SaveCategory(request.POST,request.FILES)
         if category.is_valid():
             category.save()
-            print(category.files)
             messages.success(request, 'New category added')
         else:
             for field in category.errors.values():
@@ -156,8 +155,10 @@ def save_category(request):
 @allowed_users(allowed_roles=['ADMIN'])
 def delete_category(request, id):
     category = models.Category.objects.get(pk = id)
-    if len(category.image) > 0:
+    try:
         os.remove(category.image.path)
+    except:
+        pass
     category.delete()
     return HttpResponseRedirect('/category/')
 
@@ -191,23 +192,17 @@ def import_category(request):
         file = request.FILES["csv_file"]
         storage = FileSystemStorage()
         filepath = storage.path(storage.save(file.name, file))
-
-        # temp_path = Path(filepath).parent.parent
-        # print(os.path.join(temp_path,"Data","categoryCover"))
         with open(filepath, "r", encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile, delimiter=";")
-            try:
-                for row in reader:
-                    row[3]
-                messages.warning(request, message ='Import file exceeds the number of fields')
-            except:
+            data = list(reader)
+            if len(data[0]) == 3:
+                csvfile.seek(0)
                 try:
                     for row in reader:
                         category = models.Category()
                         category.name = str(row[0])
                         category.description = str(row[1])
                         category.image = "images/categoryCover/"+row[2]
-                        # os.path.join(temp_path,"Data","categoryCover",row[2])
                         try:
                             models.Category.objects.get(name=category.name)
                             messages.warning(request, message='This category name already exists.')
@@ -216,6 +211,8 @@ def import_category(request):
                             messages.success(request,message='Import succesfully')
                 except:
                     messages.warning(request, message ='Wrong .csv input')
+            else:
+                messages.warning(request, message ='The number of fields value in the imported file does not match the number of fields')
         os.remove(filepath)
     return render(request, 'ad/import_category.html')
 
@@ -302,11 +299,9 @@ def import_source_type(request):
 
         with open(storage.path(filename), "r", encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile, delimiter=";")
-            try:
-                for row in reader:
-                    row[3]
-                messages.warning(request, message ='Import file exceeds the number of fields')
-            except:
+            data = list(reader)
+            if len(data[0]) == 3:
+                csvfile.seek(0)
                 try:
                     for row in reader:
                         source_type = forms.SaveSourceType(
@@ -325,6 +320,8 @@ def import_source_type(request):
                                 messages.warning(request, error)
                 except:
                     messages.warning(request, message ='Wrong .csv input')
+            else:
+                messages.warning(request, message ='The number of fields value in the imported file does not match the number of fields')
         os.remove(storage.path(filename))
     return render(request, 'ad/import_source_type.html')
 
@@ -410,11 +407,9 @@ def import_language(request):
 
         with open(storage.path(filename), "r", encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile, delimiter=";")
-            try:
-                for row in reader:
-                    row[3]
-                messages.warning(request, message ='Import file exceeds the number of fields')
-            except:
+            data = list(reader)
+            if len(data[0]) == 2:
+                csvfile.seek(0)
                 try:
                     for row in reader:
                         language = forms.SaveLanguage(
@@ -432,6 +427,8 @@ def import_language(request):
                                 messages.warning(request, error)
                 except:
                     messages.warning(request, message ='Wrong .csv input')
+            else:
+                messages.warning(request, message ='The number of fields value in the imported file does not match the number of fields')
     return render(request, 'ad/import_language.html')
 
 
@@ -536,8 +533,6 @@ def accept_book_request(request, id):
     book = forms.SaveBook(data=book_data, files=book_file)
     if book.is_valid():
         book.save()
-        print(book.data)
-        print(book.files)
         book_request.status = '2'
         book_request.save(update_fields=['status'])
         messages.success(request, 'Accepted book request')
@@ -551,8 +546,10 @@ def accept_book_request(request, id):
 @allowed_users(allowed_roles=['ADMIN'])
 def delete_book(request, id):
     book = models.Book.objects.get(pk = id)
-    if len(book.image) > 0:
+    try:
         os.remove(book.image.path)
+    except:
+        pass
     book.delete()
     return HttpResponseRedirect('/book/')
 
@@ -595,11 +592,9 @@ def import_book(request):
         valid = True
         with open(storage.path(filename), "r", encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile, delimiter=";")
-            try:
-                for row in reader:
-                    row[9]
-                messages.warning(request, message ='Import file exceeds the number of fields')
-            except:
+            data = list(reader)
+            if len(data[0]) == 9:
+                csvfile.seek(0)
                 try:
                     for row in reader:
                         book = models.Book()
@@ -656,6 +651,8 @@ def import_book(request):
                             book.delete()
                 except:
                     messages.warning(request, message ='Wrong .csv input')
+            else:
+                messages.warning(request, message ='The number of fields value in the imported file does not match the number of fields')
         os.remove(storage.path(filename))
     return render(request, 'ad/import_book.html')
 
@@ -861,7 +858,6 @@ def request_book(request, order = 'id'):
 @allowed_users(allowed_roles=['LIBRARIAN'])
 def save_request_book(request):
     if request.method == "POST":
-        print(request.POST)
         request_book = forms.SaveRequestBook(request.POST, request.FILES)
         if request_book.is_valid():
             request_book.save()
