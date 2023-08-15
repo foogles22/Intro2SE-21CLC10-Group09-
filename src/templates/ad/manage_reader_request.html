@@ -1,0 +1,107 @@
+{% extends 'ad/base.html' %}
+
+{% block Page_content %}
+<section class="py-4">
+  <div class="container">
+    <h3 class="fw-bolder text-center">List of Request</h3>
+    <center>
+      <hr class="bg-primary opacity-100" style="height:3px" width="5%" />
+    </center>
+    <div class="card rounded-0 shadow">
+      <div class="card-body">
+        <div class="container-fluid">
+          </div>
+          <table class="table">
+            <colcategory>
+              <col width="5%" />
+              <col width="25%" />
+              <col width="30%" />
+              <col width="30%" />
+              <col width="10%" />
+            </colcategory>
+            <thead>
+              <tr>
+                <th class="text-center" scope="col">#</th>
+                <th class="text-center" scope="col">First Name</th>
+                <th class="text-center" scope="col">Last Name</th>
+                <th class="text-center" scope="col">Email</th>
+                <th class="text-center" class="text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if requests %}
+                {% for request in requests %}
+                {% if request.status == '1' %}
+                  <tr>
+                    <td class="text-center">{{ forloop.counter }}</td>
+                    <td class="text-center">{{ request.first_name }}</td>
+                    <td class="text-center">{{ request.last_name }}</td>
+                    <td class="text-center">{{ request.email }}</td>
+                    <td class="text-center">
+                      <div class="dropdown">
+                        <button class="btn btn-light btn-sm rounded-0 border dropdown-toggle" type="button" id="{{ request.pk }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
+                        <ul class="dropdown-menu" aria-labelledby="{{ request.pk }}">
+                          <li>
+                            <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal{{ forloop.counter }}"><i class="fa-regular fa-square-check text-success"></i> Accept</button>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="{% url 'decline_reader_request' request.id%}"><i class="fa-solid fa-square-xmark text-danger"></i> Decline</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                {% endif %}
+                {% endfor %}
+              {% endif %}
+            </tbody>
+          </table>
+          <div class="d-flex justify-content-between mt-3">
+              <a href="{% url 'user' 'id'%}" class="btn btn-dark">Back</a>    
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% for request in requests %}
+{% if request.status == '1' %}
+<!-- Modal -->
+<div class="modal fade" id="modal{{ forloop.counter }}" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="card-body text-center">
+          <i class="fa fa-plus text-info"> Request Reader Account</i>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'accept_reader_request' %}" method = "POST" autocomplete="off" class = "card p-3 mt-1 border-dark was-validated">
+          {% csrf_token %}
+          <input type="text" name="id" value="{{request.id}}" hidden>
+          <div class="input-group mb-3 mt-3">
+            <span class="input-group-text border-dark" >Username</span>
+            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required>
+          </div>
+          <div class="input-group mb-3 mt-3">
+            <span class="input-group-text border-dark">Password1</span>
+            <input type="text" id="password1" name="password1" class="form-control" placeholder="Password1" required>
+          </div>
+            <div class="input-group mb-3 mt-3">
+              <span class="input-group-text border-dark">Password2</span>
+              <input type="text" id="password2" name="password2" class="form-control" placeholder="Password2" required>
+            </div>
+            <div class="text-end mt-3">
+              <input class="btn btn-dark" type="submit" value="Request">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+{% endfor %}
+</section>
+
+{% endblock %}

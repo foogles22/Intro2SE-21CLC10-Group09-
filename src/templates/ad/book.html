@@ -1,5 +1,90 @@
-{% extends 'ad/base.html'%}
+{% extends 'ad/base.html' %}
 
-{% block Page_content%}
-    <div class = "text-center">Đây là Books Page</div>
-{% endblock Page_content%}
+{% block Page_content %}
+<section class="py-4">
+  <div class="container">
+    <h3 class="fw-bolder text-center">List of Books</h3>
+    <center>
+      <hr class="bg-primary opacity-100" style="height:3px" width="5%" />
+    </center>
+    <div class="card rounded-0 shadow">
+      <div class="card-body">
+        <div class="container-fluid">
+          <div class="d-flex justify-content-between">
+            <div class="text-start mb-3">
+              <a href="{% url 'manage_book'%}" class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" type="button"><i class="fa fa-plus"></i> Add New</a>
+            </div>
+            <div class="mb-3">
+              <a href="{% url 'manage_book_request' %}" class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" type="button"><i class='fas fa-edit'></i> Manage Book Request</a>
+            </div>
+            <div class="mb-3">
+              <a href="{% url 'export_book' %}" class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" type="button"><i class='fas fa-file-export'></i> Export Book </a>
+            </div>
+            <div class="mb-3">
+              <a href="{% url 'import_book' %}" class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" type="button"><i class='fas fa-file-import'></i> Import Book </a>
+            </div>
+          </div>
+          <table class="table">
+            <colbook>
+              <col width="5%" />
+              <col width="15%" />
+              <col width="50%" />
+              <col width="20%" />
+              <col width="10%" />
+            </colbook>
+            <thead>
+              <tr>
+                <th class="text-center" scope="col">#</th>
+                <th class="text-center" scope="col">Book Title</th>
+                <th class="text-center" scope="col">Publication Year</th>
+                <th class="text-center" scope="col">Author</th>
+                <th class="text-center" scope="col">Description</th>
+                <th class="text-center" scope="col">Category</th>
+                <th class="text-center" scope="col">Source Type</th>
+                <th class="text-center" scope="col">Language</th>
+                <th class="text-center" scope="col">Quantity</th>
+                <th class="text-center" class="text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if book %}
+                {% for b in book %}
+                  <tr>
+                    <th class="text-center" scope="row">{{ forloop.counter }}</th>
+                    <td class="text-center">{{ b.title }}</td>
+                    <td class="text-center">{{ b.publication_year }}</td>
+                    <td class="text-center">{{ b.author }}</td>
+                    <td class="text-center">
+                      <p class="m-0 trunste-1">{{b.description}}</p>
+                    </td>
+                    <td class="text-center">{% for cat in b.category.all %} {{ cat }} {% endfor %}</td>
+                    <td class="text-center">{{ b.sourcetype }}</td>
+                    <td class="text-center">{{ b.language }}</td>
+                    <td class="text-center">{{ b.quantity }}</td>
+                    <td class="text-center">
+                      <div class="dropdown">
+                        <button class="btn btn-light btn-sm rounded-0 border dropdown-toggle" type="button" id="{{ b.id }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
+                        <ul class="dropdown-menu" aria-labelledby="{{ b.id }}">
+                          <li>
+                            <a class="dropdown-item view-data" href="{% url 'view_book' b.id%}"><i class="fa fa-eye text-dark"></i> View</a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item edit-data" href="{% url 'manage_book_pk' b.id%}"><i class="fa fa-edit text-primary"></i> Edit</a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item delete-data" href="{% url 'delete_book' b.id%}"><i class="fa fa-trash text-danger"></i> Delete</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

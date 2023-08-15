@@ -1,0 +1,28 @@
+{% extends 'ad/base.html' %}
+
+{% block Page_content %}
+  <div class="container-fluid" id="e-details">
+    <div class="lh-1">
+      <dl>
+        <dt class="mb-2">Book Title</dt>
+        <dd class="mb-2">{{ book.title }}</dd>
+        <dt class="mb-2">Publication Year</dt>
+        <dd class="mb-2">{{ book.publication_year }}</dd>
+        <dt class="mb-2">Author</dt>
+        <dd class="mb-2">{{ book.author }}</dd>
+        <dt class="mb-2">Description</dt>
+        <dd class="mb-2">{{ book.description }}</dd>
+        <dt class="mb-2">Category</dt>
+        <dd class="mb-2">{% for cat in book.category.all %} {{ cat }} {% endfor %}</dd>
+        <dt class="mb-2">Source Type</dt>
+        <dd class="mb-2">{{ book.sourcetype }}</dd>
+        <dt class="mb-2">Language</dt>
+        <dd class="mb-2">{{ book.language }}</dd>
+        <dt class="mb-2">Image</dt>
+        <img src= "{{book.image.url}}" alt="img">
+        <dt class="mb-2">Quantity</dt>
+        <dd class="mb-2">{{ book.quantity }}</dd>
+      </dl>
+    </div>
+  </div>
+{% endblock %}

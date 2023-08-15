@@ -1,30 +1,102 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% comment %} Truyền page title và system_name từ View vào {% endcomment %}
-    {% if page_title %} <title>{{ page_title }} | {{system_name}}</title> 
-    {% else %}
-    <title>{{system_name}}</title>
-    {% endif%}
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-
-</head>
-<body>
-    {% comment %} Navbar {% endcomment %}
-    {% comment %} {% if navbar %} {% block Navbar %}  {% endblock Navbar %} {% endif %} {% endcomment %}
-
-    {% include "ad/navbar.html" %}
-    
-    <div class="wrapper py-5 mt-4">
-        <div class="container mb-3">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      {% comment %} Truyền page title và system_name từ View vào {% endcomment %}
+      {% if page_title %} 
+      <title>{{ page_title }} | {{system_name}}</title>
+      {% else %}
+      <title>{{system_name}}</title>
+      {% endif%}
+      <!-- Static CSS-->
+      <link rel="stylesheet" href="{% static 'css/styles.css' %}"/>
+      <link rel="stylesheet" href="{% static 'css/jquery.toast.css' %}"/>
+      <!-- BT5 CSS-->
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+      <!-- FontAwsome-->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+      <!-- BT5 JS-->
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+      <!-- Jquerry-->
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css" integrity="sha512-mR/b5Y7FRsKqrYZou7uysnOdCIJib/7r5QeJMFvLNHNhtye3xJp1TdJVPLtetkukFn227nKpXD9OjUc09lx97Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js" integrity="sha512-FHZVRMUW9FsXobt+ONiix6Z0tIkxvQfxtCSirkKc5Sb4TKHmqq1dZa8DphF0XqKb3ldLu/wgMa8mT6uXiLlRlw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   </head>
+   <body>
+      {% if request.user.is_authenticated  %}
+      {% include "ad/navbar.html" %}
+      <div class="wrapper py-5 mt-4">
+         <div class="container mb-3">
             {% block Page_content%}{% endblock Page_content%}
-        </div>
-    </div>
-    
-</body>
+         </div>
+      </div>
+      {% else %}
+      {% block authentication %}{% endblock authentication %}
+      {% endif %}
+      {% for message in messages%}
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script src="{% static "js/jquery.toast.js"%}"></script>
+      <script>
+         var upperCaseTag = '{{message.tags}}'.toUpperCase();
+         $.toast({
+           heading: upperCaseTag,
+           text: '{{message}}',
+           showHideTransition: 'slide',
+           icon: '{{message.tags}}',
+           position: 'top-right',
+         });
+      </script>
+      {% endfor %} 
+      <script>
+         function showHints(inputId, hintListId, url_) {
+           var query = $('#' + inputId).val();
+           if (query.length >= 2) {
+               $.ajax({
+                   url: url_,
+                   data: { query: query },
+                   success: function(data) {
+                       var hintList = $('#' + hintListId);
+                       hintList.empty();
+                       $.each(data, function(index, item) {
+                           hintList.append("<li class = 'list-group-item border-black'>" + item + "</li>");
+                       });
+         
+                       $('#' + hintListId + ' li').on('click', function() {
+                           var selectedValue = $(this).text();
+                           $('#' + inputId).val(selectedValue);
+                           hintList.empty();
+                       });
+                   }
+               });
+           } else {
+               $('#' + hintListId).empty();
+           }
+         }
+         
+         $(document).ready(function() {
+         $('#modal').on('shown.bs.modal', function() {
+             const list_special_list = document.querySelectorAll('.modal-body .input-group .list-group');
+             const input_text_list = document.querySelectorAll('.modal-body .input-group .input-group-text');
+             const input_field_list = document.querySelectorAll('.modal-body .input-group .form-control');
+         
+             input_text_list.forEach((input_text, index) => {
+                 const input_text_width = window.getComputedStyle(input_text).width;
+             
+                 const list_special = list_special_list[index];
+                 list_special.style.left = input_text_width;
+                 });
+         
+             input_field_list.forEach((input_field, index) => {
+             const input_field_width = window.getComputedStyle(input_field).width;
+         
+             const list_special = list_special_list[index];
+             list_special.style.width = input_field_width;
+             });
+         });
+         });
+         
+      </script>
+   </body>
 </html>
