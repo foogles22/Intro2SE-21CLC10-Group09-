@@ -84,7 +84,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 text-md-center" style = "padding-top: 30px;">
+                                        <div class="col-lg-4 text-md-center">
                                             <ul>
                                                 <li>Identity<span>{{profile.identity}}</span></li>
                                                 <li>Book Loans<span>16</span></li>
@@ -92,6 +92,11 @@
                                             <div class="main-border-button">
                                                 <p><a href="{% url 'edit_profile' request.user.id %}"><button class="buttonedit"
                                                             style="font-size:16px;color: rgb(247, 247, 247);background-color:  #3b6daf; width: 100%;height:45px;border-radius: 15px; box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);"> Edit Profile</button>
+                                                </a></p>
+                                            </div>
+                                            <div class="main-border-button">
+                                                <p><a data-toggle="modal" data-target="#logoutModal"><button class="buttonedit"
+                                                            style="font-size:16px;color: rgb(247, 247, 247);background-color:  #3b6daf; width: 100%;height:45px;border-radius: 15px; box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);"> Logout</button>
                                                 </a></p>
                                             </div>
                                         </div>
@@ -215,7 +220,25 @@
 			</div>
 		</div>
 	</footer>
-
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <!-- loader -->

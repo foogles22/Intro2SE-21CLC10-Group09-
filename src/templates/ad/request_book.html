@@ -156,7 +156,7 @@
                     {% endfor %}
                 </select>
             </div>
-            <div class="input-group mb-3 mt-3">
+            <div class="input-group mb-3 mt-3" style="z-index: 0;">
                 <span class="input-group-text border-dark" style="width: 138px;">Description</span>
                 <textarea id="description" name="description" class="form-control"  rows="5" required></textarea>
             </div>
@@ -168,7 +168,7 @@
                     {% endfor %}
                 </select>
             </div>
-            <div class="input-group mb-3 mt-3">
+            <div class="input-group mb-3 mt-3" style="z-index: 0;">
                 <span class="input-group-text border-dark" style="width: 138px;">Language</span>
                 <select type="text" id="language" name="language" class="form-control selectpicker" data-size='1' data-container="body" required>
                     {% for language in languages %}
@@ -176,7 +176,7 @@
                     {% endfor %}
                 </select>
             </div>
-            <div class="input-group mb-3 mt-3">
+            <div class="input-group mb-3 mt-3" style="z-index: 0;">
                 <span class="input-group-text border-dark" style="width: 138px;">Cover Photo</span>
                 <input type="file" id="image" name="image" class="form-control" placeholder="Last Name" value="{{book.image}}" required>
             </div>

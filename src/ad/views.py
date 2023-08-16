@@ -82,8 +82,9 @@ def register_user(request, *args, **kwargs):
             messages.success(request, 'Register successfully!')
             return redirect('login')
         else:
-            for error in register_form.errors.values():
-                messages.error(request, error)
+            for keys,field in register_form.errors.items():
+                for error in field:
+                    messages.error(request, f'{str(keys).capitalize()}:  {str(error).lower()}')
     return render(request, "authenticate/register.html", context)
 
 def change_password(request):
@@ -138,7 +139,7 @@ def delete_user(request, id):
     user = User.objects.get(pk = id)
     messages.success(request, 'Deleting acount succeed')
     if len(user.profile.profile_img) > 0:
-        os.remove(user.profile.profile_img)
+        os.remove(user.profile.profile_img.path)
     user.delete()
     return redirect("user", 'id')
 
@@ -632,7 +633,7 @@ def save_request_book(request):
 def delete_request_book(request, id = None):
     book_request = models.BookRequest.objects.get(pk = id)
     if len(book_request.image) > 0:
-        os.remove(book_request.image)
+        os.remove(book_request.image.path)
     book_request.delete()
     messages.success(request, 'Deleting book request successfully!')
     return redirect('request_reader' , 'id')

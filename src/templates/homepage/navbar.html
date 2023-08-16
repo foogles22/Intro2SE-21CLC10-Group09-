@@ -21,7 +21,8 @@
         </div>
         {% if request.user.profile.role == "LIBRARIAN" %}
         <a class="navbar-brand" href="{% url 'libhome' %}">Librarian<small>Home</small></a>
-        {% else %}
+        {% endif %}
+        {% if request.user.profile.role == "ADMIN" %}
         <a class="navbar-brand" href="{% url 'adhome' %}">Admin<small>Home</small></a>
         {% endif %}
     </div>

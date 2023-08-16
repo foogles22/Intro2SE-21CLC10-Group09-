@@ -48,12 +48,27 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-
+    <link rel="stylesheet" href="{% static 'css/jquery.toast.css' %}"/>
 </head>
 
 <body>
     {% include 'homepage/navbar.html' %}
 
+
+    {% for message in messages%}
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="{% static "js/jquery.toast.js"%}"></script>
+        <script>
+            var upperCaseTag = '{{message.tags}}'.toUpperCase();
+            $.toast({
+            heading: upperCaseTag,
+            text: '{{message}}',
+            showHideTransition: 'slide',
+            icon: '{{message.tags}}',
+            position: 'top-right',
+            });
+        </script>
+    {% endfor %}
 
     <section class="home-slider owl-carousel" style = "height: 380px;">
         <div class="slider-item" style= "height: 380px; background-image: url('{% static "images/booklist.jpg" %}')"></div>

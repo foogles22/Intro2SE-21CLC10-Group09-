@@ -7,7 +7,7 @@
                 <div class="card" style="height: 100%;">
                    <div class="card-body border border-info">
                       <div class="d-flex flex-column align-items-center text-center">
-                         <img src= "{% if b.image %}{{ b.image.url }}{% endif %}">
+                         <img src= "{% if b.image %}{{ b.image.url }}{% endif %}" style="max-height:100%; max-width:100%;">
                          <div class="mt-3 text-info">
                             <h4>{{b.title}}</h4>
                          </div>
