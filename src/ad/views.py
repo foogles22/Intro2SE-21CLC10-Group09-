@@ -925,22 +925,20 @@ def searchbook(request, cate = None):
     context['categories_footer'] = models.Category.objects.all().order_by('-date_added')[0:4]
     return render(request,'homepage/book.html', context)
 
-
 # Import - Export
-
 @login_required
 @allowed_users(allowed_roles=['ADMIN'])
 def export_book(request):
     book = models.Book.objects.all()
-    file = open('book.csv','w',encoding='utf-8',newline='')
-    writer = csv.writer(file, delimiter=',')
+    file = open('export/book.csv','w',encoding='utf-8',newline='')
+    writer = csv.writer(file, delimiter=',',quoting=csv.QUOTE_ALL)
     writer.writerow(['Title', 'Publication year', 'Author', 'Category', 'Description', 'Source Type', 'Language', 'Image', 'Quantity'])
     for b in book:
         writer.writerow([
             b.title,
             b.publication_year,
             b.author,
-            b.category.all(),
+            ','.join(b.category.values_list('name', flat=True)),
             b.description,
             b.sourcetype,
             b.language,
@@ -985,19 +983,20 @@ def import_book(request):
                             valid = False
 
                         try:
-                            book.sourcetype = models.SourceType.objects.get(name = row[4])
+                            book.sourcetype = models.SourceType.objects.get(name = str(row[4]))
                         except:
                             messages.warning(request, message ='Source type name does not exist in database')
+                            print(row[4])
                             valid = False
 
                         try:
-                            book.language = models.Language.objects.get(fullname = row[5])
+                            book.language = models.Language.objects.get(fullname = str(row[5]))
                         except:
                             messages.warning(request, message ='Language name does not exist in database')
                             valid = False
 
                         book.description = row[6]
-                        book.image = "images/bookCover/"+row[7]
+                        book.image = "images/books/"+ row[7]
                         book.quantity = int(row[8])
 
                         try:
@@ -1028,20 +1027,18 @@ def import_book(request):
         messages.error(request, 'No data has been sent')
     return redirect('book', 'id')
 
-
-
 @login_required
 @allowed_users(allowed_roles=['ADMIN'])
 def export_category(request):
     category = models.Category.objects.all()
-    file = open('category.csv','w',encoding='utf-8',newline='')
-    writer = csv.writer(file, delimiter=',')
+    file = open('export/category.csv','w',encoding='utf-8',newline='')
+    writer = csv.writer(file, delimiter=';',quoting=csv.QUOTE_ALL)
     writer.writerow(['Name', 'Description','Image'])
     for cat in category:
         writer.writerow([
             cat.name,
             cat.description,
-            cat.image
+            cat.image,
         ])
     file.close()
     messages.success(request,'Export category successfully')
@@ -1054,24 +1051,17 @@ def import_category(request):
         file = request.FILES["csv_file"]
         storage = FileSystemStorage()
         filepath = storage.path(storage.save(file.name, file))
-
-        # temp_path = Path(filepath).parent.parent
-        # print(os.path.join(temp_path,"Data","categoryCover"))
-
         with open(filepath, "r", encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile, delimiter=";")
-            try:
-                for row in reader:
-                    row[3]
-                messages.warning(request, message ='Import file exceeds the number of fields')
-            except:
+            data = list(reader)
+            if len(data[0]) == 3:
+                csvfile.seek(0)
                 try:
                     for row in reader:
                         category = models.Category()
                         category.name = str(row[0])
                         category.description = str(row[1])
-                        category.image = row[2]
-                        # os.path.join(temp_path,"Data","categoryCover",row[2])
+                        category.image = "images/category/" + row[2]
                         try:
                             models.Category.objects.get(name=category.name)
                             messages.warning(request, message='This category name already exists.')
@@ -1080,6 +1070,8 @@ def import_category(request):
                             messages.success(request,message='Import succesfully')
                 except:
                     messages.warning(request, message ='Wrong .csv input')
+            else:
+                messages.warning(request, message ='The number of fields value in the imported file does not match the number of fields')
         os.remove(filepath)
     else:
         messages.error(request, "No data has been sent")
@@ -1089,8 +1081,8 @@ def import_category(request):
 @allowed_users(allowed_roles=['ADMIN'])
 def export_language(request):
     language = models.Language.objects.all()
-    file = open('language.csv','w',encoding='utf-8',newline='')
-    writer = csv.writer(file, delimiter=',')
+    file = open('export/language.csv','w',encoding='utf-8',newline='')
+    writer = csv.writer(file, delimiter=',',quoting=csv.QUOTE_ALL)
     writer.writerow(['Code', 'Fullname'])
     for lang in language:
         writer.writerow([
@@ -1111,12 +1103,9 @@ def import_language(request):
 
         with open(storage.path(filename), "r", encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile, delimiter=";")
-            try:
-                for row in reader:
-                    row[3]
-                messages.warning(request, message ='Import file exceeds the number of fields')
-            except:
-            # next(reader)
+            data = list(reader)
+            if len(data[0]) == 2:
+                csvfile.seek(0)
                 try:
                     for row in reader:
                         language = forms.SaveLanguage(
@@ -1134,6 +1123,8 @@ def import_language(request):
                                 messages.warning(request, error)
                 except:
                     messages.warning(request, message ='Wrong .csv input')
+            else:
+                messages.warning(request, message ='The number of fields value in the imported file does not match the number of fields')
     else:
         messages.error(request,"No data has been sent")
     return redirect('language', 'id')
@@ -1142,8 +1133,8 @@ def import_language(request):
 @allowed_users(allowed_roles=['ADMIN'])
 def export_source_type(request):
     source_type = models.SourceType.objects.all()
-    file = open('source_type.csv','w',encoding='utf-8',newline='')
-    writer = csv.writer(file, delimiter=',')
+    file = open('export/source_type.csv','w',encoding='utf-8',newline='')
+    writer = csv.writer(file, delimiter=',',quoting=csv.QUOTE_ALL)
     writer.writerow(['Code', 'Name', 'Description'])
     for st in source_type:
         writer.writerow([
@@ -1165,12 +1156,9 @@ def import_source_type(request):
 
         with open(storage.path(filename), "r", encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile, delimiter=";")
-            try:
-                for row in reader:
-                    row[3]
-                messages.warning(request, message ='Import file exceeds the number of fields')
-            except:
-            # next(reader)
+            data = list(reader)
+            if len(data[0]) == 3:
+                csvfile.seek(0)
                 try:
                     for row in reader:
                         source_type = forms.SaveSourceType(
@@ -1189,6 +1177,8 @@ def import_source_type(request):
                                 messages.warning(request, error)
                 except:
                     messages.warning(request, message ='Wrong .csv input')
+            else:
+                messages.warning(request, message ='The number of fields value in the imported file does not match the number of fields')
         os.remove(storage.path(filename))
     else:
         messages.error(request,"No data has been sent")
