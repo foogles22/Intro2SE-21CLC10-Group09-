@@ -1,5 +1,130 @@
 {% extends 'ad/base.html'%}
+{% load my_tags %}
 
 {% block Page_content%}
-    <div class = "text-center">Đây là Home Page</div>
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800 "><i class="fa-solid fa-sitemap"></i> Data</h1>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="fs-4 text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Books</div>
+                            <div class="h4 mb-0 font-weight-bold text-gray-800">{{'-'|booknum}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-book-bookmark fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="fs-4 text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Categories</div>
+                            <div class="h4 mb-0 font-weight-bold text-gray-800">{{'-'|categorynum}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-scroll fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="fs-4 text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Languages</div>
+                            <div class="h4 mb-0 font-weight-bold text-gray-800">{{'-'|languagenum}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-language fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="fs-4 text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                Source Types</div>
+                            <div class="h4 mb-0 font-weight-bold text-gray-800">{{'-'|sourcetypenum}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-compact-disc fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-md-4 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="fs-4 text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Users: Admin</div>
+                            <div class="h4 mb-0 font-weight-bold text-gray-800">{{'-'|adnum}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-user-gear fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-md-4 mb-4">
+            <div class="card border-left-secondary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="fs-4 text-xs font-weight-bold text-secondary text-uppercase mb-1">
+                                Users: Librarian</div>
+                            <div class="h4 mb-0 font-weight-bold text-gray-800">{{'-'|libnum}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-user-pen fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-md-4 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="fs-4 text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Users: Reader</div>
+                            <div class="h4 mb-0 font-weight-bold text-gray-800">{{'-'|readernum}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-book-open-reader fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock Page_content%}
