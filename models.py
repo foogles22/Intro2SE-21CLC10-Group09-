@@ -39,3 +39,20 @@ class Profile(models.Model):
     def __str__(self):
         return str(self.identity)
 
+@receiver(post_save, sender = User)
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        user_profile = Profile(user = instance)
+        user_profile.save()
+        user_profile.init_identity()
+        user_profile.save()
+
+class ReaderRequest(models.Model):
+    first_name = models.CharField(max_length=50, blank=False, null= False)
+    last_name = models.CharField(max_length=50, blank=False, null= False)
+    email = models.EmailField(max_length=50, blank=False, null= False)
+    status = models.CharField(
+        max_length=2, choices=(("1", "Wait"), ("2", "Accept"), ("3", "Decline")), default=1
+    )
+    def __str__(self):
+        return str('Request_' + self.email)
