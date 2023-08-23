@@ -85,3 +85,56 @@ class Language(models.Model):
 
     def __str__(self):
         return str(f"{self.fullname}")
+
+class Book(models.Model):
+    title = models.CharField(blank=False, null=False, max_length=250)
+    publication_year = models.IntegerField(null= False, blank=False, validators=[MaxValueValidator(timezone.now().year)])
+    author = models.CharField(null= False, blank=False, max_length=250)
+    category = models.ManyToManyField(Category)
+    description = models.TextField(blank=True, null=True)
+    sourcetype = models.ForeignKey(SourceType, on_delete=models.SET_NULL, null=True)
+    language = models.ForeignKey(Language, on_delete=models.SET_NULL, null=True)
+    image = models.ImageField(null=False, blank=False, upload_to="images/")
+    quantity = models.IntegerField(null=False, blank=False, validators=[MinValueValidator(0)])
+    status = models.CharField(
+        max_length=2, choices=(("1", "Active"), ("2", "Inactive")), default=1
+    )
+    date_added = models.DateTimeField(null=False, default=timezone.now)
+
+    def __str__(self):
+        words = self.title.split()
+        abbreviations = [word[0].upper() for word in words if word]
+        return ''.join(abbreviations)
+
+
+class BookRequest(models.Model):
+    title = models.CharField(max_length=250, blank=False, null=False)
+    publication_year = models.IntegerField(blank=False, null=False)
+    author = models.CharField(max_length=250, blank=False, null=False)
+    category = models.ManyToManyField(Category)
+    description = models.TextField(max_length=250, blank=False, null=False)
+    sourcetype = models.ForeignKey(SourceType, null=True, on_delete=models.SET_NULL)
+    language = models.ForeignKey(Language, null=True, on_delete=models.SET_NULL)
+    image = models.ImageField(upload_to="images/")
+    status = models.CharField(
+        max_length=2, choices=(("1", "Wait"), ("2", "Accept"), ("3", "Decline")), default=1
+    )
+
+    def __str__(self):
+            return 'Request_' + str(self.title)
+
+class LoanTransaction(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    date_loan = models.DateField(default=timezone.now, null= False)
+    date_expired = models.DateField(default=(timezone.now() + timedelta(7)), null= False)
+    overdue = models.CharField(
+        max_length=2, choices=(("0", "No"), ("1", "Yes")), default=0
+    )
+    returned = models.CharField(
+        max_length=2, choices=(("0", "No"), ("1", "Yes")), default=0
+    )
+    class Meta:
+            unique_together = ('user', 'book', 'date_loan')
+    def __str__(self):
+        return str(f'{self.user.profile.identity}_{self.book}')
