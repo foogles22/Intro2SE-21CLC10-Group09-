@@ -1,68 +1,111 @@
 {% extends 'ad/base.html' %}
-
+{% load my_tags %}
 {% block Page_content %}
-<section class="py-4">
-  <div class="container">
-    <h3 class="fw-bolder text-center">List of Request</h3>
-    <center>
-      <hr class="bg-primary opacity-100" style="height:3px" width="5%" />
-    </center>
-    <div class="card rounded-0 shadow">
-      <div class="card-body">
-        <div class="container-fluid">
-          </div>
-          <table class="table">
-            <colcategory>
-              <col width="5%" />
-              <col width="25%" />
-              <col width="30%" />
-              <col width="30%" />
-              <col width="10%" />
-            </colcategory>
-            <thead>
-              <tr>
-                <th class="text-center" scope="col">#</th>
-                <th class="text-center" scope="col">First Name</th>
-                <th class="text-center" scope="col">Last Name</th>
-                <th class="text-center" scope="col">Email</th>
-                <th class="text-center" class="text-center">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% if requests %}
-                {% for request in requests %}
-                {% if request.status == '1' %}
-                  <tr>
-                    <td class="text-center">{{ forloop.counter }}</td>
-                    <td class="text-center">{{ request.first_name }}</td>
-                    <td class="text-center">{{ request.last_name }}</td>
-                    <td class="text-center">{{ request.email }}</td>
-                    <td class="text-center">
-                      <div class="dropdown">
-                        <button class="btn btn-light btn-sm rounded-0 border dropdown-toggle" type="button" id="{{ request.pk }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
-                        <ul class="dropdown-menu" aria-labelledby="{{ request.pk }}">
-                          <li>
-                            <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal{{ forloop.counter }}"><i class="fa-regular fa-square-check text-success"></i> Accept</button>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="{% url 'decline_reader_request' request.id%}"><i class="fa-solid fa-square-xmark text-danger"></i> Decline</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </td>
-                  </tr>
-                {% endif %}
-                {% endfor %}
-              {% endif %}
-            </tbody>
-          </table>
-          <div class="d-flex justify-content-between mt-3">
-              <a href="{% url 'user' 'id'%}" class="btn btn-dark">Back</a>    
-          </div>
-        </div>
+<style>
+	a {
+	text-decoration:none;
+	color: black;
+	font-weight: 500;
+	}
+  a:hover {
+    text-decoration:none;
+    color: black;
+    font-weight: 500;
+ }
+</style>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+	<h1 class="h3 mb-0 text-gray-800 "><i class="fa-solid fa-book-open-reader"></i> Reader Requests Management</h1>
+</div>
+<div class="card shadow mb-4">
+	<div class="card-header py-2 d-flex justify-content-between">
+		<div class="m-0 font-weight-bold text-primary d-flex align-items-center">List of Reader Requests</div>
+    <a href="{% url 'user' 'id'%}" class="btn btn-sm btn-warning btn-icon-split" type="button">
+      <span class="icon text-white-50">
+      <i class="fa-solid fa-rotate-left"></i>
+    </span>
+    <span class="text">Back</span>
+    </a>
+	</div>
+	<div class="card-body">
+		<!-- input search + reset button-->
+      <div class="input-group input-group mb-3">
+         <input type="text" onkeyup="searchFunction()" class="form-control" id="search" placeholder="Search for...">
+         <a href="" class="btn btn-dark"><i class="fas fa-sync-alt"></i></a>  
       </div>
-    </div>
-  </div>
+      <table class="table table-bordered table-sm-mt-4" style="text-align: center;">
+        <colrequests>
+          <col width="5%" />
+          <col width="25%" />
+          <col width="30%" />
+          <col width="30%" />
+          <col width="10%" />
+        </colrequests>
+        <thead class="table-primary">
+          <tr>
+            <th class="text-center" scope="col">#</th>
+            <th class="text-center" scope="col"><a href="{% url 'manage_reader_request' 'first_name'%}">First Name <i class="fa-solid fa-sort"></i></a></th>
+            <th class="text-center" scope="col"><a href="{% url 'manage_reader_request' 'last_name'%}">Last Name <i class="fa-solid fa-sort"></i></a></th>
+            <th class="text-center" scope="col"><a href="{% url 'manage_reader_request' 'email'%}">Email <i class="fa-solid fa-sort"></i></a></th>
+            <th class="text-center" class="text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody id="myTable">
+          {% if requests %}
+            {% for request in requests %}
+            {% if request.status == '1' %}
+              <tr>
+                <td class="text-center">{{ forloop.counter }}</td>
+                <td class="text-center">{{ request.first_name }}</td>
+                <td class="text-center">{{ request.last_name }}</td>
+                <td class="text-center">{{ request.email }}</td>
+                <td class="text-center">
+                  <div class="dropdown">
+                    <button class="btn btn-light btn-sm rounded-0 border dropdown-toggle" type="button" id="{{ request.pk }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
+                    <ul class="dropdown-menu" aria-labelledby="{{ request.pk }}">
+                      <li>
+                        <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal{{ forloop.counter }}"><i class="fa-regular fa-square-check text-success"></i> Accept</button>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="{% url 'decline_reader_request' request.id%}"><i class="fa-solid fa-square-xmark text-danger"></i> Decline</a>
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+            {% endif %}
+            {% endfor %}
+          {% endif %}
+        </tbody>
+      </table>
+      <nav aria-label="Page">
+         <ul class="pagination  justify-content-end">
+            {% if requests.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{requests.previous_page_number}}"><i class="fa-solid fa-backward"></i></a></li>
+            {% else %}
+            <li class="page-item disabled"><a class="page-link"><i class="fa-solid fa-backward"></i></a></li>
+            {% endif %}
+            {% if requests.number|moreB%}
+            <li class="page-item"><a class="page-link" style="pointer-events: none;"><i class="fa-solid fa-ellipsis"></i></a></li>
+            {% endif %}
+            {% for i in requests.number|range_list:requests.paginator.num_pages %}
+            {% if i == requests.number %}
+            <li class="page-item"><a class="page-link" href="?page={{i}}" style="background-color: #d3d3d3;">{{i}}</a></li>
+            {% else %}
+            <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+            {% endif %}
+            {% endfor %}
+            {% if requests.number|moreF:requests.paginator.num_pages%}
+            <li class="page-item"><a class="page-link" style="pointer-events: none;"><i class="fa-solid fa-ellipsis"></i></a></li>
+            {% endif %}
+            {% if requests.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{requests.next_page_number}}"><i class="fa-solid fa-forward"></i></a></li>
+            {% else %}
+            <li class="page-item disabled"><a class="page-link"><i class="fa-solid fa-forward"></i></a></li>
+            {% endif %}
+         </ul>
+      </nav>
+	</div>
+</div>
 
 {% for request in requests %}
 {% if request.status == '1' %}
@@ -71,9 +114,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <div class="card-body text-center">
-          <i class="fa fa-plus text-info"> Request Reader Account</i>
-        </div>
+          <i class="fa fa-plus text-info"> Accept Reader Account Request</i>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -86,22 +127,27 @@
           </div>
           <div class="input-group mb-3 mt-3">
             <span class="input-group-text border-dark">Password1</span>
-            <input type="text" id="password1" name="password1" class="form-control" placeholder="Password1" required>
+            <input type="password" id="password1" name="password1" class="form-control" placeholder="Password1" required>
           </div>
             <div class="input-group mb-3 mt-3">
               <span class="input-group-text border-dark">Password2</span>
-              <input type="text" id="password2" name="password2" class="form-control" placeholder="Password2" required>
+              <input type="password" id="password2" name="password2" class="form-control" placeholder="Password2" required>
             </div>
             <div class="text-end mt-3">
-              <input class="btn btn-dark" type="submit" value="Request">
+              <div id="activateButton" class="btn btn-success btn-icon-split">
+                <span class="icon text-white-50">
+                  <i class="fa-solid fa-user-plus"></i>
+                </span>
+                <input type="submit" id="submitButton" style="display: none;">
+                <span class="text">Save</span>
+              </div>
             </div>
           </form>
         </div>
       </div>
     </div>
   </div>
+</div>
 {% endif %}
 {% endfor %}
-</section>
-
 {% endblock %}
