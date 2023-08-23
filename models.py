@@ -56,3 +56,32 @@ class ReaderRequest(models.Model):
     )
     def __str__(self):
         return str('Request_' + self.email)
+
+# -ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN
+class Category(models.Model):
+    name = models.CharField(blank=False, null=False, max_length=250)
+    description = models.TextField(blank=True, null=True, max_length=250)
+    date_added = models.DateTimeField(null=False, default=timezone.now)
+    image = models.ImageField(null=False, blank=False, upload_to="images/")
+
+    def __str__(self):
+        return str(f"{self.name}")
+
+
+class SourceType(models.Model):
+    code = models.CharField(blank=False, null=False, max_length=50)
+    name = models.CharField(null= False, blank=False, max_length=250)
+    description = models.TextField(blank=True, null=True, max_length=400)
+    date_added = models.DateTimeField(null=False, default=timezone.now)
+
+    def __str__(self):
+        return str(f"{self.name}")
+
+
+class Language(models.Model):
+    code = models.CharField(max_length=50, blank=False, null=False)
+    fullname = models.CharField(max_length=250,blank=False, null=False)
+    date_added = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return str(f"{self.fullname}")
