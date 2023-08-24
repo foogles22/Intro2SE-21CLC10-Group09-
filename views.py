@@ -99,3 +99,117 @@ def delete_user(request, id):
     messages.success(request, 'Deleting acount succeed')
     user.delete()
     return redirect("user")
+
+# ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN-ADMIN
+# --------HOME--------
+@login_required
+def home(request):
+    context = context_data()
+    context['page_title'] = 'Admin Home'
+    return render(request, 'ad/home.html', context)
+
+# --------CATEGORY--------
+@login_required
+def category(request):
+    context = context_data()
+    context['page_title'] = 'Categories'
+    context['category'] = models.Category.objects.all()
+    return render(request, 'ad/category.html', context)
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def manage_category(request, id = None):
+    context = context_data()
+    context['page_title'] = 'Manage Categories'
+    if id:
+        context['category'] = models.Category.objects.get(pk = id)
+        context['type'] = 'Save'
+    else:
+        context['category'] = {}
+        context['type'] = 'Add'
+    return render(request, 'ad/manage_category.html', context)
+
+@allowed_users(allowed_roles=['ADMIN'])
+def save_category(request):
+    if request.method == "POST":
+        post = request.POST
+        if post['id']:
+            category = models.Category.objects.get(pk = post['id'])
+            category = forms.SaveCategory(request.POST,request.FILES, instance=category)
+        else:
+            category = forms.SaveCategory(request.POST,request.FILES)
+        if category.is_valid():
+            category.save()
+            messages.success(request, 'New category added')
+        else:
+            for field in category.errors.values():
+                for error in field:
+                    messages.error(request, error)
+        return HttpResponseRedirect('/category/')
+    else:
+        pass
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def delete_category(request, id):
+    category = models.Category.objects.get(pk = id)
+    try:
+        os.remove(category.image.path)
+    except:
+        pass
+    category.delete()
+    return HttpResponseRedirect('/category/')
+
+@login_required
+def view_category(request, id):
+    context = context_data()
+    context['page_title'] = 'View Categories'
+    context['category'] = models.Category.objects.get(pk = id)
+    return render(request, 'ad/view_category.html', context)
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def export_category(request):
+    category = models.Category.objects.all()
+    file = open('export/category.csv','w',encoding='utf-8',newline='')
+    writer = csv.writer(file, delimiter=';',quoting=csv.QUOTE_ALL)
+    writer.writerow(['Name', 'Description','Image'])
+    for cat in category:
+        writer.writerow([
+            cat.name,
+            cat.description,
+            cat.image,
+        ])
+    file.close()
+    return HttpResponseRedirect('/category/')
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def import_category(request):
+    if request.method == "POST":
+        file = request.FILES["csv_file"]
+        storage = FileSystemStorage()
+        filepath = storage.path(storage.save(file.name, file))
+        with open(filepath, "r", encoding='utf-8') as csvfile:
+            reader = csv.reader(csvfile, delimiter=";")
+            data = list(reader)
+            if len(data[0]) == 3:
+                csvfile.seek(0)
+                try:
+                    for row in reader:
+                        category = models.Category()
+                        category.name = str(row[0])
+                        category.description = str(row[1])
+                        category.image = "images/categoryCover/"+row[2]
+                        try:
+                            models.Category.objects.get(name=category.name)
+                            messages.warning(request, message='This category name already exists.')
+                        except:
+                            category.save()
+                            messages.success(request,message='Import succesfully')
+                except:
+                    messages.warning(request, message ='Wrong .csv input')
+            else:
+                messages.warning(request, message ='The number of fields value in the imported file does not match the number of fields')
+        os.remove(filepath)
+    return render(request, 'ad/import_category.html')
