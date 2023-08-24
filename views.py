@@ -870,3 +870,92 @@ def delete_request_book(request, id = None):
     models.BookRequest.objects.get(pk = id).delete()
     messages.success(request, 'Deleting book request successfully!')
     return redirect('request_reader' , 'id')
+
+# ---------------------Users----------------
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def user(request, order = 'id'):
+    context = context_data()
+    context["page_title"] = "Users"
+    users = User.objects.all().order_by(order)
+    p = Paginator(users, 3)
+    page = request.GET.get('page')
+    users = p.get_page(page)
+    context["users"] = users
+    return render(request, "ad/user.html", context)
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def manage_user(request):
+    context = context_data()
+    context["page_title"] = "Manage Users"
+    context["user"] = {}
+    context["type"] = "Add"
+    return render(request, "ad/manage_user.html", context)
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def save_user(request):
+    if request.method == "POST":
+        user = forms.SaveUser(request.POST)
+        if user.is_valid():
+            user = user.save()
+            messages.success(request, 'Account created successfully!')
+            profile = models.Profile.objects.get(pk = user.id)
+            profile = forms.SaveProfile(request.POST, instance= profile)
+            if profile.is_valid():
+                profile.save()
+            else:
+                for field in profile.errors.values():
+                    for error in field:
+                        messages.error(request, error)
+        else:
+            for error in user.errors.values():
+                messages.warning(request, error)
+        return redirect("user")
+    else:
+        messages.error(request, 'No data has been sent')
+        return redirect("user")
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def manage_reader_request(request):
+    context = context_data()
+    context["page_title"] = "Manage Reader Request"
+    context["requests"] = models.ReaderRequest.objects.all()
+    if request.method == "POST":
+        pass
+    return render(request, "ad/manage_reader_request.html", context)
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def decline_reader_request(request, id=None):
+    reader_request = models.ReaderRequest.objects.get(pk=id)
+    reader_request.status = '3'
+    reader_request.save(update_fields=['status'])
+    messages.success(request, 'Decline successfully!')
+    return redirect('manage_reader_request')
+
+@login_required
+def view_user(request, id):
+    context = context_data()
+    context["page_title"] = "View Users"
+    context["user"] = User.objects.get(pk=id)
+    return render(request, "ad/view_user.html", context)
+
+# SEARCHING
+def identity_search(request):
+    if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        search_query = request.GET.get('query', '')
+        items = models.Profile.objects.filter(identity__contains=search_query)[:10]
+        item_list = [item.identity for item in items if 'RD' in item.identity]
+        return JsonResponse(item_list, safe=False)
+    return render(request, 'manage_loan.html')
+
+def book_search(request):
+    if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        search_query = request.GET.get('query', '')
+        items = models.Book.objects.filter(title__contains=search_query)[:10]
+        item_list = [item.title for item in items]
+        return JsonResponse(item_list, safe=False)
+    return render(request, 'manage_loan.html')
