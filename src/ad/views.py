@@ -983,20 +983,19 @@ def import_book(request):
                             valid = False
 
                         try:
-                            book.sourcetype = models.SourceType.objects.get(name = str(row[4]))
+                            book.sourcetype = models.SourceType.objects.get(name = row[4])
                         except:
                             messages.warning(request, message ='Source type name does not exist in database')
-                            print(row[4])
                             valid = False
 
                         try:
-                            book.language = models.Language.objects.get(fullname = str(row[5]))
+                            book.language = models.Language.objects.get(fullname = row[5])
                         except:
                             messages.warning(request, message ='Language name does not exist in database')
                             valid = False
 
                         book.description = row[6]
-                        book.image = "images/books/"+ row[7]
+                        book.image = "images/books/"+row[7]
                         book.quantity = int(row[8])
 
                         try:
@@ -1061,7 +1060,7 @@ def import_category(request):
                         category = models.Category()
                         category.name = str(row[0])
                         category.description = str(row[1])
-                        category.image = "images/category/" + row[2]
+                        category.image = "images/category/"+row[2]
                         try:
                             models.Category.objects.get(name=category.name)
                             messages.warning(request, message='This category name already exists.')

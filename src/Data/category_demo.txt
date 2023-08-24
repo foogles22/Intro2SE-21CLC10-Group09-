@@ -1,0 +1,4 @@
+"Truyện ngắn";"Truyện ngắn là hình thức tự sự cỡ nhỏ, thường được viết bằng văn xuôi, để người đọc tiếp thu liền một mạch, đọc một hơi không nghỉ.";""
+"Nhật Bản";"Thể loại sách, tài liệu liên quan đến đất nước, con người, xã hội, công nghệ Nhật Bản.";""
+"Thực phẩm";"Các tài liệu liên quan đến thực phẩm của con người, vì sức khỏe của con người. ";""
+"KHMT";"Tài liệu liên quan đến lĩnh vực Khoa học máy tính.";""
