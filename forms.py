@@ -71,3 +71,46 @@ class EditProfile(forms.ModelForm):
             self.add_error(forms.ValidationError('email', 'Email is already taken!'))
         except:
             return email
+
+class SaveCategory(forms.ModelForm):
+    name = forms.CharField(max_length=250)
+    description = forms.Textarea()
+    image = forms.ImageField()
+    class Meta:
+        model = models.Category
+        fields = ('name', 'description', 'image')
+
+    def clean(self):
+        id = self.data['id'] if (self.data['id']).isnumeric() else 0
+        name = self.data.get('name')
+        cleaned_data = self.cleaned_data
+        try:
+            if int(id) > 0:
+                models.Category.objects.exclude(id=id).get(name=name)
+            else:
+                models.Category.objects.get(name=name)
+            self.add_error('name',forms.ValidationError('This category name already exists.'))
+        except:
+            return cleaned_data
+    
+class SaveSourceType(forms.ModelForm):
+    code = forms.CharField(max_length=50)
+    name = forms.CharField(max_length=250)
+    description = forms.Textarea()
+
+    class Meta:
+        model = models.SourceType
+        fields = ('code', 'name', 'description', )
+
+    def clean(self):
+        id = self.data['id'] if (self.data['id']).isnumeric() else 0
+        code = self.data.get('code')
+        cleaned_data = self.cleaned_data
+        try:
+            if int(id) > 0:
+                models.SourceType.objects.exclude(id=id).get(code=code)
+            else:
+                models.SourceType.objects.get(code=code)
+            self.add_error('code',forms.ValidationError('This source type code already exists.'))
+        except:
+            return cleaned_data
