@@ -636,7 +636,7 @@ def delete_request_book(request, id = None):
         os.remove(book_request.image.path)
     book_request.delete()
     messages.success(request, 'Deleting book request successfully!')
-    return redirect('request_reader' , 'id')
+    return redirect('request_book' , 'id')
 
 @login_required
 @allowed_users(allowed_roles=['LIBRARIAN'])

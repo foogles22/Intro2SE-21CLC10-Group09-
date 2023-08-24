@@ -148,7 +148,7 @@
                 <span class="input-group-text border-dark" style="width: 138px;" >Author</span>
                 <input type="text" id="author" name="author" class="form-control" placeholder="Author" required>
             </div>
-            <div class="input-group mb-3 mt-3">
+            <div class="input-group mb-3 mt-3" style="z-index: 3;">
                 <span class="input-group-text border-dark" style="width: 138px;">Category</span>
                 <select type="text" id="category" name="category" data-live-search="true" class="selectpicker form-control" multiple data-container="body" required>
                     {% for category in categories %}
@@ -156,21 +156,21 @@
                     {% endfor %}
                 </select>
             </div>
-            <div class="input-group mb-3 mt-3" style="z-index: 0;">
+            <div class="input-group mb-3 mt-3">
                 <span class="input-group-text border-dark" style="width: 138px;">Description</span>
                 <textarea id="description" name="description" class="form-control"  rows="5" required></textarea>
             </div>
-            <div class="input-group mb-3 mt-3">
+            <div class="input-group mb-3 mt-3" style="z-index: 2;">
                 <span class="input-group-text border-dark" style="width: 138px;" >Source Type</span>
-                <select type="text" id="sourcetype" name="sourcetype" class="form-control selectpicker" data-size='1' data-container="body" required>
+                <select type="text" id="sourcetype" name="sourcetype" class="form-control selectpicker" data-container="body" required>
                     {% for source_type in source_types %}
                     <option value="{{source_type.pk}}">{{source_type.code}}</option>
                     {% endfor %}
                 </select>
             </div>
-            <div class="input-group mb-3 mt-3" style="z-index: 0;">
+            <div class="input-group mb-3 mt-3" style="z-index: 1;">
                 <span class="input-group-text border-dark" style="width: 138px;">Language</span>
-                <select type="text" id="language" name="language" class="form-control selectpicker" data-size='1' data-container="body" required>
+                <select type="text" id="language" name="language" class="form-control selectpicker" data-container="body" required>
                     {% for language in languages %}
                     <option value="{{language.pk}}">{{language.code}}</option>
                     {% endfor %}

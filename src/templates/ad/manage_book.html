@@ -28,7 +28,7 @@
             <span class="input-group-text border-dark" style="width: 138px;" >Author</span>
             <input type="text" id="author" name="author" class="form-control" placeholder="Author" value="{{book.author}}" required>
         </div>
-        <div class="input-group mb-3 mt-3">
+        <div class="input-group mb-3 mt-3" style = "z-index:">
             <span class="input-group-text border-dark" style="width: 138px;">Category</span>
             <select type="text" id="category" name="category" data-live-search="true" class="selectpicker form-control" multiple data-container="body" value="{{book.category}}" required>
                 {% for category in categories %}
@@ -40,11 +40,11 @@
                 {% endfor %}
             </select>
         </div>
-        <div class="input-group mb-3 mt-3" style="z-index: 0;">
+        <div class="input-group mb-3 mt-3" style = "z-index:3">
             <span class="input-group-text border-dark" style="width: 138px;">Description</span>
             <textarea id="description" name="description" class="form-control" rows="5" required>{{book.description}}</textarea>
         </div>
-        <div class="input-group mb-3 mt-3">
+        <div class="input-group mb-3 mt-3" style = "z-index:2">
             <span class="input-group-text border-dark" style="width: 138px;" >Source Type</span>
             <select type="text" id="sourcetype" name="sourcetype" class="form-control selectpicker" data-size='1' data-container="body" value="{{book.sourcetype}}" required>
                 {% for source_type in source_types %}
@@ -56,7 +56,7 @@
                 {% endfor %}
             </select>
         </div>
-        <div class="input-group mb-3 mt-3" style="z-index: 0;">
+        <div class="input-group mb-3 mt-3" style = "z-index:1">
             <span class="input-group-text border-dark" style="width: 138px;">Language</span>
             <select type="text" id="language" name="language" class="form-control selectpicker" data-size='1' data-container="body" value="{{book.language}}" required>
                 {% for language in languages %}
@@ -68,11 +68,11 @@
                 {% endfor %}
             </select>
         </div>
-        <div class="input-group mb-3 mt-3" style="z-index: 0;">
+        <div class="input-group mb-3 mt-3" style = "z-index:0">
             <span class="input-group-text border-dark" style="width: 138px" >Book quantity</span>
             <input type="number" id="quantity" name="quantity" class="form-control" value="{{book.quantity}}" placeholder="Book quantity" required>
         </div>
-        <div class="input-group mb-3 mt-3">
+        <div class="input-group mb-3 mt-3" style = "z-index:0">
             <span class="input-group-text border-dark" style="width: 138px;">Cover Photo</span>
             <input type="file" id="image" name="image" class="form-control" placeholder="Last Name" value="{{book.image}}" required>
         </div>
