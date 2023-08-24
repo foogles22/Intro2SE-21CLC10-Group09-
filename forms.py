@@ -185,3 +185,65 @@ class SaveRequestBook(forms.ModelForm):
     class Meta:
         model = models.BookRequest
         fields  = ('title', 'publication_year', 'author', 'category', 'description', 'sourcetype', 'language', 'image')
+
+class SaveTransaction(forms.ModelForm):
+    # user = forms.ModelChoiceField(queryset=User.objects.all())
+    # book = forms.ModelChoiceField(queryset=models.Book.objects.all())
+    class Meta:
+        model = models.LoanTransaction
+        fields = ('user','book')
+
+    def __init__(self,data = None, *args, **kwargs):
+        try:
+            profile = models.Profile.objects.get(identity = data['identity'])
+            user = User.objects.get(pk = profile.id)
+        except:
+            user = None
+        try:
+            book = models.Book.objects.get(title = data['book'])
+        except:
+            book = None
+        new_data = {'user': user, 'book': book}
+        super().__init__(new_data, *args, **kwargs)
+        
+    def clean(self):
+        user = self.data.get('user')
+        book = self.data.get('book')
+
+        if user not in User.objects.all():
+            self.add_error('user', forms.ValidationError('The user is not existed'))
+            self.errors['user'].pop(0)
+        else:
+            if 'RD' not in user.profile.identity:
+                self.add_error('user', forms.ValidationError('The user is not available'))
+
+        if book not in models.Book.objects.all():
+            self.add_error('book', forms.ValidationError('The book is not existed'))
+            self.errors['book'].pop(0)
+
+        try:
+            loan = models.LoanTransaction.objects.get(user= user, book = book)
+            if loan.date_loan != date.today():
+                if loan.returned == '0':
+                    self.add_error('book', forms.ValidationError('Reader has not returned this book yet!'))
+        except:
+            pass
+
+        try:
+            loan = models.LoanTransaction.objects.get(user= user, book = book, date_loan = date.today())
+            self.add_error('__all__', forms.ValidationError('The transaction is already existed!'))
+        except:
+            return {'user': user, 'book' : book}
+
+    def check_book_status(self):
+        book = self.data['book']
+        if book.status == '1':
+            book.quantity -= 1
+            if book.quantity == 0:
+                book.status = '2'
+                book.save(update_fields = ['status'])
+            book.save(update_fields = ['quantity'])
+            return 1
+        else:
+            return 0
+
