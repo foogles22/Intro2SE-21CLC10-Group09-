@@ -213,3 +213,112 @@ def import_category(request):
                 messages.warning(request, message ='The number of fields value in the imported file does not match the number of fields')
         os.remove(filepath)
     return render(request, 'ad/import_category.html')
+
+
+# --------SOURCE TYPE--------
+@login_required
+def source_type(request):
+    context = context_data()
+    context['page_title'] = 'Source Types'
+    context['source_type'] = models.SourceType.objects.all()
+    return render(request, 'ad/source_type.html', context)
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def manage_source_type(request, id = None):
+    context = context_data()
+    context['page_title'] = 'Manage Source Type'
+    if id:
+        context['source_type'] = models.SourceType.objects.get(pk = id)
+        context['type'] = 'Save'
+    else:
+        context['source_type'] = {}
+        context['type'] = 'Add'
+    return render(request, 'ad/manage_source_type.html', context)
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def save_source_type(request):
+    if request.method == "POST":
+        post = request.POST
+        if post['id']:
+            source_type = models.SourceType.objects.get(pk = post['id'])
+            source_type = forms.SaveSourceType(request.POST, instance=source_type) 
+        else:
+            source_type = forms.SaveSourceType(request.POST)    
+        if source_type.is_valid():
+            source_type.save()
+            messages.success(request, 'New source type added')
+        else:
+            for field in source_type.errors.values():
+                for error in field:
+                    messages.error(request, error)
+        return HttpResponseRedirect('/source_type/')
+    else:
+        pass
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def delete_source_type(request, id):
+    source_type = models.SourceType.objects.get(pk = id)
+    source_type.delete()
+    return HttpResponseRedirect('/source_type/')
+
+@login_required
+def view_source_type(request, id):
+    context = context_data()
+    context['page_title'] = 'View Source Types'
+    context['source_type'] = models.SourceType.objects.get(pk = id)
+    return render(request, 'ad/view_source_type.html', context)
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def export_source_type(request):
+    source_type = models.SourceType.objects.all()
+    file = open('export/source_type.csv','w',encoding='utf-8',newline='')
+    writer = csv.writer(file, delimiter=',',quoting=csv.QUOTE_ALL)
+    writer.writerow(['Code', 'Name', 'Description'])
+    for st in source_type:
+        writer.writerow([
+            st.code,
+            st.name,
+            st.description
+        ])
+    file.close()
+    return HttpResponseRedirect('/source_type/')
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def import_source_type(request):
+    if request.method == "POST":
+        file = request.FILES["csv_file"]
+        storage = FileSystemStorage()
+        filename = storage.save(file.name, file)
+
+        with open(storage.path(filename), "r", encoding='utf-8') as csvfile:
+            reader = csv.reader(csvfile, delimiter=";")
+            data = list(reader)
+            if len(data[0]) == 3:
+                csvfile.seek(0)
+                try:
+                    for row in reader:
+                        source_type = forms.SaveSourceType(
+                            data = {
+                                'id':'1',
+                                'code': row[1],
+                                'name': row[0],
+                                'description': row[2],
+                            }
+                        )
+                        if source_type.is_valid():
+                            source_type.save()
+                            messages.success(request,message='Import succesfully')
+                        else:
+                            for error in source_type.errors.values():
+                                messages.warning(request, error)
+                except:
+                    messages.warning(request, message ='Wrong .csv input')
+            else:
+                messages.warning(request, message ='The number of fields value in the imported file does not match the number of fields')
+        os.remove(storage.path(filename))
+    return render(request, 'ad/import_source_type.html')
