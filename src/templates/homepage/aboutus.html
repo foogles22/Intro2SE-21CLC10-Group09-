@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-	<title>Coffee - Free Bootstrap 4 Template by Colorlib</title>
+    <title>Wellib system - Book for life</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -34,239 +34,148 @@
 <body>
 	{% include 'homepage/navbar.html' %}
 
-	<!-- END nav -->
+	<section class="home-slider owl-carousel" style="height: 380px;">
+		<div class="slider-item" style="height: 380px; background-image: url('{% static "images/booklist.jpg" %}')">
+		</div>
+		<div class="slider-item" style="height: 380px; background-image: url('{% static "images/boundbook.jpg" %}')">
+		</div>
+		<div class="slider-item" style="height: 380px; background-image: url('{% static "images/booktop.jpg" %}')">
+		</div>
+	</section>
 
-	<section class="home-slider owl-carousel">
-		<div class="slider-item" style="background-image: url('{% static "images/boundbook.jpg" %}')"
-			data-stellar-background-ratio="0.5">
-			<div class="overlay"></div>
-			<div class="container">
-				<div class="row slider-text justify-content-center align-items-center">
-
-					<div class="col-md-7 col-sm-12 text-center ftco-animate">
-						<h1 class="mb-3 mt-5 bread">About Us</h1>
-						<p class="breadcrumbs"><span class="mr-2"><a href="{% url 'homepage' %}">Home</a></span>
-							<span>About Us</span></p>
-					</div>
-
+	<section class="ftco-about" style="padding-top: 50px">
+		<div classs="container">
+			<div class="heading-section text-center ftco-animate" style="padding-bottom: 70px">
+				<h2 style="text-align: center; font-size: 50px;">| ABOUT OUR WELLIB</h2>
+				<span class="subheading" style = "color: black;">Innovation for a better life</span>
+			</div>
+			<div class="row" style="align-items: center;">
+				<div class="col-4">
+					<button class="gotoSectionButton" data-target="whoWeAre" style="font-size:30px; align-items: center; color:black;  width: 100%; height: 80px; background-color: rgb(255, 255, 255); border-right-color: white; align-items: center; box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;" >Who we are</button>
+				</div>
+				<div class="col-4">
+					<button class="gotoSectionButton" data-target="ourValues" style="font-size:30px; align-items: center; color:black;  width: 100%; height: 80px; background-color: rgb(255, 255, 255); border-right-color: white; align-items: center; box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;" >Our values</button>
+				</div>
+				<div class="col-4">
+					<button class="gotoSectionButton" data-target="ourOrganization" style="font-size:30px; align-items: center; color:black;  width: 100%; height: 80px; background-color: rgb(255, 255, 255); border-right-color: white; align-items: center; box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;" >Our organization</button>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<section class="ftco-about d-md-flex" style="padding-top: 20px; padding-bottom: 20px">
-		<div class="one-half img" style="background-image: url('{% static "images/aboutus.jpg" %}');"></div>
-		<div class="one-half ftco-animate">
-			<div class="overlap"
-				style=" border-radius: 15px; margin-bottom: 25px; box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;">
-				<div class="heading-section ftco-animate ">
-					<span class="subheading">Discover</span>
-					<h2 class="mb-4">Book history</h2>
+	<section id = "targetSection" class="ftco-section" style="padding-top: 50px">
+		<div class="container" style="text-align: center;">
+			<section class = "section" id ="whoWeAre">
+			<div class="heading-section text-md-center ftco-animate">
+				<h2 class="mb-6">WHO WE ARE</h2>
+				<span style="font-size:18px; font-weight:bold; color:black">Since 2023, a digital library for all. Read
+					well, live better.</span>
+				<p style="font-style: italic; text-align: justify;">
+					Welcome to Wellib! </p>
+				<p class="mb-4" style="text-align: justify; color: black; ">We are a hub of knowledge, creativity, and
+					community, dedicated to providing an enriching experience
+					for all of our visitors. With a vast collection of books, magazines, and digital resources, we
+					strive to cater to the diverse interests and passions of our patrons. Whether you are a voracious
+					reader, a student seeking information, or simply looking for a tranquil space to escape and explore,
+					our library is the perfect place for you. Our dedicated team of librarians and staff are here to
+					assist you in your quest for knowledge, guiding you through our extensive collection, and helping
+					you navigate the ever-evolving world of information and technology. Join us in this wonderful
+					journey of discovery, inspiration, and lifelong learning at our library – where stories come alive,
+					imaginations soar, and connections are made. Explore, engage, and experience the magic of reading
+					and knowledge at your fingertips. Welcome to a world of endless possibilities at our library!</p>
+			</div>
+			</section>
+			<section class = "section" id ="ourValues">
+			<div class="heading-section text-md-center ftco-animate">
+				<h2 class="mb-6" style="padding-bottom: 20px; padding-top: 50px;">Our Values</h2>
+
+				<div style="padding-bottom: 30px;">
+					<h2 class="mb-6" style="font-size: 25px;">OUR PURPOSE</h2>
+					<p style=" color:black">SA digital library serving and connecting with all readers.</p>
 				</div>
-				<div>
-					<p style="color: black; text-align: justify; ">The history of books became an acknowledged academic
-						discipline in the 1980s. Contributors to the
-						discipline include specialists from the fields of textual scholarship, codicology, bibliography,
-						philology, palaeography, art history, social history and cultural history. Its key purpose is to
-						demonstrate that the book as an object, not just the text contained within it, is a conduit of
-						interaction between readers and words.
-						Prior to the evolution of the printing press, made famous by the Gutenberg Bible, each text was
-						a unique handcrafted valuable article, personalized through the design features incorporated by
-						the scribe, owner, bookbinder, and illustrator.[1] Analysis of each component part of the book
-						reveals its purpose, where and how it was kept, who read it, ideological and religious beliefs
-						of the period and whether readers interacted with the text within. Even a lack of evidence of
-						this nature leaves valuable clues about the nature of that particular book.</p>
+
+				<div style="padding-bottom: 30px;">
+					<h2 class="mb-6" style="font-size: 25px;">Our Vision</h2>
+					<p style=" color:black">“Of the people, by the people, for the people”</p>
+				</div>
+
+				<div style="padding-bottom: 30px;">
+					<h2 class="mb-6" style="font-size: 25px;">Our Mission</h2>
+					<p class="mb-4" style="color: black;">The mission of Wellib is to provide easy and open access to a
+						wide range of digital resources, promoting inclusivity by removing barriers to access. We aim to
+						organize, preserve, and disseminate knowledge worldwide, democratizing information for the
+						advancement of society. At our core, our mission is to promote learning, connecting, sharing,
+						and innovation for a better life.
+					</p>
+				</div>
+
+				<div style="padding-bottom: 30px;">
+					<h2 class="mb-6" style="font-size: 25px;">Our Values</h2>
+					<div class = "padding-bottom:30px">
+						<span style="font-weight: bold; font-style: italic; color:black">Wealth of knowledge for the community.</span>
+						<p class="mb-4" style="color: black;">Having access to a variety of educational resources and expert guidance, the community is blessed with a wealth of knowledge that empowers individuals to grow and thrive.</p>
+					</div>
+
+					<div class = "padding-bottom:30px">
+						<span style="font-weight: bold; font-style: italic; color:black">Encouraging social innovation. 
+						</span>
+						<p class="mb-4" style="color: black;">Empowering individuals with the tools, resources, and support they need, encouraging social innovation creates an environment where new ideas flourish and positive change can be realized.
+						</p>
+					</div>
+
+					<div class = "padding-bottom:30px">
+						<span style="font-weight: bold; font-style: italic; color:black">Listening and sympathy. 
+						</span>
+						<p class="mb-4" style="color: black;">Listening attentively and showing genuine sympathy, providing not just knowledge but also emotional support to those seeking solace or guidance.
+						</p>
+					</div>
+
+					<div class = "padding-bottom:30px">
+						<span style="font-weight: bold; font-style: italic; color:black">Liberal Library.
+						</span>
+						<p class="mb-4" style="color: black;">Promoting diverse perspectives and embracing a wide range of ideas, fostering an environment where critical thinking and open dialogue thrive.
+						</p>
+					</div>
+
+					<div class = "padding-bottom:30px">
+						<span style="font-weight: bold; font-style: italic; color:black">Interconnected Library.
+						</span>
+						<p class="mb-4" style="color: black;">Empowering patrons to explore a vast digital landscape and foster collaboration, transforming our interconnected library into a hub of innovation and connectivity.
+						</p>
+					</div>
+
+					<div class = "padding-bottom:30px">
+						<span style="font-weight: bold; font-style: italic; color:black">Betterment all the time.
+						</span>
+						<p class="mb-4" style="color: black;">Striving to enhance its offerings, services, and facilities, ensuring that patrons have access to the best resources and experiences to support their lifelong learning journey.
+						</p>
+					</div>
+
+				</div>
+				<div style="padding-bottom: 30px;">
+					<h2 class="mb-6" style="font-size: 25px;">OUR SOCIAL COMMITMENT TO COMMON KNOWLEDGE</h2>
+					<p class="mb-4" style="color: black; text-align: justify;">Our social commitment is to promote access to knowledge and foster a sense of community. We strive to make knowledge accessible to all, regardless of barriers or limitations. Together, we can shape a more enlightened and connected society. 
+					</p>
 				</div>
 			</div>
+			</section>
+			<section class = "section" id ="ourOrganization">
+
+			<div class="heading-section text-md-center ftco-animate">
+				<h2 class="mb-6" style = "padding-top: 50px;">OUR ORGANIZATION</h2>
+				<div class="slider-item" style= "background-size: cover;background-position: center center;height: 380px; background-image: url('{% static "images/thehand-logo.png" %}');"></div>
+				<p class="mb-4" style="padding-top: 30px; text-align: justify; color: black;">In its early days, The Hand laid the foundation and provided the driving force behind the establishment of the Wellib, setting it on a path of growth and accomplishment. 
+					While in the Interim period, the operation of our Wellib will be overseen by an executive board consisting of members from The Hand.
+					In the future, the organizational plans include the formation of a board of directors composed of members who will be elected from the sponsoring organizations.
+					The Wellib is committed to staying ahead of the curve and embracing opportunities to better serve its community, fostering a culture of lifelong learning, innovation, and connection in the years to come.
+				</p>
+			</div>
+			</section>
 		</div>
 	</section>
 
-	<section class="ftco-section img" id="ftco-testimony" style="background-image: url('{% static "images/bookman.jpg" %}');" data-stellar-background-ratio="0.5">
-		<div class="overlay"></div>
-		<div class="container">
-			<div class="row justify-content-center mb-5">
-				<div class="col-md-7 heading-section text-center ftco-animate">
-					<span class="subheading">Testimony</span>
-					<h2 class="mb-4">Customers Says</h2>
-					<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there
-						live the blind texts.</p>
-				</div>
-			</div>
-		</div>
-		<div class="container-wrap">
-			<div class="row d-flex no-gutters">
-				<div class="col-lg align-self-sm-end">
-					<div class="testimony">
-						<blockquote>
-							<p>&ldquo;Even the all-powerful Pointing has no control about the blind texts it is an
-								almost unorthographic life One day however a small.&rdquo;</p>
-						</blockquote>
-						<div class="author d-flex mt-4">
-							<div class="image mr-3 align-self-center">
-								<img src="images/person_1.jpg" alt="">
-							</div>
-							<div class="name align-self-center">Louise Kelly <span class="position">Illustrator
-									Designer</span></div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg align-self-sm-end">
-					<div class="testimony overlay">
-						<blockquote>
-							<p>&ldquo;Even the all-powerful Pointing has no control about the blind texts it is an
-								almost unorthographic life One day however a small line of blind text by the name of
-								Lorem Ipsum decided to leave for the far World of Grammar.&rdquo;</p>
-						</blockquote>
-						<div class="author d-flex mt-4">
-							<div class="image mr-3 align-self-center">
-								<img src="images/person_2.jpg" alt="">
-							</div>
-							<div class="name align-self-center">Louise Kelly <span class="position">Illustrator
-									Designer</span></div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg align-self-sm-end">
-					<div class="testimony">
-						<blockquote>
-							<p>&ldquo;Even the all-powerful Pointing has no control about the blind texts it is an
-								almost unorthographic life One day however a small line of blind text by the name.
-								&rdquo;</p>
-						</blockquote>
-						<div class="author d-flex mt-4">
-							<div class="image mr-3 align-self-center">
-								<img src="images/person_3.jpg" alt="">
-							</div>
-							<div class="name align-self-center">Louise Kelly <span class="position">Illustrator
-									Designer</span></div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg align-self-sm-end">
-					<div class="testimony overlay">
-						<blockquote>
-							<p>&ldquo;Even the all-powerful Pointing has no control about the blind texts it is an
-								almost unorthographic life One day however.&rdquo;</p>
-						</blockquote>
-						<div class="author d-flex mt-4">
-							<div class="image mr-3 align-self-center">
-								<img src="images/person_2.jpg" alt="">
-							</div>
-							<div class="name align-self-center">Louise Kelly <span class="position">Illustrator
-									Designer</span></div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg align-self-sm-end">
-					<div class="testimony">
-						<blockquote>
-							<p>&ldquo;Even the all-powerful Pointing has no control about the blind texts it is an
-								almost unorthographic life One day however a small line of blind text by the name.
-								&rdquo;</p>
-						</blockquote>
-						<div class="author d-flex mt-4">
-							<div class="image mr-3 align-self-center">
-								<img src="images/person_3.jpg" alt="">
-							</div>
-							<div class="name align-self-center">Louise Kelly <span class="position">Illustrator
-									Designer</span></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
 
-	<section class="ftco-section">
-		<div class="container">
-			<div class="row align-items-center">
-				<div class="col-md-6 pr-md-5">
-					<div class="heading-section text-md-right ftco-animate">
-						<span class="subheading">Discover</span>
-						<h2 class="mb-4">Our Menu</h2>
-						<p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and
-							Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the
-							coast of the Semantics, a large language ocean.</p>
-						<p><a href="#" class="btn btn-primary btn-outline-primary px-4 py-3">View Full Menu</a></p>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="row">
-						<div class="col-md-6">
-							<div class="menu-entry">
-								<a href="#" class="img" style="background-image: url(images/menu-1.jpg);"></a>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="menu-entry mt-lg-4">
-								<a href="#" class="img" style="background-image: url(images/menu-2.jpg);"></a>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="menu-entry">
-								<a href="#" class="img" style="background-image: url(images/menu-3.jpg);"></a>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="menu-entry mt-lg-4">
-								<a href="#" class="img" style="background-image: url(images/menu-4.jpg);"></a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<section class="ftco-counter ftco-bg-dark img" id="section-counter" style="background-image: url(images/bg_2.jpg);"
-		data-stellar-background-ratio="0.5">
-		<div class="overlay"></div>
-		<div class="container">
-			<div class="row justify-content-center">
-				<div class="col-md-10">
-					<div class="row">
-						<div class="col-md-6 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
-							<div class="block-18 text-center">
-								<div class="text">
-									<div class="icon"><span class="flaticon-coffee-cup"></span></div>
-									<strong class="number" data-number="100">0</strong>
-									<span>Coffee Branches</span>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
-							<div class="block-18 text-center">
-								<div class="text">
-									<div class="icon"><span class="flaticon-coffee-cup"></span></div>
-									<strong class="number" data-number="85">0</strong>
-									<span>Number of Awards</span>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
-							<div class="block-18 text-center">
-								<div class="text">
-									<div class="icon"><span class="flaticon-coffee-cup"></span></div>
-									<strong class="number" data-number="10567">0</strong>
-									<span>Happy Customer</span>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
-							<div class="block-18 text-center">
-								<div class="text">
-									<div class="icon"><span class="flaticon-coffee-cup"></span></div>
-									<strong class="number" data-number="900">0</strong>
-									<span>Staff</span>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-
+	
 	<footer class="ftco-footer ftco-section img">
 		<div class="overlay"></div>
 		<div class="container">
@@ -274,8 +183,9 @@
 				<div class="col-lg-3 col-md-6 mb-5 mb-md-5">
 					<div class="ftco-footer-widget mb-4">
 						<h2 class="ftco-heading-2">About Us</h2>
-						<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-							there live the blind texts.</p>
+						<p>We are a hub of knowledge, creativity, and
+							community, dedicated to providing an enriching experience
+							for all of our visitors.</p>
 						<ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
 							<li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
 							<li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
@@ -285,41 +195,32 @@
 				</div>
 				<div class="col-lg-4 col-md-6 mb-5 mb-md-5">
 					<div class="ftco-footer-widget mb-4">
-						<h2 class="ftco-heading-2">Recent Blog</h2>
+						<h2 class="ftco-heading-2">Recent News</h2>
+						{% for blog in blogs_footer%}
 						<div class="block-21 mb-4 d-flex">
-							<a class="blog-img mr-4" style="background-image: url(images/image_1.jpg);"></a>
+							<a href="{%url 'blog' blog.id%}" class="blog-img mr-4"
+								style="background-image: url('{{blog.image_blog.url}}');"></a>
 							<div class="text">
-								<h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about</a>
+								<h3 class="heading"><a href="{%url 'blog' blog.id%}">{{blog.title}}</a>
 								</h3>
 								<div class="meta">
-									<div><a href="#"><span class="icon-calendar"></span> Sept 15, 2018</a></div>
-									<div><a href="#"><span class="icon-person"></span> Admin</a></div>
+									<div><a href="#"><span class="icon-calendar"></span> {{blog.created_at}}</a></div>
+									<div><a href="#"><span class="icon-person"></span> {{blog.writer}}</a></div>
 									<div><a href="#"><span class="icon-chat"></span> 19</a></div>
 								</div>
 							</div>
 						</div>
-						<div class="block-21 mb-4 d-flex">
-							<a class="blog-img mr-4" style="background-image: url(images/image_2.jpg);"></a>
-							<div class="text">
-								<h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about</a>
-								</h3>
-								<div class="meta">
-									<div><a href="#"><span class="icon-calendar"></span> Sept 15, 2018</a></div>
-									<div><a href="#"><span class="icon-person"></span> Admin</a></div>
-									<div><a href="#"><span class="icon-chat"></span> 19</a></div>
-								</div>
-							</div>
-						</div>
+						{% endfor %}
 					</div>
 				</div>
 				<div class="col-lg-2 col-md-6 mb-5 mb-md-5">
 					<div class="ftco-footer-widget mb-4 ml-md-4">
-						<h2 class="ftco-heading-2">Services</h2>
+						<h2 class="ftco-heading-2">Category</h2>
 						<ul class="list-unstyled">
-							<li><a href="#" class="py-2 d-block">Cooked</a></li>
-							<li><a href="#" class="py-2 d-block">Deliver</a></li>
-							<li><a href="#" class="py-2 d-block">Quality Foods</a></li>
-							<li><a href="#" class="py-2 d-block">Mixed</a></li>
+							{% for category in categories_footer%}
+							<li><a href="{% url 'searchbook' category.id %}" class="py-2 d-block">{{category.name}}</a>
+							</li>
+							{% endfor %}
 						</ul>
 					</div>
 				</div>
@@ -328,29 +229,28 @@
 						<h2 class="ftco-heading-2">Have a Questions?</h2>
 						<div class="block-23 mb-3">
 							<ul>
-								<li><span class="icon icon-map-marker"></span><span class="text">203 Fake St. Mountain
-										View, San Francisco, California, USA</span></li>
+								<li><span class="icon icon-map-marker"></span><span class="text">2227 Nguyen Van Cu
+										street, District 5, Ho Chi Minh city</span></li>
 								<li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929
 											210</span></a></li>
 								<li><a href="#"><span class="icon icon-envelope"></span><span
-											class="text">info@yourdomain.com</span></a></li>
+											class="text">wellib@gmail.com</span></a></li>
 							</ul>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="row">
+			<!-- <div class="row">
 				<div class="col-md-12 text-center">
 
-					<p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+					<p>
 						Copyright &copy;
 						<script>document.write(new Date().getFullYear());</script> All rights reserved | This template
 						is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com"
 							target="_blank">Colorlib</a>
-						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 					</p>
 				</div>
-			</div>
+			</div> -->
 		</div>
 	</footer>
 
@@ -382,6 +282,20 @@
 		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
 	<script src="{% static 'js/google-map.js' %}"></script>
 	<script src="{% static 'js/main.js' %}"></script>
+
+	<script>
+		const gotoSectionButtons = document.querySelectorAll('.gotoSectionButton');
+	
+		gotoSectionButtons.forEach(button => {
+			button.addEventListener('click', () => {
+				const target = button.getAttribute('data-target');
+				const targetSection = document.getElementById(target);
+				if (targetSection) {
+					targetSection.scrollIntoView({ behavior: 'smooth' });
+				}
+			});
+		});
+	</script>
 
 </body>
 

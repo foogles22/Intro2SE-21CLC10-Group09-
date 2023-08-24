@@ -48,6 +48,7 @@
         <div class="mb-3">
             <label for="profile_img" class="control-label">Profile Image</label>
             <input type="file" id="profile_img" name="profile_img" class="form-control form-control-sm rounded-0">
+            
             <img id="imagePreview" src="{% if profile.profile_img %}{{ profile.profile_img.url }}{% endif %}" width="200" height="200">
         </div>
         

@@ -3,7 +3,7 @@
 <html lang="vi">
 
 <head>
-	<title>Coffee - Free Bootstrap 4 Template by Colorlib</title>
+	<title>Wellib, Book for life</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
@@ -25,7 +25,6 @@
 	<link rel="stylesheet" href="{% static 'css/jquery.timepicker.css' %}">
 
 
-	<link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
 	<link rel="stylesheet" href="{% static 'css/icomoon.css' %}">
 	<link rel="stylesheet" href="{% static 'css/style.css' %}">
 	<link rel="stylesheet" href="{% static 'css/searchbar.css' %}">
@@ -51,12 +50,11 @@
 				<div class="row slider-text justify-content-center align-items-center" data-scrollax-parent="true">
 
 					<div class="col-md-8 col-sm-12 text-center ftco-animate">
-						<span class="subheading">Welcome</span>
 						<h1 class="mb-4">The Best Library System Management</h1>
 						<p class="mb-4 mb-md-5">A library is a place where you can lose your innocence without losing
 							your virginity.</p>
 						<p><a href="#" class="btn btn-primary p-3 px-xl-4 py-xl-3" style="border-radius: 15px">Explore
-								Now</a> <a href="#" class="btn btn-white btn-outline-white p-3 px-xl-4 py-xl-3"
+								Now</a> <a href="{% url 'searchbook' 0%}" class="btn btn-white btn-outline-white p-3 px-xl-4 py-xl-3"
 								style="border-radius: 15px">View Books List</a></p>
 					</div>
 
@@ -70,7 +68,6 @@
 				<div class="row slider-text justify-content-center align-items-center" data-scrollax-parent="true">
 
 					<div class="col-md-8 col-sm-12 text-center ftco-animate">
-						<span class="subheading">Welcome</span>
 						<h1 class="mb-4">Amazing Books &amp; Beautiful Place</h1>
 						<p class="mb-4 mb-md-5">“Walking the stacks in a library, dragging your fingers across the
 							spines — it is hard not to feel the presence of sleeping spirits.”</p>
@@ -90,7 +87,6 @@
 			<div class="container">
 				<div class="row slider-text justify-content-center align-items-center" data-scrollax-parent="true">
 					<div class="col-md-8 col-sm-12 text-center ftco-animate">
-						<span class="subheading">Welcome</span>
 						<h1 class="mb-4">A Heanven on Earth and Ready to Serve</h1>
 						<p class="mb-4 mb-md-5">“Whatever the cost of our libraries, the price is cheap compared to that
 							of an ignorant nation.”</p>
@@ -112,28 +108,28 @@
 						<div class="col-md-4 d-flex ftco-animate">
 							<div class="icon"><span class="icon-phone"></span></div>
 							<div class="text">
-								<h3>000 (123) 456 7890</h3>
-								<p>Our Community</p>
+								<h3 style = "color: white; font-weight: bold;">000 (123) 456 7890</h3>
+								<p style = "color: white;">Our Community</p>
 							</div>
 						</div>
 						<div class="col-md-4 d-flex ftco-animate">
 							<div class="icon"><span class="icon-my_location"></span></div>
 							<div class="text">
-								<h3>Khoa Hoc Tu Nhien</h3>
-								<p> 227 Nguyen Van Cu street, District 5, Ho Chi Minh city</p>
+								<h3 style = "color: white;  font-weight: bold;">Khoa Hoc Tu Nhien</h3>
+								<p style = "color: white;"> 227 Nguyen Van Cu street, District 5, Ho Chi Minh city</p>
 							</div>
 						</div>
 						<div class="col-md-4 d-flex ftco-animate">
 							<div class="icon"><span class="icon-clock-o"></span></div>
 							<div class="text">
-								<h3>Open Monday-friday</h3>
-								<p>8:00am - 9:00pm</p>
+								<h3 style = "color: white;  font-weight: bold;">Open Monday-friday</h3>
+								<p style = "color: white;">8:00am - 9:00pm</p>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="p-4" style="background-color: rgb(225, 213, 181);">
-					<h3>Quotes for the day</h3>
+					<h3 style = "font-weight: bold; font-size: 20px;">Quotes of the day</h3>
 					<span style="color: black;">“The more that you read, the more things you will know. The more that
 						you learn, the more places you’ll go.”</span>
 					<p style="color: black"> - Dr. Seuss</p>
@@ -143,7 +139,7 @@
 	</section>
 
 	<!-- book history -->
-	<section class="ftco-about d-md-flex" style="padding-top: 20px;">
+	<section class="ftco-about d-md-flex" style="padding-top: 20px; padding-bottom: 20px;">
 		<div class="one-half img" style="background-image: url('{% static "images/about_history.jpg" %}');"></div>
 		<div class="one-half ftco-animate">
 			<div class="overlap"
@@ -174,7 +170,7 @@
 	<section class="ftco-section ftco-services" style="background-color: rgb(131, 151, 203);">
 		<div class="container">
 			<div class="s130">
-				<form action = "{% url 'searchbook' 'None' %}" method="POST">
+				<form action = "{% url 'searchbook' 0 %}" method="POST">
 					{% csrf_token %}
 					<div class="heading-section text-md-center ftco-animate">
 						<h2 class="mb-6" style="text-align: center; color: black">SEARCH FOR THOUSAND BOOKS</h2>
@@ -202,17 +198,13 @@
 	<!-- top category -->
 	<section class="ftco-section">
 		<div class="container" style="text-align: center;">
-			<!-- <div class="row align-items-center"> -->
-			<!-- <div class="col-md-6 pr-md-5"> -->
 			<div class="heading-section text-md-center ftco-animate">
-				<!-- <span class="subheading">Discover</span> -->
 				<h2 class="mb-6">Explore Our Top Category</h2>
 				<p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and
 					Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the
 					coast of the Semantics, a large language ocean.</p>
 			</div>
 			<div class="popup" style="padding-bottom: 30px;">
-				<!-- Button trigger modal -->
 				<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
 					View Full Category
 				</button>
@@ -222,20 +214,21 @@
 					aria-hidden="true">
 					<div class="modal-dialog modal-xl">
 						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+							<div class="modal-header text-center" style= "text-align: center; background-color: rgb(187, 201, 240);">
+								<h5 class="modal-title" id="exampleModalLabel" style = "font-weight: bold; font-size: 30px; text-align: center;">Our Categories</h5>
 								<button type="button" class="btn-close" data-bs-dismiss="modal"
 									aria-label="Close"></button>
 							</div>
 							<div class="modal-body">
 								<div class="container-fluid">
 									<div class="row">
+										{% if allcategory %}
 										{% for category in allcategory %}
 										<div class="col-md-3">
 											<div class="menu-entry" style="position: relative; text-align: center; ">
 												<!-- <p><a href="#" class="btn btn-primary btn-outline-primary px-1 py-2"
 																	style="border-radius: 10px;">Adult</a></p> -->
-												<a href="{% url 'searchbook' category.name %}" class="img"
+												<a href="{% url 'searchbook' category.id %}" class="img"
 													style="height : 270px;background-image: url('{{category.image.url}}');"></a>
 												<div class="categorytext">
 													<h4> Category </h4>
@@ -245,10 +238,11 @@
 											</div>
 										</div>
 										{% endfor %}
+										{% endif %}
 									</div>
 								</div>
 							</div>
-							<div class="modal-footer">
+							<div class="modal-footer" style = "border: none;">
 								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 							</div>
 						</div>
@@ -258,12 +252,13 @@
 		</div>
 		<div class="col-md-12" style="padding-left: 60px; padding-right: 60px;">
 			<div class="row">
+				{% if categories %}
 				{% for category in categories %}
 				<div class="col-md-4">
 					<div class="menu-entry" style="position: relative; text-align: center; ">
 						<!-- <p><a href="#" class="btn btn-primary btn-outline-primary px-1 py-2"
 										style="border-radius: 10px;">Adult</a></p> -->
-						<a href="{% url 'searchbook' category.name %}" class="img"
+						<a href="{% url 'searchbook' category.id %}" class="img"
 							style="height : 270px;background-image: url('{{category.image.url}}');"></a>
 						<div class="categorytext">
 							<h4> Category</h4>
@@ -272,6 +267,7 @@
 					</div>
 				</div>
 				{% endfor %}
+				{% endif %}
 			</div>
 		</div>
 	</section>
@@ -281,17 +277,17 @@
 		<div class="container">
 			<div class="row justify-content-center mb-5 pb-3">
 				<div class="col-md-7 heading-section ftco-animate text-center">
-					<span class="subheading">Discover</span>
 					<h2 class="mb-4">Popular among our collections</h2>
 					<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there
 						live the blind texts.</p>
 				</div>
 			</div>
 			<div class="row">
+				{% if books %}
 				{% for book in books %}
 				<div class="col-md-2">
 					<div class="menu-entry">
-						<a href="{% url 'bookdetail' book.title %}" class="img"
+						<a href="{% url 'bookdetail' book.id %}" class="img"
 							style="background-image: url('{{book.image.url}}');height: 250px; border-radius: 20px;"></a>
 						<div class="text text-center pt-4">
 							<p class="overflow-ellipsis" style="color: black; font-weight: bold;   width: 200px;
@@ -299,39 +295,41 @@
 							overflow: hidden;">{{book.title}}</p>
 							<p style="font-weight: bold;text-overflow: ellipsis;"><span> {{book.author}}</span></p>
 							<p style="font-size: 13px;"> {{book.publication_year}}</p>
-							<p><a href="{% url 'bookdetail' book.title %}" class="btn btn-info btn-outline-info;"
+							<p><a href="{% url 'bookdetail' book.id %}" class="btn btn-info btn-outline-info;"
 									style="border-radius: 15px;">View book detail</a></p>
 						</div>
 					</div>
 				</div>
 				{% endfor %}
+				{% endif %}
 			</div>
 		</div>
 	</section>
 
 	<!-- New book added  -->
-	<section class="ftco-section img" id="ftco-testimony" style="background-image: url('{% static "images/bookman.jpg" %}');" data-stellar-background-ratio="0.5">
+	<section class="ftco-section img" id="ftco-testimony" style="background-image: url('{% static "images/bookbaw.jpg" %}');" data-stellar-background-ratio="0.5">
     	<div class="overlay"></div>
 		<div class="container">
 			<div class="row align-items-center">
 				<div class="col-md-4">
 					<div class="menu-entry">
-						<a href="{% url 'bookdetail' newbooks.title %}" class="img"
+						<a href="{% url 'bookdetail' newbooks.id %}" class="img"
 							style="background-image: url('{{newbooks.image.url}}');  border-radius: 15px; height: 450px; width: 300px;"></a>
 					</div>
 				</div>
-				<div class="col-md-4 pr-md-5" style="text-align: center">
-					<h2 class="mb-6">{{newbooks.title}}</h2>
-					<h4 class="mb-6">{{newbooks.author}}</h4>
-					<h4 class="mb-6">{{newbooks.publication_year}}</h4>
-					<p class="mb-4" style="color: black">{{newbooks.description}}</p>
-					<p><a href="{% url 'bookdetail' newbooks.title %}"
-							class="btn btn-secondary btn-outline-link px-4 py-3" style="border-radius: 15px">Read
+				<div class="col-md-4 pr-md-5" style="text-align: center;">
+					{% if newbooks %}
+					<h2 style="color: rgb(255, 255, 255); text-align: justify; font-weight: bold;" class="mb-6">{{newbooks.title}}</h2>
+					<h5 style="color: rgb(255, 255, 255); text-align: justify;" class="mb-6">{{newbooks.author}}</h4>
+					<h5 style="color: rgb(255, 255, 255); text-align: justify;" class="mb-6">{{newbooks.publication_year}}</h4>
+					<p class="mb-4" style="color: rgb(255, 255, 255); text-align: justify;">{{newbooks.description}}</p>
+					{% endif %}
+					<p><a href="{% url 'bookdetail' newbooks.id %}"
+							class="btn btn-dark px-2 py-2" style="border-radius: 15px">Read
 							more</a></p>
 				</div>
 				<div class="col-md-4 pr-md-5">
 					<div class="heading-section text-md-right ftco-animate">
-						<span class="subheading">Discover</span>
 						<h2 class="mb-6">NEW BOOK IN LIBRARY</h2>
 					</div>
 				</div>
@@ -351,62 +349,27 @@
 				</div>
 			</div>
 			<div class="row d-flex">
+				{% for blog in blogs %}
 				<div class="col-md-4 d-flex ftco-animate">
 					<div class="blog-entry align-self-stretch">
 						<div style="position: relative">
-							<a href="blog-single.html" class="block-20"
-								style="background-image: url('images/image_1.jpg');">
+							<a href="{% url 'blog' blog.id %}" class="block-20"
+								style="background-image: url('{{blog.image_blog.url}}');">
 							</a>
-							<h3 class="newtitle"> THE NEW 1 TITLE</h3>
+							<h3 class="newtitle"> {{blog.title}}</h3>
 						</div>
 						<div class="text py-4 d-block">
 							<div class="meta">
-								<div><a href="#">Sept 10, 2018</a></div>
-								<div><a href="#">Admin</a></div>
-								<div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+								<div><a href="{%url 'blog' blog.id%}"><span class="icon-calendar"></span> {{blog.created_at}}</a></div>
+								<div><a href="{%url 'blog' blog.id%}"><span class="icon-person"></span> {{blog.writer}}</a></div>
+								<div><a href="{%url 'blog' blog.id%}" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
 							</div>
-							<p>A small river named Duden flows by their place and supplies it with the necessary
-								regelialia.</p>
+							<p style = "text-align: justify;">{{blog.content}}</p>
 						</div>
 					</div>
 				</div>
-				<div class="col-md-4 d-flex ftco-animate">
-					<div class="blog-entry align-self-stretch">
-						<div style="position: relative">
-							<a href="blog-single.html" class="block-20"
-								style="background-image: url('images/image_2.jpg');"></a>
-							<h3 class="newtitle"> THE NEW 1 TITLE</h3>
-						</div>
-						<div class="text py-4 d-block">
-							<div class="meta">
-								<div><a href="#">Sept 10, 2018</a></div>
-								<div><a href="#">Admin</a></div>
-								<div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-							</div>
-							<p>A small river named Duden flows by their place and supplies it with the necessary
-								regelialia.</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-4 d-flex ftco-animate">
-					<div class="blog-entry align-self-stretch">
-						<div style="position: relative">
-							<a href="blog-single.html" class="block-20"
-								style="background-image: url('images/image_3.jpg');">
-							</a>
-							<h3 class="newtitle"> THE NEW 1 TITLE</h3>
-						</div>
-						<div class="text py-4 d-block">
-							<div class="meta">
-								<div><a href="#">Sept 10, 2018</a></div>
-								<div><a href="#">Admin</a></div>
-								<div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-							</div>
-							<p>A small river named Duden flows by their place and supplies it with the necessary
-								regelialia.</p>
-						</div>
-					</div>
-				</div>
+				{% endfor %}
+
 			</div>
 		</div>
 	</section>
@@ -418,52 +381,42 @@
 				<div class="col-lg-3 col-md-6 mb-5 mb-md-5">
 					<div class="ftco-footer-widget mb-4">
 						<h2 class="ftco-heading-2">About Us</h2>
-						<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-							there live the blind texts.</p>
+						<p></p>
 						<ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
 							<li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
 							<li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
 							<li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
 						</ul>
-					</div>
+					</div>We are a hub of knowledge, creativity, and
+                            community, dedicated to providing an enriching experience
+                            for all of our visitors.
 				</div>
 				<div class="col-lg-4 col-md-6 mb-5 mb-md-5">
 					<div class="ftco-footer-widget mb-4">
 						<h2 class="ftco-heading-2">Recent News</h2>
+						{% for blog in blogs_footer%}
 						<div class="block-21 mb-4 d-flex">
-							<a class="blog-img mr-4" style="background-image: url(images/image_1.jpg);"></a>
+							<a href = "{%url 'blog' blog.id%}" class="blog-img mr-4" style="background-image: url('{{blog.image_blog.url}}');"></a>
 							<div class="text">
-								<h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about</a>
+								<h3 class="heading"><a href="{%url 'blog' blog.id%}">{{blog.title}}</a>
 								</h3>
 								<div class="meta">
-									<div><a href="#"><span class="icon-calendar"></span> Sept 15, 2018</a></div>
-									<div><a href="#"><span class="icon-person"></span> Admin</a></div>
+									<div><a href="#"><span class="icon-calendar"></span> {{blog.created_at}}</a></div>
+									<div><a href="#"><span class="icon-person"></span> {{blog.writer}}</a></div>
 									<div><a href="#"><span class="icon-chat"></span> 19</a></div>
 								</div>
 							</div>
 						</div>
-						<div class="block-21 mb-4 d-flex">
-							<a class="blog-img mr-4" style="background-image: url(images/image_2.jpg);"></a>
-							<div class="text">
-								<h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about</a>
-								</h3>
-								<div class="meta">
-									<div><a href="#"><span class="icon-calendar"></span> Sept 15, 2018</a></div>
-									<div><a href="#"><span class="icon-person"></span> Admin</a></div>
-									<div><a href="#"><span class="icon-chat"></span> 19</a></div>
-								</div>
-							</div>
-						</div>
+						{% endfor %}
 					</div>
 				</div>
 				<div class="col-lg-2 col-md-6 mb-5 mb-md-5">
 					<div class="ftco-footer-widget mb-4 ml-md-4">
-						<h2 class="ftco-heading-2">Services</h2>
+						<h2 class="ftco-heading-2">Category</h2>
 						<ul class="list-unstyled">
-							<li><a href="#" class="py-2 d-block">Cooked</a></li>
-							<li><a href="#" class="py-2 d-block">Deliver</a></li>
-							<li><a href="#" class="py-2 d-block">Quality Foods</a></li>
-							<li><a href="#" class="py-2 d-block">Mixed</a></li>
+							{% for category in categories_footer%}
+							<li><a href="{% url 'searchbook' category.id %}" class="py-2 d-block">{{category.name}}</a></li>
+							{% endfor %}
 						</ul>
 					</div>
 				</div>
@@ -472,32 +425,18 @@
 						<h2 class="ftco-heading-2">Have a Questions?</h2>
 						<div class="block-23 mb-3">
 							<ul>
-								<li><span class="icon icon-map-marker"></span><span class="text">203 Fake St. Mountain
-										View, San Francisco, California, USA</span></li>
+								<li><span class="icon icon-map-marker"></span><span class="text">2227 Nguyen Van Cu street, District 5, Ho Chi Minh city</span></li>
 								<li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929
 											210</span></a></li>
 								<li><a href="#"><span class="icon icon-envelope"></span><span
-											class="text">info@yourdomain.com</span></a></li>
+											class="text">wellib@gmail.com</span></a></li>
 							</ul>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-md-12 text-center">
-
-					<p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-						Copyright &copy;
-						<script>document.write(new Date().getFullYear());</script> All rights reserved | This template
-						is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com"
-							target="_blank">Colorlib</a>
-						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-					</p>
-				</div>
-			</div>
 		</div>
 	</footer>
-
 
 
 	<!-- loader -->

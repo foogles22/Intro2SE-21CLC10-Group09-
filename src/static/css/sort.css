@@ -1,0 +1,38 @@
+.sort_item{
+    margin-top: 30px;
+    padding: 30px;
+    width: 270px;
+    display: inline-block;
+    grid-template-columns: 32.666% 32.666% 32.666%;
+    column-gap: 1%;
+    row-gap: 20px;
+    background-color:rgb(209, 217, 241) ;
+    border-radius: 20px;    
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+}
+
+.sort_item .select-container{
+    font-size: 13px;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.sort_item .select-container select{
+    width: 100%;
+    padding: 5px;
+    background-color: transparent;
+    border-left: 1px solid #ddd;
+    outline: none;  
+    border: none;
+    
+}
+
+.sort_item .select-container label{
+    display: block;
+    width: 40%;
+    padding: 0 10px;
+    font-weight: bold;
+}
