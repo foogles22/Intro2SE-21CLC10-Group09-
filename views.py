@@ -652,3 +652,221 @@ def import_book(request):
                 messages.warning(request, message ='The number of fields value in the imported file does not match the number of fields')
         os.remove(storage.path(filename))
     return render(request, 'ad/import_book.html')
+
+# Librarian-Librarian-Librarian-Librarian-Librarian-Librarian-Librarian-Librarian-Librarian-Librarian
+
+# ---------LOAN Transaction-----------
+@login_required
+@allowed_users(allowed_roles=['LIBRARIAN'])
+def loan(request, order = 'id'):
+    context = context_data()
+    context["page_title"] = "Loan Transaction"
+    loans = models.LoanTransaction.objects.get_queryset().order_by(order)
+
+    # setup pagination
+    p = Paginator(loans, 5)
+    page = request.GET.get('page')
+    loan_p = p.get_page(page)
+    context["loan"] = loan_p
+    return render(request, "ad/loan.html", context)
+
+@login_required
+@allowed_users(allowed_roles=['LIBRARIAN'])
+def manage_loan(request, id=None):
+    context = context_data()
+    context["page_title"] = "Manage Loan Transaction"
+    context["loan"] = {}
+    return render(request, "ad/manage_loan.html", context)
+
+@login_required
+@allowed_users(allowed_roles=['LIBRARIAN'])
+def save_loan(request):
+    if request.method == "POST":
+        loan = forms.SaveTransaction(request.POST)
+        if loan.is_valid():
+            flag = loan.check_book_status()
+            if not flag:
+                messages.info(request, 'Book is out of quantity')
+            else:
+                loan.save()
+                messages.success(request,'Adding New Transaction succeed')
+            return redirect("loan")
+        else:
+            for field in loan.errors.values():
+                for error in field:
+                    messages.error(request, error)
+                
+            return redirect("loan")
+    else:
+        messages.error(request, 'No data has been sent')
+        return redirect("loan")
+
+@login_required
+@allowed_users(allowed_roles=['LIBRARIAN'])
+def delete_loan(request, id):
+    loan = models.LoanTransaction.objects.get(pk=id)
+    loan.delete()
+    book = loan.book
+    book.quantity += 1
+    if book.quantity == 1:
+        book.status = '1'
+    book.save(update_fields=['quantity', 'status'])
+    messages.success(request, 'Deleting transaction succeed!')
+    return redirect("loan")
+
+
+@login_required
+@allowed_users(allowed_roles=['LIBRARIAN'])
+def return_book(request, id):
+    loan = models.LoanTransaction.objects.get(pk=id)
+    loan.returned = '1'
+    loan.save(update_fields=['returned'])
+    if date.today() > loan.date_expired:
+        loan.overdue = '1'
+        messages.warning(request, 'Overdue !!!')
+    else:
+        loan.overdue = '0'
+        messages.success(request, 'Reader returned book successfully!')
+    loan.save(update_fields=['overdue'])
+
+    book = loan.book
+    book.quantity += 1
+    if book.quantity == 1:
+        book.status = '1'
+    book.save(update_fields=['quantity', 'status'])
+    return redirect("loan")
+
+@login_required
+@allowed_users(allowed_roles=['LIBRARIAN'])
+def renew_book(request, id):
+    loan = models.LoanTransaction.objects.get(pk=id)
+    loan.date_expired += timedelta(7)
+    loan.save(update_fields=['date_expired'])
+    messages.success(request, 'Reader renew book succeed!')
+    return redirect("loan")
+
+# -------------------ReaderInfo------------
+def order_by_quantity():
+    users = User.objects.all().filter(profile__identity__contains = 'RD')
+    sorted(users, key=lambda x: models.LoanTransaction.objects.all().filter(user = x).count())
+    return users
+
+@login_required
+@allowed_users(allowed_roles=['LIBRARIAN'])
+def reader_info(request, order = 'id'):
+    context = context_data()
+    context["page_title"] = "Reader Infomation"
+    if order != 'quantity':
+        users = User.objects.get_queryset().order_by(order).filter(profile__identity__contains = 'RD')
+    else:
+        users = order_by_quantity()
+    # setup pagination
+    p = Paginator(users, 5)
+    page = request.GET.get('page')
+    user_p = p.get_page(page)
+    context["users"] = user_p
+    return render(request, "ad/reader_info.html", context)
+
+@login_required
+@allowed_users(allowed_roles=['LIBRARIAN'])
+def request_reader(request, order = 'id'):
+    context = context_data()
+    context["page_title"] = "Reader Infomation"
+    if request.method == "POST":
+        request_reader = forms.SaveRequestReader(request.POST)
+        request_reader.save()
+        messages.success(request, 'Request reader account successfully!')
+        return redirect('request_reader', 'id')
+    else:
+        requests = models.ReaderRequest.objects.all().order_by(order)
+        p = Paginator(requests, 5)
+        page = request.GET.get('page')
+        requests = p.get_page(page)
+        context["requests"] = requests
+    return render(request, "ad/request_reader.html", context)
+
+def modify_post(post):
+    request = models.ReaderRequest.objects.get(pk = post['id'])
+    return {
+        'username' : post['username'],
+        'password1' : post['password1'],
+        'password2' : post['password2'],
+        'first_name' : request.first_name,
+        'last_name' : request.last_name,
+        'email' : request.email,
+        'role' : 'READER',
+    }
+
+@login_required
+@allowed_users(allowed_roles=['ADMIN'])
+def accept_request_reader(request):
+    if request.method == "POST":
+        post = modify_post(request.POST)
+        user = forms.SaveUser(post)
+        if user.is_valid():
+            user = user.save()
+            request_reader = models.ReaderRequest.objects.get(pk = request.POST['id'])
+            request_reader.status = '2'
+            request_reader.save(update_fields=['status'])
+            messages.success(request, 'Account created successfully!')
+            profile = models.Profile.objects.get(pk = user.id)
+            profile = forms.SaveProfile(post, instance= profile)
+            if profile.is_valid():
+                profile.save()
+            else:
+                messages.warning(request, 'Profile fields has something wrong, must be edited later')
+        else:
+            for error in user.errors.values():
+                messages.warning(request, error)
+        return redirect("manage_reader_request")
+    else:
+        messages.error(request, 'No data has been sent')
+        return redirect("manage_reader_request")
+
+
+@login_required
+@allowed_users(allowed_roles=['LIBRARIAN'])
+def delete_request_reader(request, id = None):
+    models.ReaderRequest.objects.get(pk = id).delete()
+    messages.success(request, 'Deleting reader request successfully!')
+    return redirect('request_reader' , 'id')
+
+
+@login_required
+@allowed_users(allowed_roles=['LIBRARIAN'])
+def request_book(request, order = 'id'):
+    context = context_data()
+    context["page_title"] = "Request Book"
+    requests = models.BookRequest.objects.all().order_by(order)
+    categories = models.Category.objects.all()
+    source_types = models.SourceType.objects.all()
+    languages = models.Language.objects.all()
+    p = Paginator(requests, 5)
+    page = request.GET.get('page')
+    requests = p.get_page(page)
+    context["requests"] = requests
+    context["categories"] = categories
+    context["source_types"] = source_types
+    context["languages"] = languages
+    return render(request, "ad/request_book.html", context)
+
+@login_required
+@allowed_users(allowed_roles=['LIBRARIAN'])
+def save_request_book(request):
+    if request.method == "POST":
+        request_book = forms.SaveRequestBook(request.POST, request.FILES)
+        if request_book.is_valid():
+            request_book.save()
+            messages.success(request, 'Requesting book succeed!')
+        else:
+            for field in request_book.errors.values():
+                for error in field:
+                    messages.error(request, error)
+        return redirect('request_book', 'id')
+
+@login_required
+@allowed_users(allowed_roles=['LIBRARIAN'])
+def delete_request_book(request, id = None):
+    models.BookRequest.objects.get(pk = id).delete()
+    messages.success(request, 'Deleting book request successfully!')
+    return redirect('request_reader' , 'id')
