@@ -54,3 +54,20 @@ class SaveProfile(forms.ModelForm):
         except:
             return email
 
+class SaveRequestReader(forms.ModelForm):
+    class Meta:
+        model = models.ReaderRequest
+        fields = ('first_name','last_name','email')
+
+class EditProfile(forms.ModelForm):
+    class Meta:
+        model = models.Profile
+        fields = ('first_name','last_name','email','phone','date_of_birth','sex','profile_img')
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        try:
+            models.Profile.objects.get(email = email)
+            self.add_error(forms.ValidationError('email', 'Email is already taken!'))
+        except:
+            return email
