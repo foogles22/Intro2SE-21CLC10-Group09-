@@ -1,0 +1,7 @@
+Changes in the Software Architecture Document (SAD) file: 
+1. Simplify UC Model from "subsystem" to package. 
+2. In Logical View section: 
+- Added main components and their associating components;
+- Includes adding specific class diagrams and component diagrams to demonstrate each components and their relationships within the MVC model;
+- The package component represent the total architecture of the system.
+3. Complete the Deployment and Implementation View Section. 

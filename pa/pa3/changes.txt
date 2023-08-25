@@ -1,0 +1,8 @@
+Update on Use-case specification
+[1] Divide old Use-Case Model into 5 subsystems: 
+ 1.Resource Lookup
+ 2.Resource Management
+ 3.Account Management
+ 4.Library Circulation
+ 5.Interactive Library
+[2] Shorten some unnecessary things of actor admin

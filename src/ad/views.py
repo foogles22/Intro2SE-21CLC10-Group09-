@@ -928,6 +928,9 @@ def export_book(request):
 def import_book(request):
     if request.method == "POST":
         file = request.FILES["csv_file"]
+        if not file.name.endswith('.csv'):
+            messages.error(request, 'File is not CSV type')
+            return redirect('book', 'id')
         storage = FileSystemStorage()
         filename = storage.save(file.name, file)
         valid = True
@@ -1022,6 +1025,9 @@ def export_category(request):
 def import_category(request):
     if request.method == "POST":
         file = request.FILES["csv_file"]
+        if not file.name.endswith('.csv'):
+            messages.error(request, 'File is not CSV type')
+            return redirect('category', 'id')
         storage = FileSystemStorage()
         filepath = storage.path(storage.save(file.name, file))
         with open(filepath, "r", encoding='utf-8') as csvfile:
@@ -1071,6 +1077,9 @@ def export_language(request):
 def import_language(request):
     if request.method == "POST":
         file = request.FILES["csv_file"]
+        if not file.name.endswith('.csv'):
+            messages.error(request, 'File is not CSV type')
+            return redirect('language', 'id')
         storage = FileSystemStorage()
         filename = storage.save(file.name, file)
 
@@ -1124,6 +1133,9 @@ def export_source_type(request):
 def import_source_type(request):
     if request.method == "POST":
         file = request.FILES["csv_file"]
+        if not file.name.endswith('.csv'):
+            messages.error(request, 'File is not CSV type')
+            return redirect('source_type', 'id')
         storage = FileSystemStorage()
         filename = storage.save(file.name, file)
 

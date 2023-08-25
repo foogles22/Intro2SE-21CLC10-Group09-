@@ -1,0 +1,2 @@
+1. Revised project plan: removing comments and refine the layout, also updating schedule and other sections with more information we have.
+2. Detailed vision document, updating non-functional requirements due to the TA's advice.
