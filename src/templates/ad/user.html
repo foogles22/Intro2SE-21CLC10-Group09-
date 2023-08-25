@@ -2,196 +2,193 @@
 {% load my_tags %}
 {% block Page_content %}
 <style>
-   a {
-   text-decoration:none;
-   color: black;
-   font-weight: 500;
-   }
+	a {
+	text-decoration:none;
+	color: black;
+	font-weight: 500;
+	}
 </style>
-<section class="py-4">
-   <div class="container">
-      <h3 class="fw-bolder text-center">List of Users</h3>
-      <center>
-         <hr class="bg-primary opacity-100" style="height:3px" width="5%" />
-      </center>
-      <div class="card rounded-0 shadow">
-         <div class="card-body">
-            <div class="container-fluid">
-               <div class="d-flex justify-content-between">
-                  <div class="mb-3">
-                     <button class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#modal"><i class="fa fa-plus"></i> Add New</button>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+	<h1 class="h3 mb-0 text-gray-800 "><i class="fa-solid fa-users"></i> Users Management</h1>
+</div>
+<div class="card shadow mb-4">
+	<div class="card-header py-2 d-flex justify-content-between">
+		<div class="m-0 font-weight-bold text-primary d-flex align-items-center">List of Users</div>
+      <div>
+         <button class="btn btn-sm btn-success btn-icon-split" type="button" data-bs-toggle="modal" data-bs-target="#modal">
+            <span class="icon text-white-50">
+            <i class="fa-solid fa-user-plus"></i>
+         </span>
+         <span class="text">Add</span>
+         </button>
+         <a href="{% url 'manage_reader_request' 'id'%}" class="btn btn-sm btn-success btn-icon-split" type="button">
+            <span class="icon text-white-50">
+            <i class="fa-solid fa-question"></i>
+         </span>
+         <span class="text">Request</span>
+         </a>
+      </div>
+	</div>
+	<div class="card-body">
+		<!-- input search + reset button-->
+      <div class="input-group input-group mb-3">
+         <input type="text" onkeyup="searchFunction()" class="form-control" id="search" placeholder="Search for...">
+         <a href="" class="btn btn-dark"><i class="fas fa-sync-alt"></i></a>  
+      </div>
+      <table class="table table-bordered table-sm-mt-4" style="text-align: center;">
+         <colcategory>
+            <col width="5%" />
+            <col width="25%" />
+            <col width="20%" />
+            <col width="20%" />
+            <col width="20%" />
+            <col width="10%" />
+         </colcategory>
+         <thead class="table-primary">
+            <tr id="chk-th">
+               <th class="text-center" scope="col">#</th>
+               <th class="text-center" scope="col"><a href="{% url 'user' 'username'%}">Username <i class="fa-solid fa-sort"></i></a></th>
+               <th class="text-center" scope="col"><a href="{% url 'user' 'last_name'%}">Last Name <i class="fa-solid fa-sort"></i></a></th>
+               <th class="text-center" scope="col"><a href="{% url 'user' 'email'%}">Email <i class="fa-solid fa-sort"></i></a></th>
+               <th class="text-center" scope="col"><a href="{% url 'user' 'profile__role'%}">Role <i class="fa-solid fa-sort"></i></a></th>
+               <th class="text-center" class="text-center">Action</th>
+            </tr>
+         </thead>
+         <tbody id="myTable">
+            {% if users %}
+            {% for user in users %}
+            <tr>
+               <td class="text-center">{{ forloop.counter }}</td>
+               <td class="text-center">{{ user.username }}</td>
+               <td class="text-center">{{ user.profile.last_name }}</td>
+               <td class="text-center">{{ user.profile.email }}</td>
+               <td class="text-center">{{ user.profile.role }}</td>
+               <td class="text-center">
+                  <div class="dropdown">
+                     <button class="btn btn-light btn-sm rounded-0 border dropdown-toggle" type="button" id="{{ cat.pk }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
+                     <ul class="dropdown-menu" aria-labelledby="{{ causert.pk }}">
+                        <li>
+                           <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal{{ forloop.counter }}"><i class="fa fa-eye text-dark"></i> View</button>
+                        </li>
+                        <li>
+                           <a class="dropdown-item" href="{% url 'delete_user' user.id%}"><i class="fa fa-trash text-danger"></i> Delete</a>
+                        </li>
+                     </ul>
                   </div>
-                  <div class="mb-3">
-                     <a href="{% url 'manage_reader_request' %}" class="btn btn-sm btn-dark rounded-1 bg-gradient-primary" type="button"><i class="fa fa-plus"></i> Manage Request</a>
-                  </div>
+               </td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+         </tbody>
+      </table>
+      <nav aria-label="Page">
+         <ul class="pagination  justify-content-end">
+            {% if users.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{users.previous_page_number}}"><i class="fa-solid fa-backward"></i></a></li>
+            {% else %}
+            <li class="page-item disabled"><a class="page-link"><i class="fa-solid fa-backward"></i></a></li>
+            {% endif %}
+            {% if users.number|moreB%}
+            <li class="page-item"><a class="page-link" style="pointer-events: none;"><i class="fa-solid fa-ellipsis"></i></a></li>
+            {% endif %}
+            {% for i in users.number|range_list:users.paginator.num_pages %}
+            {% if i == users.number %}
+            <li class="page-item"><a class="page-link" href="?page={{i}}" style="background-color: #d3d3d3;">{{i}}</a></li>
+            {% else %}
+            <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+            {% endif %}
+            {% endfor %}
+            {% if users.number|moreF:users.paginator.num_pages%}
+            <li class="page-item"><a class="page-link" style="pointer-events: none;"><i class="fa-solid fa-ellipsis"></i></a></li>
+            {% endif %}
+            {% if users.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{users.next_page_number}}"><i class="fa-solid fa-forward"></i></a></li>
+            {% else %}
+            <li class="page-item disabled"><a class="page-link"><i class="fa-solid fa-forward"></i></a></li>
+            {% endif %}
+         </ul>
+      </nav>
+	</div>
+</div>
+
+<!-- Modal ADD-->
+<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+         <div class="modal-header">
+            <i class="fa fa-plus text-info"> Add User Account</i>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+         </div>
+         <div class="modal-body">
+            <form action="{% url 'save_user' %}" method = "POST" autocomplete="off" class = "card p-3 mt-1 border-dark was-validated">
+               {% csrf_token %}
+               <div class="input-group mb-3 mt-3">
+                  <span class="input-group-text border-dark" style="width: 100px;" >Username</span>
+                  <input type="text" id="username" name="username" class="form-control" placeholder="Username" required>
                </div>
-               <!-- input search + reset button-->
-               <div class="input-group input-group-sm mb-3">
-                  <input type="text" onkeyup="searchFunction()" class="form-control" id="search" placeholder="Search for...">
-                  <a href="" class="btn btn-dark"><i class="fas fa-sync-alt"></i></a>  
+               <div class="input-group mb-3 mt-3">
+                  <span class="input-group-text border-dark" style="width: 100px;" >First Name</span>
+                  <input type="text" id="first_name" name="first_name" class="form-control" placeholder="First Name" required>
                </div>
-               <table class="table table-bordered table-sm-mt-4" id="myTable" style="text-align: center;">
-                  <colcategory>
-                     <col width="5%" />
-                     <col width="25%" />
-                     <col width="20%" />
-                     <col width="20%" />
-                     <col width="20%" />
-                     <col width="10%" />
-                  </colcategory>
-                  <thead>
-                     <tr id="chk-th">
-                        <th class="text-center" scope="col">#</th>
-                        <th class="text-center" scope="col"><a href="{% url 'user' 'username'%}">Username <i class="fa-solid fa-sort"></i></a></th>
-                        <th class="text-center" scope="col"><a href="{% url 'user' 'last_name'%}">Last Name <i class="fa-solid fa-sort"></i></a></th>
-                        <th class="text-center" scope="col"><a href="{% url 'user' 'email'%}">Email <i class="fa-solid fa-sort"></i></a></th>
-                        <th class="text-center" scope="col"><a href="{% url 'user' 'profile__role'%}">Role <i class="fa-solid fa-sort"></i></a></th>
-                        <th class="text-center" class="text-center">Action</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     {% if users %}
-                     {% for user in users %}
-                     <tr>
-                        <td class="text-center">{{ forloop.counter }}</td>
-                        <td class="text-center">{{ user.username }}</td>
-                        <td class="text-center">{{ user.profile.last_name }}</td>
-                        <td class="text-center">{{ user.profile.email }}</td>
-                        <td class="text-center">{{ user.profile.role }}</td>
-                        <td class="text-center">
-                           <div class="dropdown">
-                              <button class="btn btn-light btn-sm rounded-0 border dropdown-toggle" type="button" id="{{ user.pk }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
-                              <ul class="dropdown-menu" aria-labelledby="{{ user.pk }}">
-                                 <li>
-                                    <a class="dropdown-item" href="{% url 'view_user' user.id%}"><i class="fa fa-eye text-dark"></i> View</a>
-                                 </li>
-                                 <li>
-                                    <a class="dropdown-item" href="{% url 'delete_user' user.id%}"><i class="fa fa-trash text-danger"></i> Delete</a>
-                                 </li>
-                              </ul>
-                           </div>
-                        </td>
-                     </tr>
-                     {% endfor %}
-                     {% endif %}
-                  </tbody>
-               </table>
-               <div class="d-flex justify-content-center">
-                  <span class="text-danger" id="no-data" style="font-size: 20px;"></span>
+               <div class="input-group mb-3 mt-3">
+                  <span class="input-group-text border-dark" style="width: 100px;" >Last Name</span>
+                  <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Last Name" required>
                </div>
-               <nav aria-label="Page">
-                  <ul class="pagination  justify-content-end">
-                     {% if users.has_previous %}
-                     <li class="page-item"><a class="page-link" href="?page={{users.previous_page_number}}"><i class="fa-solid fa-backward"></i></a></li>
-                     {% else %}
-                     <li class="page-item disabled"><a class="page-link"><i class="fa-solid fa-backward"></i></a></li>
-                     {% endif %}
-                     {% if users.number|moreB%}
-                     <li class="page-item"><a class="page-link" style="pointer-events: none;"><i class="fa-solid fa-ellipsis"></i></a></li>
-                     {% endif %}
-                     {% for i in users.number|range_list:users.paginator.num_pages %}
-                     {% if i == users.number %}
-                     <li class="page-item"><a class="page-link" href="?page={{i}}" style="background-color: #d3d3d3;">{{i}}</a></li>
-                     {% else %}
-                     <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
-                     {% endif %}
-                     {% endfor %}
-                     {% if users.number|moreF:users.paginator.num_pages%}
-                     <li class="page-item"><a class="page-link" style="pointer-events: none;"><i class="fa-solid fa-ellipsis"></i></a></li>
-                     {% endif %}
-                     {% if users.has_next %}
-                     <li class="page-item"><a class="page-link" href="?page={{users.next_page_number}}"><i class="fa-solid fa-forward"></i></a></li>
-                     {% else %}
-                     <li class="page-item disabled"><a class="page-link"><i class="fa-solid fa-forward"></i></a></li>
-                     {% endif %}
-                  </ul>
-               </nav>
-            </div>
+               <div class="input-group mb-3 mt-3">
+                  <span class="input-group-text border-dark" style="width: 100px;" >Email</span>
+                  <input type="text" id="email" name="email" class="form-control" placeholder="Last Name" required>
+               </div>
+               <div class="input-group mb-3 mt-3">
+                  <label class="input-group-text border-dark" style="width: 100px;" >Password1</label>
+                  <input type="password" id="password1" name="password1" class="form-control" placeholder="Password1" required>
+               </div>
+               <div class="input-group mb-3 mt-3">
+                  <label class="input-group-text border-dark" style="width: 100px;" >Password2</label>
+                  <input type="password" id="password2" name="password2" class="form-control" placeholder="Password2" required>
+               </div>
+               <div class="input-group mb-3 mt-3">
+                  <label class="input-group-text border-dark" style="width: 100px;" >Role</label>
+                  <select type="text" id="role" name="role" class="form-control selectpicker" required>
+                     <option value="ADMIN">Admin</option>
+                     <option value="READER">Reader</option>
+                     <option value="LIBRARIAN">Librarian</option>
+                  </select>
+               </div>
+               <div class="text-end mt-3">
+                  <div id="activateButton" class="btn btn-success btn-icon-split">
+                     <span class="icon text-white-50">
+                        <i class="fa-solid fa-user-plus"></i>
+                     </span>
+                     <input type="submit" id="submitButton" style="display: none;">
+                     <span class="text">Add</span>
+                 </div>
+               </div>
+            </form>
          </div>
       </div>
    </div>
-   <!-- Modal -->
-   <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-         <div class="modal-content">
-            <div class="modal-header">
-               <i class="fa fa-plus text-info"> Add User Account</i>
-               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-               <form action="{% url 'save_user' %}" method = "POST" autocomplete="off" class = "card p-3 mt-1 border-dark was-validated">
-                  {% csrf_token %}
-                  <div class="input-group mb-3 mt-3">
-                     <span class="input-group-text border-dark" style="width: 100px;" >Username</span>
-                     <input type="text" id="username" name="username" class="form-control" placeholder="Username" required>
-                  </div>
-                  <div class="input-group mb-3 mt-3">
-                     <span class="input-group-text border-dark" style="width: 100px;" >First Name</span>
-                     <input type="text" id="first_name" name="first_name" class="form-control" placeholder="First Name" required>
-                  </div>
-                  <div class="input-group mb-3 mt-3">
-                     <span class="input-group-text border-dark" style="width: 100px;" >Last Name</span>
-                     <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Last Name" required>
-                  </div>
-                  <div class="input-group mb-3 mt-3">
-                     <span class="input-group-text border-dark" style="width: 100px;" >Email</span>
-                     <input type="text" id="email" name="email" class="form-control" placeholder="Last Name" required>
-                  </div>
-                  <div class="input-group mb-3 mt-3">
-                     <label class="input-group-text border-dark" style="width: 100px;" >Password1</label>
-                     <input type="text" id="password1" name="password1" class="form-control" placeholder="Password1" required>
-                  </div>
-                  <div class="input-group mb-3 mt-3">
-                     <label class="input-group-text border-dark" style="width: 100px;" >Password2</label>
-                     <input type="text" id="password2" name="password2" class="form-control" placeholder="Password2" required>
-                  </div>
-                  <div class="input-group mb-3 mt-3">
-                     <label class="input-group-text border-dark" style="width: 100px;" >Role</label>
-                     <select type="text" id="role" name="role" class="form-control selectpicker" required>
-                        <option value="ADMIN">Admin</option>
-                        <option value="READER">Reader</option>
-                        <option value="LIBRARIAN">Librarian</option>
-                     </select>
-                  </div>
-                  <div class="text-end mt-3">
-                     <input class="btn btn-dark" type="submit" value="Add">
-                  </div>
-               </form>
-            </div>
-         </div>
+</div>
+
+{% if users %}
+{% for user in users %}
+  <!-- Modal View-->
+  <div class="modal fade" id="modal{{ forloop.counter }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered text-white">
+      <div class="modal-content border-bottom-info">
+        <div class="modal-header bg-info">
+          <h5 class="modal-title" id="exampleModalLabel">Profile</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body mt-2">
+            {% if user.profile.role == "READER" %}
+               {% include "ad/reader_profile.html" %}
+            {% else %}
+               {% include "ad/ad_lib_info.html" %}
+            {% endif %}
+        </div>
       </div>
-   </div>
-</section>
-<script>
-   function searchFunction(){
-     let input, filter, table, tr, td, j;
-     input = document.getElementById("search");
-     filter = input.value.toUpperCase();
-     table = document.getElementById("myTable");
-     tr = table.getElementsByTagName("tr");
-   
-     for (j=0; j<tr.length; j++){
-       td = tr[j].getElementsByTagName("td");
-       msg = document.getElementById("no-data");
-   
-       if(td.length>0){
-         if (td[0].innerHTML.toLocaleUpperCase().indexOf(filter)>-1 ||
-             td[1].innerHTML.toLocaleUpperCase().indexOf(filter)>-1 ||
-             td[2].innerHTML.toLocaleUpperCase().indexOf(filter)>-1 ||
-             td[3].innerHTML.toLocaleUpperCase().indexOf(filter)>-1 ||
-             td[4].innerHTML.toLocaleUpperCase().indexOf(filter)>-1 ||
-             td[5].innerHTML.toLocaleUpperCase().indexOf(filter)>-1){
-               tr[j].style.display = "";
-               msg.innerHTML ="";
-         }
-         else {
-           tr[j].style.display ="none"
-         }
-       }
-       if(td.length==0){
-         msg.innerHTML = "User not found"
-       }
-     }
-   }
-</script>
-{% endblock %}
+    </div>
+  </div>
+{% endfor %}
+{% endif %}
+{% endblock Page_content %}
