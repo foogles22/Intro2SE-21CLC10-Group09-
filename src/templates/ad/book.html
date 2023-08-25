@@ -142,33 +142,7 @@
 				{% endif %}
 			</tbody>
 		</table>
-		<nav aria-label="Page">
-			<ul class="pagination  justify-content-end">
-				{% if book.has_previous %}
-				<li class="page-item"><a class="page-link" href="?page={{book.previous_page_number}}"><i class="fa-solid fa-backward"></i></a></li>
-				{% else %}
-				<li class="page-item disabled"><a class="page-link"><i class="fa-solid fa-backward"></i></a></li>
-				{% endif %}
-				{% if book.number|moreB%}
-				<li class="page-item"><a class="page-link" style="pointer-events: none;"><i class="fa-solid fa-ellipsis"></i></a></li>
-				{% endif %}
-				{% for i in book.number|range_list:book.paginator.num_pages %}
-				{% if i == book.number %}
-				<li class="page-item"><a class="page-link" href="?page={{i}}" style="background-color: #d3d3d3;">{{i}}</a></li>
-				{% else %}
-				<li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
-				{% endif %}
-				{% endfor %}
-				{% if book.number|moreF:book.paginator.num_pages%}
-				<li class="page-item"><a class="page-link" style="pointer-events: none;"><i class="fa-solid fa-ellipsis"></i></a></li>
-				{% endif %}
-				{% if book.has_next %}
-				<li class="page-item"><a class="page-link" href="?page={{book.next_page_number}}"><i class="fa-solid fa-forward"></i></a></li>
-				{% else %}
-				<li class="page-item disabled"><a class="page-link"><i class="fa-solid fa-forward"></i></a></li>
-				{% endif %}
-			</ul>
-		</nav>
+		<ul id="pagination" class="pagination justify-content-center"></ul>
 	</div>
 </div>
 {% endblock %}

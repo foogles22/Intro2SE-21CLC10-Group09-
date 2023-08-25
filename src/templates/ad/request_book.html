@@ -28,10 +28,10 @@
 	</div>
 	<div class="card-body">
 		<!-- input search + reset button-->
-        <div class="input-group input-group mb-3">
-            <input type="text" onkeyup="searchFunction()" class="form-control" id="search" placeholder="Search for...">
-            <a href="" class="btn btn-dark"><i class="fas fa-sync-alt"></i></a>  
-        </div>
+		<div class="input-group input-group mb-3">
+			<input type="text" class="form-control" id="search" placeholder="Search for...">
+			<a href="" class="btn btn-dark"><i class="fas fa-sync-alt"></i></a>  
+		</div>
         <table class="table table-bordered table-sm-mt-4" style="text-align: center;">
             <colcategory>
             <col width="5%"  />
@@ -89,38 +89,7 @@
             {% endif %}
             </tbody>
         </table>
-        <nav aria-label="Page">
-            <ul class="pagination  justify-content-end">
-                {% if requests.has_previous %}
-                <li class="page-item"><a class="page-link" href="?page={{requests.previous_page_number}}"><i class="fa-solid fa-backward"></i></a></li>
-                {% else %}
-                <li class="page-item disabled"><a class="page-link"><i class="fa-solid fa-backward"></i></a></li>
-                {% endif %}
-
-                {% if requests.number|moreB%}
-                <li class="page-item"><a class="page-link" style="pointer-events: none;"><i class="fa-solid fa-ellipsis"></i></a></li>
-                {% endif %}
-
-                {% for i in requests.number|range_list:requests.paginator.num_pages %}
-                {% if i == requests.number %}
-                <li class="page-item"><a class="page-link" href="?page={{i}}" style="background-color: #d3d3d3;">{{i}}</a></li>
-                {% else %}
-                <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
-                {% endif %}
-
-                {% endfor %}
-
-                {% if requests.number|moreF:requests.paginator.num_pages%}
-                <li class="page-item"><a class="page-link" style="pointer-events: none;"><i class="fa-solid fa-ellipsis"></i></a></li>
-                {% endif %}
-
-                {% if requests.has_next %}
-                <li class="page-item"><a class="page-link" href="?page={{requests.next_page_number}}"><i class="fa-solid fa-forward"></i></a></li>
-                {% else %}
-                <li class="page-item disabled"><a class="page-link"><i class="fa-solid fa-forward"></i></a></li>
-                {% endif %}
-            </ul>
-        </nav>
+        <ul id="pagination" class="pagination justify-content-center"></ul>
 	</div>
 </div>
 
@@ -148,7 +117,7 @@
                 <span class="input-group-text border-dark" style="width: 138px;" >Author</span>
                 <input type="text" id="author" name="author" class="form-control" placeholder="Author" required>
             </div>
-            <div class="input-group mb-3 mt-3">
+            <div class="input-group mb-3 mt-3" style="z-index: 3;">
                 <span class="input-group-text border-dark" style="width: 138px;">Category</span>
                 <select type="text" id="category" name="category" data-live-search="true" class="selectpicker form-control" multiple data-container="body" required>
                     {% for category in categories %}
@@ -158,25 +127,25 @@
             </div>
             <div class="input-group mb-3 mt-3">
                 <span class="input-group-text border-dark" style="width: 138px;">Description</span>
-                <input type="text" id="description" name="description" class="form-control" placeholder="Description" required>
+                <textarea id="description" name="description" class="form-control"  rows="5" required></textarea>
             </div>
-            <div class="input-group mb-3 mt-3">
+            <div class="input-group mb-3 mt-3" style="z-index: 2;">
                 <span class="input-group-text border-dark" style="width: 138px;" >Source Type</span>
-                <select type="text" id="sourcetype" name="sourcetype" class="form-control selectpicker" data-size='1' data-container="body" required>
+                <select type="text" id="sourcetype" name="sourcetype" class="form-control selectpicker" data-container="body" required>
                     {% for source_type in source_types %}
                     <option value="{{source_type.pk}}">{{source_type.code}}</option>
                     {% endfor %}
                 </select>
             </div>
-            <div class="input-group mb-3 mt-3">
+            <div class="input-group mb-3 mt-3" style="z-index: 1;">
                 <span class="input-group-text border-dark" style="width: 138px;">Language</span>
-                <select type="text" id="language" name="language" class="form-control selectpicker" data-size='1' data-container="body" required>
+                <select type="text" id="language" name="language" class="form-control selectpicker" data-container="body" required>
                     {% for language in languages %}
                     <option value="{{language.pk}}">{{language.code}}</option>
                     {% endfor %}
                 </select>
             </div>
-            <div class="input-group mb-3 mt-3">
+            <div class="input-group mb-3 mt-3" style="z-index: 0;">
                 <span class="input-group-text border-dark" style="width: 138px;">Cover Photo</span>
                 <input type="file" id="image" name="image" class="form-control" placeholder="Last Name" value="{{book.image}}" required>
             </div>
@@ -190,7 +159,6 @@
                 </div>
             </div>
         </form>
-
         </div>
     </div>
     </div>

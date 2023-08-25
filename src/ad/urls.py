@@ -4,6 +4,7 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
 
+    path("", views.first_access, name="first_access"),
     path('login/', views.login_user, name='login'),
     path('logout/', views.logout_user, name='logout'),
     path('register/', views.register_user, name='register'),
@@ -21,9 +22,6 @@ urlpatterns = [
     path('save_comment/<int:id>', views.save_comment, name='save_comment'),
     path('blog/<int:id>', views.blog, name='blog'),
 
-
-
-
     # ----------------------------------LIBRARIAN--------------------------------------------
     # --------Borrowing Transactions-------
     path('libhome/', views.libhome, name = 'libhome'),
@@ -37,11 +35,16 @@ urlpatterns = [
     path("reader_info/<str:order>", views.reader_info, name="reader_info"),
     path("request_reader/<str:order>", views.request_reader, name ="request_reader"),
     path("delete_request_reader/<int:id>", views.delete_request_reader, name ="delete_request_reader"),
-
     path("request_book/<str:order>", views.request_book, name ="request_book"),
     path("save_request_book/", views.save_request_book, name ="save_request_book"),
     path("delete_request_book/<int:id>", views.delete_request_book, name ="delete_request_book"),
-
+    # -------------------Post------------------------------------------------------------
+    path('post/<str:order>', views.post, name = 'post'),
+    path('manage_post/', views.manage_post, name = 'manage_post'),
+    path('manage_post/<int:id>', views.manage_post, name = 'manage_post_pk'),
+    path('save_post/', views.save_post, name = 'save_post'),
+    path('delete_post/<int:id>', views.delete_post, name = 'delete_post'),
+    
 
 # ----------------------------------ADMIN------------------------------------------------
     # --------CATEGORY--------

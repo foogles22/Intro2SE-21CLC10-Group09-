@@ -5,13 +5,12 @@
   <section class="text-center text-lg-start" style = "padding-top: 80px;">
     <style>
       .cascading-right {
-        margin-right: -100px;
-        border-radius: 20px;
+        border-radius: 20px
       }
   
       @media (max-width: 991.98px) {
         .cascading-right {
-          margin-right: 50px;
+          margin-right: 0;
         }
       }
       .buttonlogin{
@@ -38,25 +37,29 @@
     <!-- Jumbotron -->
     <div class="container py-4"   style = "background-size: cover;background-position: center center;background-image: url('{% static "images/white.jpg" %}'); border-radius: 20px; width: 860px; box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;">
       <div class="row g-0 align-items-center">
-        <div class="col-lg-2"></div>
-        <div class="col-lg-4 mb-5 mb-lg-0">
-          <div style ="text-align: left;">
-            <img src="{% static 'images/thehand-logo.png' %}" class="rounded-4 shadow-4" alt="" style="height: 80%; width: 80%; " />
+        <div class="col-lg-6 mb-5 mb-lg-0">
+          <div>
+            <img src="{% static 'images/wellib.png' %}" class="rounded-4 shadow-4" alt="" style="height: 80%; width: 80%; " />
           </div>
           <h2 class="fw-bold" style = "padding-top: 10px; padding-bottom:10px; font-size: 20px;">Login To Your Account</h2>
-          <div class="card cascading-right" style="background: hsla(0, 0%, 100%, 0.55);backdrop-filter: blur(20px);">
+          <div class="card cascading-right" style="
+              background: hsla(0, 0%, 100%, 0.55);
+              backdrop-filter: blur(20px);
+              ">
             <div class="card-body p-4 shadow-5 text-center">
               <!--  FORM  -->
               <form action="{% url 'login' %}" method="POST">
                 {% csrf_token %}
                 <!-- User ID input -->
                 <div class="form-outline mb-4">
-                  <input type="text" id="userID" name="userID" class="form-control" style = "font-size:13px; border-radius: 10px;" placeholder="User ID"/>
+                  <input type="text" id="userID" name="userID" class="form-control" style = "font-size:13px; border-radius: 10px;" placeholder="Username"/>
+                  <!-- <label class="form-label" for="userID" style = "font-size: 18px; font-weight: bold;">User ID</label> -->
                 </div>
   
                 <!-- Password input -->
                 <div class="form-outline mb-4">
                   <input type="password" id="password" name="password" class="form-control"  style = "font-size:13px; border-radius: 10px" placeholder="Password"/>
+                  <!-- <label class="form-label" for="password" style = "font-size: 18px; font-weight: bold;">Password</label> -->
                 </div>
   
                 <!-- Submit button -->
@@ -65,7 +68,7 @@
                 </button>
   
               </form>
-              <a href="{% url 'register' %}" style="padding-top: 30px;"><button class= "buttonlogin" style = "margin-top: 30px;width: 100%; box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;">Register</button></a>
+              <a href="{% url 'register' %}" style="padding-top: 30px;"><button class= "buttonlogin" style = "margin-top: 30px;width: 100%; box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;">Sign up</button></a>
             </div>
           </div>
         </div>

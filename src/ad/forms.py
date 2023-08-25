@@ -119,6 +119,37 @@ class SaveSourceType(forms.ModelForm):
         except:
             return cleaned_data
 
+class SavePost(forms.ModelForm):
+    class Meta:
+        model = models.Post
+        fields = ('title', 'writer', 'content','main_content', 'image_blog' )
+
+    def clean(self):
+        id = self.data['id'] if (self.data['id']).isnumeric() else 0
+        title = self.data.get('title')
+        cleaned_data = self.cleaned_data
+        try:
+            if int(id) > 0:
+                models.Post.objects.exclude(id=id).get(title=title)
+            else:
+                models.Post.objects.get(title=title)
+            self.add_error('code',forms.ValidationError('This post title already exists.'))
+        except:
+            return cleaned_data
+
+    def clean(self):
+        id = self.data['id'] if (self.data['id']).isnumeric() else 0
+        code = self.data.get('code')
+        cleaned_data = self.cleaned_data
+        try:
+            if int(id) > 0:
+                models.SourceType.objects.exclude(id=id).get(code=code)
+            else:
+                models.SourceType.objects.get(code=code)
+            self.add_error('code',forms.ValidationError('This source type code already exists.'))
+        except:
+            return cleaned_data
+
 class SaveLanguage(forms.ModelForm):
     code = forms.CharField(max_length=50)
     fullname = forms.CharField(max_length=250)

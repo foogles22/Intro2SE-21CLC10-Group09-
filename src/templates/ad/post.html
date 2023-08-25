@@ -1,0 +1,81 @@
+{% extends 'ad/base.html' %}
+{% load my_tags %}
+{% block Page_content %}
+<style>
+	a {
+	text-decoration:none;
+	color: black;
+	font-weight: 500;
+	}
+  a:hover {
+    text-decoration:none;
+    color: black;
+    font-weight: 500;
+ }
+</style>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+	<h1 class="h3 mb-0 text-gray-800 "><i class="fa-regular fa-newspaper"></i> Posts Management</h1>
+</div>
+<div class="card shadow mb-4">
+	<div class="card-header py-2 d-flex justify-content-between">
+		<div class="m-0 font-weight-bold text-primary d-flex align-items-center">List of Posts</div>
+		<a href="{% url 'manage_post'%}" class="btn btn-sm btn-success btn-icon-split" type="button">
+			<span class="icon text-white-50">
+			<i class="fas fa-plus"></i>
+		</span>
+		<span class="text">Add</span>
+		</a>
+	</div>
+	<div class="card-body">
+		<!-- input search + reset button-->
+		<div class="input-group input-group mb-3">
+			<input type="text" class="form-control" id="search" placeholder="Search for...">
+			<a href="" class="btn btn-dark"><i class="fas fa-sync-alt"></i></a>  
+		</div>
+   <table class="table table-bordered table-sm-mt-4" style="text-align: center;">
+      <collanguage>
+        <col width="5%"/>
+        <col width="20%"/>
+        <col width="25%"/>
+        <col width="40%"/>
+        <col width="10%"/>
+      </collanguage>
+      <thead class="table-primary"> 
+        <tr id="chk-th">
+          <th class="text-center" scope="col">#</th>
+          <th class="text-center" scope="col"><a href="{% url 'post' 'title'%}">Code <i class="fa-solid fa-sort"></i></a></th>
+          <th class="text-center" scope="col"><a href="{% url 'post' 'writer__profile__identity'%}">Writer <i class="fa-solid fa-sort"></i></a></th>
+          <th class="text-center" scope="col"><a href="{% url 'post' 'content'%}">Content <i class="fa-solid fa-sort"></i></a></th>
+          <th class="text-center" class="text-center">Action</th>
+        </tr>
+      </thead>
+      <tbody id="myTable">
+        {% if posts %}
+          {% for post in posts %}
+            <tr>
+              <td class="text-center">{{ forloop.counter }}</td>
+              <td class="text-center">{{ post.title }}</td>
+              <td class="text-center">{{ post.writer.profile.identity }}</td>
+              <td class="text-center">{{ post.content }}</td>
+              <td class="text-center">
+                <div class="dropdown">
+                  <button class="btn btn-light btn-sm rounded-0 border dropdown-toggle" type="button" id="{{ post.id }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
+                  <ul class="dropdown-menu" aria-labelledby="{{ post.id }}">
+                    <li>
+                      <a class="dropdown-item" href="{% url 'manage_post_pk' post.id%}"><i class="fa fa-edit text-primary"></i> Edit</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{% url 'delete_post' post.id%}"><i class="fa fa-trash text-danger"></i> Delete</a>
+                    </li>
+                  </ul>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        {% endif %}
+      </tbody>
+    </table>
+    <ul id="pagination" class="pagination justify-content-center"></ul>
+	</div>
+</div>
+{% endblock %}

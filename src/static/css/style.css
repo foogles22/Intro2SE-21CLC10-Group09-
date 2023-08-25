@@ -9585,19 +9585,6 @@ textarea.form-control {
   margin-bottom: 0;
 } 
 
-.buttonedit{
-  width: 200px;
-  font-size: 13px;
-  height: 30px;
-  font-weight: bold;
-  color: #000;
-  border: none;
-  border-radius: 45px;
-  transition: all 0.3s ease 0s;
-  cursor: pointer;
-  outline: none;
-  }
-
 
 .line {
   margin-top: 30px;
