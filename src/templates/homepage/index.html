@@ -36,8 +36,7 @@
 		crossorigin="anonymous"></script>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
 		integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-
+	<link rel="stylesheet" href="{% static 'css/jquery.toast.css' %}"/>
 </head>
 
 <body>
@@ -108,7 +107,7 @@
 						<div class="col-md-4 d-flex ftco-animate">
 							<div class="icon"><span class="icon-phone"></span></div>
 							<div class="text">
-								<h3 style = "color: white; font-weight: bold;">000 (123) 456 7890</h3>
+								<h3 style = "color: white; font-weight: bold;">(028) 62884499</h3>
 								<p style = "color: white;">Our Community</p>
 							</div>
 						</div>
@@ -200,9 +199,7 @@
 		<div class="container" style="text-align: center;">
 			<div class="heading-section text-md-center ftco-animate">
 				<h2 class="mb-6">Explore Our Top Category</h2>
-				<p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and
-					Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the
-					coast of the Semantics, a large language ocean.</p>
+				<p class="mb-4">"Welcome to the heart of our book library, where our thoughtfully curated category invites you to explore a rich tapestry of literary treasures. From timeless classics to contemporary gems, this collection offers a gateway to diverse worlds of imagination, insight, and discovery, ensuring there's always something exceptional awaiting every reader."</p>
 			</div>
 			<div class="popup" style="padding-bottom: 30px;">
 				<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -276,10 +273,10 @@
 	<section class="ftco-section">
 		<div class="container">
 			<div class="row justify-content-center mb-5 pb-3">
-				<div class="col-md-7 heading-section ftco-animate text-center">
+				<div class="heading-section ftco-animate text-center">
 					<h2 class="mb-4">Popular among our collections</h2>
-					<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there
-						live the blind texts.</p>
+					<p>"Delve into the literary wonders that have captured the hearts and minds of countless readers in our esteemed book library's popular book category, where we present a handpicked selection of thought-provoking and enthralling titles that have transcended time, resonating with a wide spectrum of tastes and preferences, and serving as a testament to the power of storytelling to captivate and inspire."
+					</p>
 				</div>
 			</div>
 			<div class="row">
@@ -305,7 +302,7 @@
 			</div>
 		</div>
 	</section>
-
+	{% if newbooks %}
 	<!-- New book added  -->
 	<section class="ftco-section img" id="ftco-testimony" style="background-image: url('{% static "images/bookbaw.jpg" %}');" data-stellar-background-ratio="0.5">
     	<div class="overlay"></div>
@@ -337,18 +334,20 @@
 			</div>
 		</div>
 	  </section>
+	{% endif %}
+	
 
 	<!-- news -->
 	<section class="ftco-section">
 		<div class="container">
 			<div class="row justify-content-center mb-5 pb-3">
-				<div class="col-md-7 heading-section ftco-animate text-center">
+				<div class="heading-section ftco-animate text-center">
 					<h2 class="mb-4">WHAT'S HAPPENING</h2>
-					<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there
-						live the blind texts.</p>
+					<p>"Discover what's happening in our book library with our latest updates, including new arrivals, literary events, and engaging reading recommendations, ensuring you're always at the forefront of literary happenings."</p>
 				</div>
 			</div>
 			<div class="row d-flex">
+				{% if blogs%}
 				{% for blog in blogs %}
 				<div class="col-md-4 d-flex ftco-animate">
 					<div class="blog-entry align-self-stretch">
@@ -369,7 +368,7 @@
 					</div>
 				</div>
 				{% endfor %}
-
+				{% endif %}
 			</div>
 		</div>
 	</section>
@@ -426,8 +425,7 @@
 						<div class="block-23 mb-3">
 							<ul>
 								<li><span class="icon icon-map-marker"></span><span class="text">2227 Nguyen Van Cu street, District 5, Ho Chi Minh city</span></li>
-								<li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929
-											210</span></a></li>
+								<li><a href="#"><span class="icon icon-phone"></span><span class="text">(028) 62884499</span></a></li>
 								<li><a href="#"><span class="icon icon-envelope"></span><span
 											class="text">wellib@gmail.com</span></a></li>
 							</ul>
@@ -438,7 +436,21 @@
 		</div>
 	</footer>
 
-
+	{% for message in messages%}
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script src="{% static "js/jquery.toast.js"%}"></script>
+      <script>
+         var upperCaseTag = '{{message.tags}}'.toUpperCase();
+         $.toast({
+           heading: upperCaseTag,
+           text: '{{message}}',
+           showHideTransition: 'slide',
+           icon: '{{message.tags}}',
+           position: 'top-right',
+         });
+      </script>
+      {% endfor %}
+	  
 	<!-- loader -->
 	<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
 			<circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />

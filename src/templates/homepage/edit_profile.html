@@ -48,49 +48,68 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-
+    <link rel="stylesheet" href="{% static 'css/jquery.toast.css' %}"/>
 </head>
 
 <body>
     {% include 'homepage/navbar.html' %}
 
 
-    <section class="home-slider owl-carousel">
-        <div class="slider-item" style="background-image: url(images/bg_3.jpg);" data-stellar-background-ratio="0.5">
-            <div class="overlay"></div>
-            <div class="container">
-                <div class="row slider-text justify-content-center align-items-center">
+    {% for message in messages%}
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="{% static "js/jquery.toast.js"%}"></script>
+        <script>
+            var upperCaseTag = '{{message.tags}}'.toUpperCase();
+            $.toast({
+            heading: upperCaseTag,
+            text: '{{message}}',
+            showHideTransition: 'slide',
+            icon: '{{message.tags}}',
+            position: 'top-right',
+            });
+        </script>
+    {% endfor %}
 
-                    <div class="col-md-7 col-sm-12 text-center ftco-animate">
-                        <h1 class="mb-3 mt-5 bread">Edit My Profile</h1>
-                        <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>My
-                                Profile</span></p>
-                    </div>
-
-                </div>
-            </div>
-        </div>
+    <section class="home-slider owl-carousel" style = "height: 380px;">
+        <div class="slider-item" style= "height: 380px; background-image: url('{% static "images/booklist.jpg" %}')"></div>
+        <div class="slider-item" style= "height: 380px; background-image: url('{% static "images/boundbook.jpg" %}')"></div>
+        <div class="slider-item" style= "height: 380px; background-image: url('{% static "images/booktop.jpg" %}')"></div>
     </section>
+    
 
 
     <section class="ftco-section">
         <div class="container">
             <div class="row flex-lg-nowrap">
-                <div class="col-12 col-lg-auto mb-3" style="width: 200px;">
-                    <div class="card p-3"
+                <div class="col-12 col-md-3 mb-3">
+                    <div class="card mb-3"
                         style="box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;  border-radius: 15px">
-                        <div class="e-navlist e-navlist--active-bg">
-                            <ul class="nav">
-                                <li class="nav-item"><a class="nav-link px-2 active" href="#"><i
-                                            class="fa fa-fw fa-bar-chart mr-1"></i><span>Overview</span></a></li>
-                                <li class="nav-item"><a class="nav-link px-2"
-                                        href="https://www.bootdey.com/snippets/view/bs4-crud-users" target="__blank"><i
-                                            class="fa fa-fw fa-th mr-1"></i><span>CRUD</span></a></li>
-                                <li class="nav-item"><a class="nav-link px-2"
-                                        href="https://www.bootdey.com/snippets/view/bs4-edit-profile-page"
-                                        target="__blank"><i class="fa fa-fw fa-cog mr-1"></i><span>Settings</span></a>
-                                </li>
-                            </ul>
+                        <div class="card-body">
+                            <div class="px-xl-3">
+                                <a href="{% url 'homepage' %}">
+                                <button class="buttonedit"
+                                style="margin-bottom:15px; font-size:16px;background-color: #98bceb; color:white; width: 100%;height:40px;border-radius: 10px;">
+                                    <i class="fa fa-sign-out"></i>
+                                    <span style = " color:white; ">Homepage</span>
+                                </button>
+                                </a>
+                                <a  href="{% url 'profile' request.user.id %}">
+                                <button class="buttonedit"
+                                style="font-size:16px; background-color: #98bceb; color:white; width: 100%;height:40px;border-radius: 10px;">
+                                    <i class="fa fa-sign-out"></i>
+                                    <span style = " color:white; ">View profile</span>
+                                </button> 
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card"
+                        style="box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;  border-radius: 15px">
+                        <div class="card-body">
+                            <h6 class="card-title font-weight-bold">Support</h6>
+                            <p class="card-text">Get fast, free help from our friendly assistants.</p>
+                            <a href="{% url 'help' %}"><button type="button" class="btn" style = "background-color: #3b6daf; color:white">Get
+                                    Help</button></a>
                         </div>
                     </div>
                 </div>
@@ -119,14 +138,14 @@
                                                         {% csrf_token %}
                                                         <input id="profile_img" type="file" name="profile_img" hidden>
                                                         <div class="mt-2">
-                                                            <button id="avabtn" class="btn btn-primary" type="button">
+                                                            <button id="avabtn" class="btn" style = "background-color: #98bceb; color:white"type="button">
                                                                 <i class="fa fa-fw fa-camera"></i>
-                                                                <span>Change Photo</span>
+                                                                <span style = "color: white;">Change Photo</span>
                                                             </button>
                                                         </div>
                                                         <div class="row" style = "padding-bottom: 30px; margin-top: 20px;">
                                                             <div class="col d-flex justify-content-start">
-                                                                <button class="btn btn-primary" type="submit">Save
+                                                                <button class="btn" style = "background-color: #3b6daf; color:white" type="submit">Save
                                                                     Changes</button>
                                                             </div>
                                                         </div>
@@ -239,7 +258,7 @@
                                                     </div>
                                                     <div class="row" style = "padding-bottom: 30px;">
                                                         <div class="col d-flex justify-content-end">
-                                                            <button class="btn btn-primary" type="submit">Save Changes</button>
+                                                            <button class="btn" style = "background-color: #3b6daf; color:white" type="submit">Save Changes</button>
                                                         </div>
                                                     </div>
                                                 </form>
@@ -294,15 +313,7 @@
                                                                                 class="custom-control-input"
                                                                                 id="notifications-news" checked="">
                                                                             <label class="custom-control-label"
-                                                                                for="notifications-news">Newsletter</label>
-                                                                        </div>
-                                                                        <div class="custom-control custom-checkbox">
-                                                                            <input type="checkbox"
-                                                                                class="custom-control-input"
-                                                                                id="notifications-offers" checked="">
-                                                                            <label class="custom-control-label"
-                                                                                for="notifications-offers">Personal
-                                                                                Offers</label>
+                                                                                for="notifications-news">New Book Added</label>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -311,7 +322,7 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col d-flex justify-content-end">
-                                                            <button class="btn btn-primary" type="submit">Save
+                                                            <button class="btn" style = "background-color: #3b6daf; color:white" type="submit">Save
                                                                 Changes</button>
                                                         </div>
                                                     </div>
@@ -323,31 +334,7 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-12 col-md-3 mb-3">
-                            <div class="card mb-3"
-                                style="box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;  border-radius: 15px">
-                                <div class="card-body">
-                                    <div class="px-xl-3">
-                                        <button class="btn btn-block btn-secondary">
-                                            <i class="fa fa-sign-out"></i>
-                                            <span>Logout</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card"
-                                style="box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;  border-radius: 15px">
-                                <div class="card-body">
-                                    <h6 class="card-title font-weight-bold">Support</h6>
-                                    <p class="card-text">Get fast, free help from our friendly assistants.</p>
-                                    <a href="about.html"><button type="button" class="btn btn-primary">Contact
-                                            Us</button></a>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -407,8 +394,7 @@
 						<div class="block-23 mb-3">
 							<ul>
 								<li><span class="icon icon-map-marker"></span><span class="text">2227 Nguyen Van Cu street, District 5, Ho Chi Minh city</span></li>
-								<li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929
-											210</span></a></li>
+								<li><a href="#"><span class="icon icon-phone"></span><span class="text">(028) 62884499</span></a></li>
 								<li><a href="#"><span class="icon icon-envelope"></span><span
 											class="text">wellib@gmail.com</span></a></li>
 							</ul>

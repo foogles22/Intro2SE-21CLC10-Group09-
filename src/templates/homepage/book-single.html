@@ -50,7 +50,7 @@
 
 
 	<section class="search"
-		style="background-color: rgb(189, 204, 244); height: 230px; box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15">
+		style="background-color: rgb(189, 204, 244); height: 230px; box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15)">
 		<div class="container">
 			<div class="s130">
 				<form action="{% url 'searchbook' 0 %}" method="POST">
@@ -134,7 +134,6 @@
 						Book Description</p>
 					<p class="mb-4" style="text-align: justify; background-color: white ; color:black">
 						{{book.description}}</p>
-
 					<div class="sidebar-widget category" style="align-items: center; padding-top: 30px;">
 						<h2 class="title">
 							Availability
@@ -173,6 +172,9 @@
 		</div>
 	</section>
 	<div class="comment-session">
+		<div class="sidebar-widget category">
+			<h2 class="title">Comment</h2>
+		</div>
 		<div class="line" style="padding-bottom: 30px;"></div>
 		{% if comments %}
 		{% for comment in comments %}
@@ -181,12 +183,12 @@
 				<div class="uscmt">
 					<div class="user-image"><img src="{{comment.user.profile.profile_img.url}}" alt="image"></div>
 					<div class="user-meta">
-						<div class="usname">
+						<div class="usname" style = "font-size: 14px;">
 							{{comment.user.profile.first_name}}&ensp;{{comment.user.profile.last_name}}</div>
 						<div class="day">{{comment.created_at}}</div>
 					</div>
 				</div>
-				<div class="comment-post" style = "margin-left: 20px;">{{comment.content}}</div>
+				<div class="comment-post" style = "margin-left: 53px; margin-right: 20px;font-size: 10px; color: black; text-align: justify;">{{comment.content}}</div>
 			</div>
 		</div>
 		{% endfor %}
@@ -194,7 +196,8 @@
 		<div class="comment-box">
 			<div class="uscmt">
 				<div class="usimage"><img src="{{request.user.profile.profile_img.url}}" alt="image"></div>
-				<div class="usname">{{request.user.profile.first_name}}<span>{{request.user.profile.last_name}}</span>
+				<div class="usname" style = "font-size: 13px;">
+					<span>{{request.user.profile.first_name}}{{request.user.profile.last_name}}</span>
 				</div>
 			</div>
 			<form action="{% url 'save_comment' book.id %}" method="post">
@@ -202,7 +205,7 @@
 				<input type="text" name="user" hidden value="{{request.user.id}}">
 				<input type="text" name="book" hidden value="{{book.id}}">
 				{% if request.user.is_authenticated %}
-				<textarea name="content" placeholder="Your Message"></textarea>
+				<textarea name="content" placeholder="Your Message" ></textarea>
 				<button class="comment-submit">Comment</button>
 				{%else%}
 				You must be logged in to post a comment
@@ -297,7 +300,7 @@
 						<div class="block-23 mb-3">
 							<ul>
 								<li><span class="icon icon-map-marker"></span><span class="text">2227 Nguyen Van Cu street, District 5, Ho Chi Minh city</span></li>
-								<li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929
+								<li><a href="#"><span class="icon icon-phone"></span><span class="text">(028) 62884499</span></a></li>
 											210</span></a></li>
 								<li><a href="#"><span class="icon icon-envelope"></span><span
 											class="text">wellib@gmail.com</span></a></li>
@@ -308,7 +311,20 @@
 			</div>
 		</div>
 	</footer>
-
+	{% for message in messages%}
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script src="{% static "js/jquery.toast.js"%}"></script>
+      <script>
+         var upperCaseTag = '{{message.tags}}'.toUpperCase();
+         $.toast({
+           heading: upperCaseTag,
+           text: '{{message}}',
+           showHideTransition: 'slide',
+           icon: '{{message.tags}}',
+           position: 'top-right',
+         });
+      </script>
+      {% endfor %}
 
 
 	<!-- loader -->
@@ -371,7 +387,7 @@
 				}
 			});
 
-		});
+		});z
 	</script>
 
 </body>

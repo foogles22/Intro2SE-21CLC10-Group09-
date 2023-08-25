@@ -1,0 +1,2 @@
+"Tập thơ";"Tập thơ gồm nhiều bài thơ, được tổ chức thành một cuốn sách.";""
+"Du lịch";"Sách du lịch là tập tài liệu cẩm nang trợ giúp trong hành trình chinh phục những địa danh, thắng cảnh trên thế giới, phản ánh lịch sử, văn hóa, con người nơi đấy một cách trực quan nhất.";""

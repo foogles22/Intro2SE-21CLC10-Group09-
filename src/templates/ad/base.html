@@ -1,111 +1,372 @@
 {% load static %}
+{% load my_tags %}
+
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      {% comment %} Truyền page title và system_name từ View vào {% endcomment %}
-      {% if page_title %} 
-      <title>{{ page_title }} | {{system_name}}</title>
-      {% else %}
-      <title>{{system_name}}</title>
-      {% endif%}
-      <!-- Static CSS-->
-      <link rel="stylesheet" href="{% static 'css/styles.css' %}"/>
-      <link rel="stylesheet" href="{% static 'css/jquery.toast.css' %}"/>
-      <!-- BT5 CSS-->
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-      <!-- FontAwsome-->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
-      <!-- BT5 JS-->
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-      <!-- Jquerry-->
-      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css" integrity="sha512-mR/b5Y7FRsKqrYZou7uysnOdCIJib/7r5QeJMFvLNHNhtye3xJp1TdJVPLtetkukFn227nKpXD9OjUc09lx97Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js" integrity="sha512-FHZVRMUW9FsXobt+ONiix6Z0tIkxvQfxtCSirkKc5Sb4TKHmqq1dZa8DphF0XqKb3ldLu/wgMa8mT6uXiLlRlw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-   </head>
-   <body>
-      {% if request.user.is_authenticated  %}
-      {% include "ad/navbar.html" %}
-      <div class="wrapper py-5 mt-4">
-         <div class="container mb-3">
-            {% block Page_content%}{% endblock Page_content%}
-         </div>
-      </div>
-      {% else %}
-      {% block authentication %}{% endblock authentication %}
-      {% endif %}
-      {% for message in messages%}
-      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-      <script src="{% static "js/jquery.toast.js"%}"></script>
-      <script>
-         var upperCaseTag = '{{message.tags}}'.toUpperCase();
-         $.toast({
-           heading: upperCaseTag,
-           text: '{{message}}',
-           showHideTransition: 'slide',
-           icon: '{{message.tags}}',
-           position: 'top-right',
-         });
-      </script>
-      {% endfor %} 
-      <script>
-         function showHints(inputId, hintListId, url_) {
-           var query = $('#' + inputId).val();
-           if (query.length >= 2) {
-               $.ajax({
-                   url: url_,
-                   data: { query: query },
-                   success: function(data) {
-                       var hintList = $('#' + hintListId);
-                       hintList.empty();
-                       $.each(data, function(index, item) {
-                           hintList.append("<li class = 'list-group-item border-black'>" + item + "</li>");
-                       });
-         
-                       $('#' + hintListId + ' li').on('click', function() {
-                           var selectedValue = $(this).text();
-                           $('#' + inputId).val(selectedValue);
-                           hintList.empty();
-                       });
-                   }
-               });
-           } else {
-               $('#' + hintListId).empty();
-           }
-         }
 
-         $(document).ready(function(){
-            $("#search").on("keyup", function() {
-              var value = $(this).val().toLowerCase();
-              $("#myTable tr").filter(function() {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-              });
-            });
-          });
-          
-         $(document).ready(function() {
-         $('#modal').on('shown.bs.modal', function() {
-             const list_special_list = document.querySelectorAll('.modal-body .input-group .list-group');
-             const input_text_list = document.querySelectorAll('.modal-body .input-group .input-group-text');
-             const input_field_list = document.querySelectorAll('.modal-body .input-group .form-control');
-         
-             input_text_list.forEach((input_text, index) => {
-                 const input_text_width = window.getComputedStyle(input_text).width;
-             
-                 const list_special = list_special_list[index];
-                 list_special.style.left = input_text_width;
-                 });
-         
-             input_field_list.forEach((input_field, index) => {
-             const input_field_width = window.getComputedStyle(input_field).width;
-         
-             const list_special = list_special_list[index];
-             list_special.style.width = input_field_width;
-             });
-         });
-         });
-         
-      </script>
-   </body>
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{{page_title}}</title>
+    
+    <!-- BT5 CSS-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'vendor/jquery/jquery.min.js'%}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+    <!-- BT5 JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <!-- Jquerry-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap select -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css" integrity="sha512-mR/b5Y7FRsKqrYZou7uysnOdCIJib/7r5QeJMFvLNHNhtye3xJp1TdJVPLtetkukFn227nKpXD9OjUc09lx97Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js" integrity="sha512-FHZVRMUW9FsXobt+ONiix6Z0tIkxvQfxtCSirkKc5Sb4TKHmqq1dZa8DphF0XqKb3ldLu/wgMa8mT6uXiLlRlw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Custom fonts for this template-->
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+    <!-- FontAwsome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <!-- Static CSS-->
+    <link href="{% static 'css/sb-admin-2.min.css'%}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/jquery.toast.css' %}"/>
+</head>
+{% if request.user.is_authenticated %}
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion col-xl-2" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% if request.user.profile.role == "ADMIN"%}{% url 'adhome'%}{% else %}{% url 'libhome'%}{% endif %}">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-laugh-wink"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">{{request.user.profile.role}}<sup> {{request.user.profile.identity}}</sup></div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+            {% if request.user.profile.role == "ADMIN" %}
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'adhome' %}">
+                  <i class="fas fa-fw fa-tachometer-alt"></i>
+                  <span class="fs-5 text-center">ADMIN Home</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading" style="font-size: 14px;">
+                Manage Database
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" style="width: 100% !important;" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fa-solid fa-sitemap"></i>
+                    <span class="fs-5">Database</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header" style="font-size: 14px !important;">Element:</h6>
+                        <a class="collapse-item" href="{% url 'book' 'id' %}" style="font-size: 14px !important;">Books</a>
+                        <a class="collapse-item" href="{% url 'category' 'id' %}" style="font-size: 14px !important;">Categories</a>
+                        <a class="collapse-item" href="{% url 'language' 'id' %}" style="font-size: 14px !important;">Languages</a>
+                        <a class="collapse-item" href="{% url 'source_type' 'id' %}" style="font-size: 14px !important;">SourceTypes</a>
+                        <a class="collapse-item" href="{% url 'user' 'id' %}" style="font-size: 14px !important;">User</a>
+                    </div>
+                </div>
+            </li>
+            {% else %}
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'libhome' %}">
+                  <i class="fas fa-fw fa-tachometer-alt"></i>
+                  <span>Librarian Home</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Manage Library
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" style="width: 100% !important;" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Manage Library</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header" style="font-size: 14px !important;" >Element:</h6>
+                        <a class="collapse-item" href="{% url 'loan' 'id'%}" style="font-size: 14px !important;" >Loan Transaction</a>
+                        <a class="collapse-item" href="{% url 'reader_info' 'id'%}" style="font-size: 14px !important;" >Reader Info</a>
+                        <a class="collapse-item" href="{% url 'post' 'id'%}" style="font-size: 14px !important;" >Post</a>
+                        <a class="collapse-item" href="{% url 'request_book' 'id'%}" style="font-size: 14px !important;" >Request Book</a>
+                    </div>
+                </div>
+            </li>
+            {% endif %}  
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Topbar Search -->
+                    <div class="d-none d-sm-inline-block mr-auto">                    
+                            <img style="width: 250px;" src="{% static 'images/wellib.png' %}">
+                    </div>
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">         
+                        <!-- Topbar Search -->
+                        <!-- Nav Item - Alerts -->
+                        <li class="nav-item dropdown no-arrow mx-1">
+                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-bell fa-fw"></i>
+                                <!-- Counter - Alerts --> 
+                                    {% if request.user.profile.role == "ADMIN" %}
+                                    {% if '-'|adnoti != 0%}
+                                    <span class="badge badge-danger badge-counter">
+                                        {{'-'|adnoti}}+
+                                    </span>
+                                    {% endif %}
+                                    {% else %}
+                                    {% if '-'|libnoti != 0%}
+                                    <span class="badge badge-danger badge-counter">
+
+                                        {{'-'|libnoti}}+
+                                    </span>
+                                    {% endif %}
+                                    {% endif %}
+                            </a>
+                            <!-- Dropdown - Alerts -->
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="alertsDropdown">
+                                <h6 class="dropdown-header">
+                                    Alerts Center
+                                </h6>
+                                <div class="scrollable">
+                                    {% if request.user.profile.role == "ADMIN" %}
+                                    {% if '-'|book_requests %}
+                                        {% for book_request in  '-'|book_requests%}
+                                            <a class="dropdown-item d-flex align-items-center" href="{% url 'manage_book_request' 'id'%}">
+                                                <div class="mr-3">
+                                                    <div class="icon-circle bg-warning">
+                                                        <i class="fas fa-question text-white"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="small text-gray-500">{{book_request.date_added}}</div>
+                                                    <span class="font-weight-bold">A new book request is waiting to be responsed</span>
+                                                </div>
+                                            </a>
+                                        {% endfor %}
+                                    {% endif %}
+                                    {% if '-'|reader_requests %}
+                                        {% for reader_request in  '-'|reader_requests%}
+                                            <a class="dropdown-item d-flex align-items-center" href="{% url 'manage_reader_request' 'id'%}">
+                                                <div class="mr-3">
+                                                    <div class="icon-circle bg-warning">
+                                                        <i class="fas fa-question text-white"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="small text-gray-500">{{reader_request.date_added}}</div>
+                                                    <span class="font-weight-bold">A new reader account request is waiting to be responsed</span>
+                                                </div>
+                                            </a>
+                                        {% endfor %}
+                                    {% endif %}
+                                    {% endif %}
+                                    {% if request.user.profile.role == "LIBRARIAN" %}
+                                    {% if '-'|book_responses %}
+                                        {% for book_response in  '-'|book_responses%}
+                                            <a class="dropdown-item d-flex align-items-center" href="{% url 'request_book' 'id'%}">
+                                                {% if book_response.status == "2" %}
+                                                    <div class="mr-3">
+                                                        <div class="icon-circle bg-success">
+                                                            <i class="fa-regular fa-square-check text-white"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="small text-gray-500">{{book_response.date_added}}</div>
+                                                        <span class="font-weight-bold">{{book_response}} is accepted</span>
+                                                    </div>
+                                                    {% else %}
+                                                    <div class="mr-3">
+                                                        <div class="icon-circle bg-danger">
+                                                            <i class="fa-solid fa-square-xmark text-white"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="small text-gray-500">{{book_response.date_added}}</div>
+                                                        <span class="font-weight-bold">{{book_response}} is declined</span>
+                                                    </div>
+                                                {% endif %}
+                                            </a>
+                                        {% endfor %}
+                                    {% endif %}
+                                    {% if '-'|reader_responses %}
+                                        {% for reader_response in  '-'|reader_responses%}
+                                            <a class="dropdown-item d-flex align-items-center" href="{% url 'request_reader' 'id'%}">
+                                                {% if reader_response.status == "2" %}
+                                                    <div class="mr-3">
+                                                        <div class="icon-circle bg-success">
+                                                            <i class="fa-regular fa-square-check text-white"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="small text-gray-500">{{reader_response.date_added}}</div>
+                                                        <span class="font-weight-bold">{{reader_response}} is accepted</span>
+                                                    </div>
+                                                    {% else %}
+                                                    <div class="mr-3">
+                                                        <div class="icon-circle bg-danger">
+                                                            <i class="fa-solid fa-square-xmark text-white"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="small text-gray-500">{{reader_response.date_added}}</div>
+                                                        <span class="font-weight-bold">{{reader_response}} is declined</span>
+                                                    </div>
+                                                {% endif %}
+                                            </a>
+                                        {% endfor %}
+                                    {% endif %}        
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </li>
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{request.user.profile.last_name}}</span>
+                                <img class="img-profile rounded-circle" src="{{request.user.profile.profile_img.url}}">
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="{% url 'profile' request.user.id %}">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a>
+                                <a class="dropdown-item" href="{% url 'homepage' %}">
+                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Homepage
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid" style="padding: 0 5% !important;">
+                    {% block Page_content %}{% endblock Page_content %}
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Wellib 2023</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    {% else %}
+    {% block authentication %}{% endblock authentication %}
+    {% endif %}
+
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% for message in messages%}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static "js/jquery.toast.js"%}"></script>
+    <script>
+       var upperCaseTag = '{{message.tags}}'.toUpperCase();
+       $.toast({
+         heading: upperCaseTag,
+         text: '{{message}}',
+         showHideTransition: 'slide',
+         icon: '{{message.tags}}',
+         position: 'top-right',
+       });
+    </script>
+    {% endfor %} 
+    <script src="{% static 'js/pagination_livesearch.js' %}"></script>
+</body>
+
 </html>

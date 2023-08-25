@@ -1,0 +1,102 @@
+{% extends 'ad/base.html'%}
+{% load my_tags %}
+{% block Page_content%}
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800 "><i class="fa-solid fa-pencil"></i> Management</h1>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="fs-4 font-weight-bold text-success text-uppercase mb-1">
+                                Books Available</div>
+                            <div class="h4 mb-0 font-weight-bold text-gray-800">{{'-'|bookavai}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-book-medical fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="fs-4 font-weight-bold text-danger text-uppercase mb-1">
+                                Books Unavailable</div>
+                            <div class="h4 mb-0 font-weight-bold text-gray-800">{{'-'|bookunavai}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-book-skull fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="fs-4 font-weight-bold text-info text-uppercase mb-1">
+                                Books Being Borrowed</div>
+                            <div class="h4 mb-0 font-weight-bold text-gray-800">{{'-'|bookbeingborrowed}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-book-open-reader fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Requests Card Example -->
+        <div class="col-xl-4 col-md-6 mb-4 ml-auto">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="fs-4 font-weight-bold text-warning text-uppercase mb-1">
+                                Pending Book Requests</div>
+                            <div class="h4 mb-0 font-weight-bold text-gray-800">{{'-'|bookrequest}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-circle-pause fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Requests Card Example -->
+        <div class="col-xl-4 col-md-6 mb-4 mr-auto">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="fs-4 font-weight-bold text-warning text-uppercase mb-1">
+                                Pending Reader Requests</div>
+                            <div class="h4 mb-0 font-weight-bold text-gray-800">{{'-'|readerrequest}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-regular fa-hourglass-half fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock Page_content%}

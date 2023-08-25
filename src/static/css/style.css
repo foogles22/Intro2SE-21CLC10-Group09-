@@ -58,9 +58,7 @@ article, aside, dialog, figcaption, figure, footer, header, hgroup, main, nav, s
 
 body {
   margin: 0;
-  /* font-family: "Work Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; */
-  /* font-family: "Josefin Sans", Arial, sans-serif; } */
-  font-family: serif;
+  font-family: "Work Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -1990,7 +1988,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
     .form-inline .custom-control-label {
       margin-bottom: 0; } }
 
-.btn{
+.btn {
   display: inline-block;
   font-weight: 400;
   text-align: center;
@@ -9775,17 +9773,4 @@ textarea.form-control {
 /* elipsis */
 .overflow-ellipsis{
   text-overflow: ellipsis;
-}
-
-
-.gotoSectionButton {
-  border: none;
-  outline: none;
-  background-color: transparent;
-  cursor: pointer;
-  font-family: "Josefin Sans", Arial, sans-serif;
-  font-weight: 900px;
-  font-size: 40px;
-  position: relative;
-  text-transform: uppercase;
 }

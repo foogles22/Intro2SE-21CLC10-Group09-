@@ -52,6 +52,11 @@ class SaveProfile(forms.ModelForm):
             self.add_error('email', forms.ValidationError('Email is already taken!'))
         except:
             return email
+        
+class SaveRequestReader(forms.ModelForm):
+    class Meta:
+        model = models.ReaderRequest
+        fields = ('first_name','last_name','email')
 
 class EditProfile(forms.ModelForm):
     class Meta:
@@ -100,6 +105,37 @@ class SaveSourceType(forms.ModelForm):
     class Meta:
         model = models.SourceType
         fields = ('code', 'name', 'description', )
+
+    def clean(self):
+        id = self.data['id'] if (self.data['id']).isnumeric() else 0
+        code = self.data.get('code')
+        cleaned_data = self.cleaned_data
+        try:
+            if int(id) > 0:
+                models.SourceType.objects.exclude(id=id).get(code=code)
+            else:
+                models.SourceType.objects.get(code=code)
+            self.add_error('code',forms.ValidationError('This source type code already exists.'))
+        except:
+            return cleaned_data
+
+class SavePost(forms.ModelForm):
+    class Meta:
+        model = models.Post
+        fields = ('title', 'writer', 'content','main_content', 'image_blog' )
+
+    def clean(self):
+        id = self.data['id'] if (self.data['id']).isnumeric() else 0
+        title = self.data.get('title')
+        cleaned_data = self.cleaned_data
+        try:
+            if int(id) > 0:
+                models.Post.objects.exclude(id=id).get(title=title)
+            else:
+                models.Post.objects.get(title=title)
+            self.add_error('code',forms.ValidationError('This post title already exists.'))
+        except:
+            return cleaned_data
 
     def clean(self):
         id = self.data['id'] if (self.data['id']).isnumeric() else 0
@@ -168,11 +204,6 @@ class SaveBook(forms.ModelForm):
             return True
 
     def clean(self):
-        cleaned_data = self.cleaned_data
-
-        # print(self.data)
-        # print(cleaned_data)
-        
         title = self.data.get('title')
         self.cleanTitle(title)
         
@@ -190,8 +221,6 @@ class SaveRequestBook(forms.ModelForm):
         
 
 class SaveTransaction(forms.ModelForm):
-    # user = forms.ModelChoiceField(queryset=User.objects.all())
-    # book = forms.ModelChoiceField(queryset=models.Book.objects.all())
     class Meta:
         model = models.LoanTransaction
         fields = ('user','book')
@@ -203,7 +232,7 @@ class SaveTransaction(forms.ModelForm):
         except:
             user = None
         try:
-            book = models.Book.objects.get(title = data['book'])
+            book = models.Book.objects.get(id = data['book'])
         except:
             book = None
         new_data = {'user': user, 'book': book}
@@ -225,11 +254,10 @@ class SaveTransaction(forms.ModelForm):
             self.errors['book'].pop(0)
 
         try:
-            loan = models.LoanTransaction.objects.get(user= user, book = book)
+            loan = models.LoanTransaction.objects.all().filter(user= user, book = book).order_by('-date_loan')[0]
             if loan.date_loan <= timezone.now():
                 if loan.returned == '0':
                     self.add_error('book', forms.ValidationError('Reader has not returned this book yet!'))
-                    print(1)
         except:
             return {'user': user, 'book' : book}
 

@@ -39,21 +39,12 @@
     {% include 'homepage/navbar.html' %}
 
     <!-- END nav -->
-    <section class="home-slider owl-carousel">
-        <div class="slider-item" style="background-image: url('{% static "images/booktop.jpg" %}')" data-stellar-background-ratio="0.5">
-          <div class="overlay"></div>
-          <div class="container">
-            <div class="row slider-text justify-content-center align-items-center">
-    
-              <div class="col-md-7 col-sm-12 text-center ftco-animate">
-                <h1 class="mb-3 mt-5 bread">Profile</h1>
-                <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'homepage' %}">Home</a></span> <span>Profile</span></p>
-              </div>
-    
-            </div>
-          </div>
-        </div>
+    <section class="home-slider owl-carousel" style = "height: 380px;">
+        <div class="slider-item" style= "height: 380px; background-image: url('{% static "images/booklist.jpg" %}')"></div>
+        <div class="slider-item" style= "height: 380px; background-image: url('{% static "images/boundbook.jpg" %}')"></div>
+        <div class="slider-item" style= "height: 380px; background-image: url('{% static "images/booktop.jpg" %}')"></div>
       </section>
+    
 
     <section class="ftco-section">
         <div class="container">
@@ -65,33 +56,51 @@
                             <div class="col-lg-12">
                                 <div class="main-profile ">
                                     <div class="row">
-                                        <div class="col-lg-4">
-                                            <div class="menu-entry" style="position: relative; text-align: center;">
+                                        <div class="col-lg-4 text-md-center">
+                                            <!-- <div class="menu-entry" style = "margin-right:0px">
+
                                                 <a href="#" class="img"
                                                     style="height : 270px; width:270px; background-image:  url('{{profile.profile_img.url}}'); border-radius: 15px;"></a>
-                                            </div>
+                                            </div> -->
+                                            <img src = "{{profile.profile_img.url}}" style = "object-fit:cover;text-align:center;height : 270px; width : 270px; border-radius: 15px;">
                                         </div>
-                                        <div class="col-lg-4 align-self-center">
+                                        <div class="col-lg-4 " style = "padding: 30px; height:270px; width: 270px; box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15); border-radius: 15px; padding-right: 30px;">
                                             <div class="main-info header-text">
                                                 <h4>{{request.user.profile.first_name}}&ensp;{{request.user.profile.last_name}}</h4>
-                                                <h5>{{profile.email}}</h5>
-                                                <p>{{profile.date_joined}}</p>
-
-                                                <p>{{profile.bio}}</p>
-                                                <div class="main-border-button">
-                                                    <p><a href="{% url 'edit_profile' request.user.id %}"><button class="buttonview"
-                                                                style="color: rgb(13, 13, 79)"> Edit Profile</button>
-                                                        </a></p>
-
+                                                <div style = "display: flex;  padding-bottom: 5px;">
+                                                    <h5 style  ="font-weight: bold;font-size: 15px;">Email:</h5>
+                                                    <h5 style = "margin-left:10px;font-size: 15px;">{{profile.email}}</h5>
+                                                </div>
+                                                <div style = "display: flex; padding-bottom: 5px;">
+                                                    <h5 style  ="font-weight: bold;font-size: 15px;">Date Of Birth:</h5>
+                                                    <h5 style = "margin-left:10px;font-size: 15px;">{{profile.date_of_birth}}</h5>
+                                                </div>
+                                                <div style = "display: flex;  padding-bottom: 5px;">
+                                                    <h5 style  ="font-weight: bold;font-size: 15px;">Date Joined:</h5>
+                                                    <h5 style = "margin-left:10px;font-size: 15px;">{{profile.date_joined}}</h5>
+                                                </div>
+                                                <div style="background: #ffffff;padding: 10px; box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15); border-radius: 8px;">
+                                                    <p style = "font-size: 12px; color: black;">{{profile.bio}}</p>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 align-self-center">
+                                        <div class="col-lg-4 text-md-center">
                                             <ul>
                                                 <li>Identity<span>{{profile.identity}}</span></li>
                                                 <li>Book Loans<span>16</span></li>
                                             </ul>
+                                            <div class="main-border-button">
+                                                <p><a href="{% url 'edit_profile' request.user.id %}"><button class="buttonedit"
+                                                            style="font-size:16px;color: rgb(247, 247, 247);background-color:  #3b6daf; width: 100%;height:45px;border-radius: 15px; box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);"> Edit Profile</button>
+                                                </a></p>
+                                            </div>
+                                            <div class="main-border-button">
+                                                <p><a data-toggle="modal" data-target="#logoutModal"><button class="buttonedit"
+                                                            style="font-size:16px;color: rgb(247, 247, 247);background-color:  #3b6daf; width: 100%;height:45px;border-radius: 15px; box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);"> Logout</button>
+                                                </a></p>
+                                            </div>
                                         </div>
+                                        
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-12">
@@ -125,10 +134,10 @@
                                             <h4>Date Loaned</h4><span>{{loan.date_loan}}</span>
                                         </li>
                                         <li>
-                                            {% if loan.returned == 0%}
-                                            <h4>Status</h4><span>Returned</span>
-                                            {% else %}
+                                            {% if loan.returned == "0"%}
                                             <h4>Status</h4><span>Taken</span>
+                                            {% else %}
+                                            <h4>Status</h4><span>Returned</span>
                                             {% endif %}
                                         </li>
                                         <li>
@@ -200,8 +209,8 @@
 						<div class="block-23 mb-3">
 							<ul>
 								<li><span class="icon icon-map-marker"></span><span class="text">2227 Nguyen Van Cu street, District 5, Ho Chi Minh city</span></li>
-								<li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929
-											210</span></a></li>
+                                <li><a href="#"><span class="icon icon-phone"></span><span class="text">(028) 62884499</span></a></li>
+
 								<li><a href="#"><span class="icon icon-envelope"></span><span
 											class="text">wellib@gmail.com</span></a></li>
 							</ul>
@@ -211,7 +220,25 @@
 			</div>
 		</div>
 	</footer>
-
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <!-- loader -->
