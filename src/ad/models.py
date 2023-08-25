@@ -47,7 +47,10 @@ def create_profile(sender, instance, created, **kwargs):
         user_profile = Profile(user = instance)
         user_profile.save()
         user_profile.init_identity()
-        user_profile.save()
+        if instance.is_superuser:
+            user_profile.role = "ADMIN"
+            user_profile.save(update_fields=['role'])
+
 
 class ReaderRequest(models.Model):
     first_name = models.CharField(max_length=255, blank=False, null= False)

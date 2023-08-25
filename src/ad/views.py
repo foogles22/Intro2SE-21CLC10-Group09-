@@ -62,7 +62,7 @@ def login_user(request):
                     return redirect('homepage')             
         else:
             messages.error(request, 'Login failed!')
-            return render(request, "authenticate/login.html", context)        
+            return render(request, "authenticate/login.html", context)  
     return render(request, "authenticate/login.html", context)
 
 
