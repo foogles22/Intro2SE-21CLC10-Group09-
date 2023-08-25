@@ -99,7 +99,13 @@
 					</td>
 					<td class="text-center">{{ b.sourcetype.code }}</td>
 					<td class="text-center">{{ b.language.code }}</td>
-					<td class="text-center">{{ b.status }}</td>
+					<td class="text-center">
+						{% if b.status == "1" %}
+						<i class="fa-solid fa-check text-success"></i>
+						{%else%}
+						<i class="fa-solid fa-check text-danger"></i>
+						{% endif %}
+					</td>
 					<td class="text-center">
 						<div class="dropdown">
 							<button class="btn btn-light border dropdown-toggle" type="button" id="{{ b.id }}" data-bs-toggle="dropdown" aria-expanded="false">Action</button>
@@ -164,7 +170,5 @@
 			</ul>
 		</nav>
 	</div>
-</div>
-</div>
 </div>
 {% endblock %}

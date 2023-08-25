@@ -2,7 +2,9 @@
 
 {% block Page_content %}
 
-<h1 class="h3 mb-2 text-gray-800">Source Types management</h1>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+	<h1 class="h3 mb-0 text-gray-800 "><i class="fa-solid fa-book-bookmark"></i> Source Types Management</h1>
+</div>
 <div class="card shadow mb-4">
 	<div class="card-header py-3">
         {% if type == 'Save' %}
@@ -25,7 +27,7 @@
          </div>
          <div class="input-group mb-3 mt-3">
             <span class="input-group-text border-dark" style="width: 106px;" >Description</span>
-            <input type="text" id="description" name="description" class="form-control" value="{{source_type.description}}" placeholder="Description" required>
+            <textarea id="description" name="description" class="form-control" rows="5" required>{{source_type.description}}</textarea>
          </div>
         <div class="d-flex justify-content-between mt-3">
             <a href="{% url 'source_type' 'id'%}" class="btn btn-warning btn-icon-split" type="button">
@@ -45,7 +47,4 @@
         </div>
     </form>
 </div>
-</div>
-</div>
 {% endblock Page_content %}
-        
