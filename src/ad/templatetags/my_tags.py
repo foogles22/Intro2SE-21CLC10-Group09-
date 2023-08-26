@@ -5,6 +5,9 @@ from django.db.models import Q
 register = template.Library()
 
 @register.filter
+def fullname(profile):
+    return f'{profile.first_name} {profile.last_name}'
+@register.filter
 def borrowing(user):
     return models.LoanTransaction.objects.all().filter(user = user, returned = '0').count()
 

@@ -138,7 +138,8 @@ def delete_user(request, id):
     user = User.objects.get(pk = id)
     messages.success(request, 'Deleting acount succeed')
     if len(user.profile.profile_img) > 0:
-        os.remove(user.profile.profile_img.path)
+        if(user.profile.profile_img != 'images/avatars/default.jpg'):
+            os.remove(user.profile.profile_img.path)
     user.delete()
     return redirect("user", 'id')
 
@@ -1107,6 +1108,7 @@ def import_language(request):
                     messages.warning(request, message ='Wrong .csv input')
             else:
                 messages.warning(request, message ='The number of fields value in the imported file does not match the number of fields')
+        os.remove(storage.path(filename))
     else:
         messages.error(request,"No data has been sent")
     return redirect('language', 'id')

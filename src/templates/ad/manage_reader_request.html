@@ -96,15 +96,15 @@
           {% csrf_token %}
           <input type="text" name="id" value="{{request.id}}" hidden>
           <div class="input-group mb-3 mt-3">
-            <span class="input-group-text border-dark" >Username</span>
+            <span class="input-group-text border-dark" style="width: 106px">Username</span>
             <input type="text" id="username" name="username" class="form-control" placeholder="Username" required>
           </div>
           <div class="input-group mb-3 mt-3">
-            <span class="input-group-text border-dark">Password1</span>
+            <span class="input-group-text border-dark"style="width: 106px">Password1</span>
             <input type="password" id="password1" name="password1" class="form-control" placeholder="Password1" required>
           </div>
             <div class="input-group mb-3 mt-3">
-              <span class="input-group-text border-dark">Password2</span>
+              <span class="input-group-text border-dark"style="width: 106px">Password2</span>
               <input type="password" id="password2" name="password2" class="form-control" placeholder="Password2" required>
             </div>
             <div class="text-end mt-3">
@@ -121,7 +121,6 @@
       </div>
     </div>
   </div>
-</div>
 {% endif %}
 {% endfor %}
 {% endblock %}

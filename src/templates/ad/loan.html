@@ -100,7 +100,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
-   <div class="modal-dialog modal-dialog-centered">
+   <div class="modal-dialog">
       <div class="modal-content">
          <div class="modal-header">
             <i class="fa fa-plus text-success"> Add Loan Transaction</i>
@@ -109,17 +109,17 @@
          <div class="modal-body">
             <form action="{% url 'save_loan' %}" method = "POST" autocomplete="off" class = "card p-3 mt-1 border-dark was-validated">
                {% csrf_token %}
-               <div class="input-group mb-3 mt-3">
+               <div class="input-group mb-3 mt-3" style="z-index: 1;">
                   <span class="input-group-text border-dark" style="width: 97px;">Reader ID</span>
-                  <select type="text" id="identity" name="identity" data-live-search="true" class="selectpicker form-control"  data-container="body" required>
+                  <select type="text" id="identity" name="identity" data-live-search="true" class="selectpicker form-control" required>
                       {% for reader in readers %}
-                      <option value="{{reader.identity}}" style="z-index:1 !important;">{{reader.identity}}</option>
+                      <option value="{{reader.identity}}">{{reader.identity}}</option>
                       {% endfor %}
                   </select>
                </div>
-               <div class="input-group mb-3 mt-3">
+               <div class="input-group mb-3 mt-3" style="z-index: 0;">
                   <span class="input-group-text border-dark" style="width: 97px;">Book</span>
-                  <select type="text" id="book" name="book" data-live-search="true" class="selectpicker form-control"  data-container="body" required>
+                  <select type="text" id="book" name="book" data-live-search="true" class="selectpicker form-control" required>
                       {% for book in books %}
                       <option value="{{book.id}}">{{book.title}}</option>
                       {% endfor %}

@@ -36,7 +36,15 @@ class Profile(models.Model):
             name = 'LB'
         if self.role == "READER":
             name = 'RD'
-        self.identity = name + str(Profile.objects.filter(role=self.role).count())
+        try:
+            total = Profile.objects.all().filter(role=self.role)
+            id_list = [each.identity for each in total]
+            id_list.pop()
+            number = int(id_list[-1][-1])
+            number +=1
+        except:
+            number = 1
+        self.identity = name + str(number)
 
     def __str__(self):
         return str(self.identity)
@@ -46,10 +54,11 @@ def create_profile(sender, instance, created, **kwargs):
     if created:
         user_profile = Profile(user = instance)
         user_profile.save()
-        user_profile.init_identity()
         if instance.is_superuser:
             user_profile.role = "ADMIN"
             user_profile.save(update_fields=['role'])
+        user_profile.init_identity()
+        user_profile.save()
 
 
 class ReaderRequest(models.Model):

@@ -119,7 +119,7 @@
             </div>
             <div class="input-group mb-3 mt-3" style="z-index: 3;">
                 <span class="input-group-text border-dark" style="width: 138px;">Category</span>
-                <select type="text" id="category" name="category" data-live-search="true" class="selectpicker form-control" multiple data-container="body" required>
+                <select type="text" id="category" name="category" data-live-search="true" class="selectpicker form-control" multiple required>
                     {% for category in categories %}
                     <option value="{{category.pk}}">{{category.name}}</option>
                     {% endfor %}
@@ -131,7 +131,7 @@
             </div>
             <div class="input-group mb-3 mt-3" style="z-index: 2;">
                 <span class="input-group-text border-dark" style="width: 138px;" >Source Type</span>
-                <select type="text" id="sourcetype" name="sourcetype" class="form-control selectpicker" data-container="body" required>
+                <select type="text" id="sourcetype" name="sourcetype" class="form-control selectpicker" required>
                     {% for source_type in source_types %}
                     <option value="{{source_type.pk}}">{{source_type.code}}</option>
                     {% endfor %}
@@ -139,7 +139,7 @@
             </div>
             <div class="input-group mb-3 mt-3" style="z-index: 1;">
                 <span class="input-group-text border-dark" style="width: 138px;">Language</span>
-                <select type="text" id="language" name="language" class="form-control selectpicker" data-container="body" required>
+                <select type="text" id="language" name="language" class="form-control selectpicker" required>
                     {% for language in languages %}
                     <option value="{{language.pk}}">{{language.code}}</option>
                     {% endfor %}
